@@ -18,6 +18,24 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AnglePair.cpp" />
+    <ClCompile Include="BVHNode.cpp" />
+    <ClCompile Include="BVHTree.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MarchingCubes.cpp" />
+    <ClCompile Include="Ray.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AnglePair.h" />
+    <ClInclude Include="Array3D.h" />
+    <ClInclude Include="BoundingBox.h" />
+    <ClInclude Include="BVHNode.h" />
+    <ClInclude Include="BVHTree.h" />
+    <ClInclude Include="MarchingCubes.h" />
+    <ClInclude Include="Ray.h" />
+    <ClInclude Include="Structures.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -126,23 +144,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\MIndicesTEMP\MIndices\AnglePair.h" />
-    <ClInclude Include="..\..\MIndicesTEMP\MIndices\Array3D.h" />
-    <ClInclude Include="..\..\MIndicesTEMP\MIndices\BoundingBox.h" />
-    <ClInclude Include="..\..\MIndicesTEMP\MIndices\BVHTree.h" />
-    <ClInclude Include="..\..\MIndicesTEMP\MIndices\MarchingCubes.h" />
-    <ClInclude Include="..\..\MIndicesTEMP\MIndices\Ray.h" />
-    <ClInclude Include="..\..\MIndicesTEMP\MIndices\Structures.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\MIndicesTEMP\MIndices\AnglePair.cpp" />
-    <ClCompile Include="..\..\MIndicesTEMP\MIndices\BVHNode.cpp" />
-    <ClCompile Include="..\..\MIndicesTEMP\MIndices\BVHTree.cpp" />
-    <ClCompile Include="..\..\MIndicesTEMP\MIndices\Main.cpp" />
-    <ClCompile Include="..\..\MIndicesTEMP\MIndices\MarchingCubes.cpp" />
-    <ClCompile Include="..\..\MIndicesTEMP\MIndices\Ray.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
