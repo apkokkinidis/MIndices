@@ -6,4 +6,4 @@
 
  The first step of the algorithm is to triangulate the binary voxel data, this is achieved using the marching cubes algorithm. The algorithm uses bounding volumes that wrap the triangulated surfaces, forming a bounding volume hierarchy, in order to reduce the computational complexity of ray tracing. A parallel version of the algorithm has also been implemented that further decreases the time required to process each sample.
 
- The software takes as input the path of the voxel file (not included in this repo) from the command line. It then requires the dimenssions of the file in order to load the voxel array and triangulate it.
+ The software takes as input the filepath of the voxel file (inside Samples folder) from the command line. It then requires the dimenssions of the file in order to load the voxel array and triangulate it.
