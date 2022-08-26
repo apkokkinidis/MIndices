@@ -15,7 +15,6 @@
 #include "Array3D.h"
 #include "MarchingCubes.h"
 #include "Ray.h"
-#include "RayIntersection.h"
 #include "BVHTree.h"
 #include "AnglePair.h"
 
