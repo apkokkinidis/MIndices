@@ -157,7 +157,7 @@ void MarchingCubes::TriangulateCubes(std::vector<TRIANGLE>& outTriangles) noexce
 	@param	a constant reference to an existing Cube.
 	@return true if the cube is entirely in/out of the surface.
 */
-inline bool MarchingCubes::CubeInOutSurface(const Cube& cube, int& cubeindex) noexcept
+inline bool MarchingCubes::CubeInOutSurface(const Cube& cube, int& cubeindex) const noexcept
 {
 	cubeindex = 0;
 	if (cube.val[0]) cubeindex |= 1;
@@ -176,7 +176,7 @@ inline bool MarchingCubes::CubeInOutSurface(const Cube& cube, int& cubeindex) no
 	@param	a constant reference of the edges of the cube.
 	@return the generated triangle.
 */
-inline TRIANGLE MarchingCubes::GenerateTriangle(const Point3D(&edges)[12], size_t cubeIndx, size_t edgeIndx) noexcept
+inline TRIANGLE MarchingCubes::GenerateTriangle(const Point3D(&edges)[12], size_t cubeIndx, size_t edgeIndx) const noexcept
 {
 	Point3D p1 = edges[triTable[cubeIndx][edgeIndx]];
 	Point3D p2 = edges[triTable[cubeIndx][edgeIndx + 1]];
@@ -185,7 +185,7 @@ inline TRIANGLE MarchingCubes::GenerateTriangle(const Point3D(&edges)[12], size_
 }
 
 //Finds the midpoint of the given edge
-inline Point3D MarchingCubes::FindEdgeMidpoint(const Point3D& p1, const Point3D& p2) noexcept
+inline Point3D MarchingCubes::FindEdgeMidpoint(const Point3D& p1, const Point3D& p2) const noexcept
 {
 	Point3D midPoint{ 0 };
 	midPoint.x = (p1.x + p2.x) * 0.5f;
@@ -265,7 +265,7 @@ bool MarchingCubes::PrintTrianglesToFile(const vector<TRIANGLE>& vecTriangles, c
 	}
 }
 
-bool MarchingCubes::SaveToFile(const vector<TRIANGLE>& triangles, const char* FileSpec)
+bool MarchingCubes::SaveToFile(const vector<TRIANGLE>& triangles, const char* FileSpec) const
 {
 	FILE* file = (FILE*)fopen(FileSpec, "w+");
 	if (file == nullptr)

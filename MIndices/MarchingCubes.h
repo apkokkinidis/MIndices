@@ -314,9 +314,9 @@ public:
 
 	void TriangulateCubes(std::vector<TRIANGLE>& outTriangles) noexcept;
 
-	inline bool CubeInOutSurface(const Cube& cube, int& cubeindex) noexcept;
-	inline TRIANGLE GenerateTriangle(const Point3D(&edges)[12], size_t cubeIndx, size_t edgeIndx) noexcept;
-	inline Point3D FindEdgeMidpoint(const Point3D& p1, const Point3D& p2) noexcept;
+	inline bool CubeInOutSurface(const Cube& cube, int& cubeindex) const noexcept;
+	inline TRIANGLE GenerateTriangle(const Point3D(&edges)[12], size_t cubeIndx, size_t edgeIndx) const noexcept;
+	inline Point3D FindEdgeMidpoint(const Point3D& p1, const Point3D& p2) const noexcept;
 
 	//printing functions
 	bool PrintCubesToFile(const std::string& fPath);
@@ -324,7 +324,7 @@ public:
 	bool PrintTrianglesToFile(const vector<TRIANGLE>& vecTriangles, const size_t bufferSize, const std::string& fPath);
 
 	//save to file
-	bool SaveToFile(const vector<TRIANGLE>& triangles, const char* FileSpec);
+	bool SaveToFile(const vector<TRIANGLE>& triangles, const char* FileSpec) const;
 };
 
 #endif  Cubes_H
