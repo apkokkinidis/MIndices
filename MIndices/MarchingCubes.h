@@ -315,7 +315,7 @@ public:
 	void TriangulateCubes(std::vector<TRIANGLE>& outTriangles) noexcept;
 
 	inline bool CubeInOutSurface(const Cube& cube, int& cubeindex) const noexcept;
-	inline TRIANGLE GenerateTriangle(const Point3D(&edges)[12], size_t cubeIndx, size_t edgeIndx) const noexcept;
+	inline TRIANGLE GenerateTriangle(const Point3D(&edges)[12], int cubeIndx, int edgeIndx) const noexcept;
 	inline Point3D FindEdgeMidpoint(const Point3D& p1, const Point3D& p2) const noexcept;
 
 	//printing functions

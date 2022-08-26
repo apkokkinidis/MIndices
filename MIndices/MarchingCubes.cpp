@@ -176,7 +176,7 @@ inline bool MarchingCubes::CubeInOutSurface(const Cube& cube, int& cubeindex) co
 	@param	a constant reference of the edges of the cube.
 	@return the generated triangle.
 */
-inline TRIANGLE MarchingCubes::GenerateTriangle(const Point3D(&edges)[12], size_t cubeIndx, size_t edgeIndx) const noexcept
+inline TRIANGLE MarchingCubes::GenerateTriangle(const Point3D(&edges)[12], int cubeIndx, int edgeIndx) const noexcept
 {
 	Point3D p1 = edges[triTable[cubeIndx][edgeIndx]];
 	Point3D p2 = edges[triTable[cubeIndx][edgeIndx + 1]];
