@@ -2,7 +2,9 @@
 //BVHNode.cpp
 #include "BVHNode.h"
 
-BVHNode::BVHNode(BoundingBox3D b, vector<TRIANGLE> tri) : bbox(b), triangles(tri), right(nullptr), left(nullptr)
+using namespace MIndices;
+
+BVHNode::BVHNode(BoundingBox3D b, vector<Triangle> tri) : bbox(b), triangles(tri), right(nullptr), left(nullptr)
 {
 }
 
@@ -29,7 +31,7 @@ BVHNode::~BVHNode()
 	}
 }
 
-bool HasEvenIntersections(const vector<TRIANGLE>& t)
+bool HasEvenint32_tersections(const vector<Triangle>& t)
 {
 	if (t.size() % 2 == 0)
 	{
@@ -45,14 +47,46 @@ void BVHNode::SetBBox(const BoundingBox3D& newBBox)
 	bbox = newBBox;
 }
 
-void BVHNode::SetTriangles(const vector<TRIANGLE>& triangles)
+void BVHNode::SetTriangles(const vector<Triangle>& triangles)
 {
 	this->triangles = triangles;
 }
 
+void BVHNode::ClearTriangles()
+{
+	if (!triangles.empty())
+	{
+		triangles.clear();
+	}
+}
+
+int32_t BVHNode::ComputeEdges()
+{
+	size_t s = triangles.size();
+	if (s > 0)
+	{
+		if (edges.empty())
+		{
+			edges.reserve(s * 2);
+			for (auto triangle = triangles.begin(); triangle != triangles.end(); ++triangle)
+			{
+				Point3D edge[2]
+				{
+					triangle->p[1] - triangle->p[0],  triangle->p[2] - triangle->p[0]
+				};
+				edges.push_back({ *triangle, {edge[0], edge[1]} });
+			}
+			edges.shrink_to_fit();
+			//All edges computed return 1
+			return 1;
+		}
+	}
+	return -1;	//Failed to compute edges
+}
+
 bool BVHNode::IsLeafNode() const
 {
-	return (left == NULL && right == NULL);
+	return (NULL == left && NULL == right);
 }
 
 BoundingBox3D BVHNode::Box() const noexcept
@@ -60,7 +94,7 @@ BoundingBox3D BVHNode::Box() const noexcept
 	return bbox;
 }
 
-vector<TRIANGLE> BVHNode::GetTriangles() const noexcept
+vector<Triangle> BVHNode::GetTriangles() const noexcept
 {
 	return triangles;
 }
@@ -70,12 +104,12 @@ vector<TriangleEdge> BVHNode::GetEdges() const noexcept
 	return edges;
 }
 
-std::vector<TRIANGLE>::iterator BVHNode::GetTriBegin()
+std::vector<Triangle>::iterator BVHNode::GetTriBegin()
 {
 	return triangles.begin();
 }
 
-std::vector<TRIANGLE>::iterator BVHNode::GetTriEnd()
+std::vector<Triangle>::iterator BVHNode::GetTriEnd()
 {
 	return triangles.end();
 }

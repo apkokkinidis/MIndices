@@ -33,6 +33,7 @@
     <ClInclude Include="BVHNode.h" />
     <ClInclude Include="BVHTree.h" />
     <ClInclude Include="MarchingCubes.h" />
+    <ClInclude Include="Products.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Structures.h" />
   </ItemGroup>

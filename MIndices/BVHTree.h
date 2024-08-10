@@ -7,61 +7,69 @@
 #include "Structures.h"
 #include "BVHNode.h"
 #include <vector>
+#include <stack>
 #include <assert.h>
 #include <omp.h>
 
 using std::vector;
-const int MAX_TRIANGLES_PER_LEAF = 4;
 
-class BVHTree
+namespace MIndices
 {
-private:
-	BVHNode* root;
-public:
-	BVHTree();
-	~BVHTree();
+	constexpr uint32_t MAX_TRIANGLES_PER_LEAF = 4;
 
-	//Hierarchy construction functions
-	//Top-down build methods
-	void TopDownBuildObjectMedian(vector<TRIANGLE> &triangles) noexcept;
-	void TopDowwBuildObjectMedian_Parralel(vector<TRIANGLE> &triangles) noexcept;
-	void TopDownBuildObjectMedian(BVHNode* pnode, vector<TRIANGLE> &triangles) noexcept;
+	class BVHTree
+	{
+	private:
+		BVHNode* root;
+	public:
+		BVHTree();
+		~BVHTree();
 
-	//Compute bounds functions
-	BoundingBox3D ComputeBounds(const vector<TRIANGLE>& triangles) const;
-	BoundingBox3D ComputeBounds(const TRIANGLE& triangle) const;
+		//Hierarchy construction functions
+		//Top-down build methods using standard recursion
+		void TopDownBuildObjectMedian(vector<Triangle>& triangles) noexcept;
+		void TopDowwBuildObjectMedian_Parralel(vector<Triangle>& triangles) noexcept;
+		void TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle>& triangles) noexcept;
 
-	//Compute centroid functions
-	Point3D ComputeCentroidOfTriangle(const TRIANGLE& t) const noexcept;
-	Point3D ComputeCentroidOfBoundingBox(const BoundingBox3D& box) const noexcept;
+		//Bottom-up build methods
+		void BottomUpBuild(vector<Triangle>& triangles) noexcept;
 
-	//sorting functions
-	void QuickSortTri(vector<TRIANGLE>& tri, int lo, int hi, Axis axis) noexcept;
-	size_t partitionTriXAxis(vector<TRIANGLE>& tri, int lo, int hi) noexcept;
-	size_t partitionTriYAxis(vector<TRIANGLE>& tri, int lo, int hi) noexcept;
-	size_t partitionTriZAxis(vector<TRIANGLE>& tri, int lo, int hi) noexcept;
+		//Compute bounds functions
+		BoundingBox3D ComputeBounds(const vector<Triangle>& triangles) const;
+		BoundingBox3D ComputeBounds(const Triangle& triangle) const;
 
-	//utility functions
-	float CalculateSurfaceAreaOfBox(const BoundingBox3D& box) const noexcept;
-	int FindDepth(BVHNode* node) const noexcept;
-	bool TreeIsEmpty() const noexcept;
-	Axis FindLongestAxisOfBBox(const BoundingBox3D& box) const noexcept;
-	void CopyTriangles(vector<TRIANGLE>& triDest, const vector<TRIANGLE>& triOrig, size_t start, size_t end) const noexcept;
+		//Compute centroid functions
+		Point3D ComputeCentroidOfTriangle(const Triangle& t) const noexcept;
+		Point3D ComputeCentroidOfBoundingBox(const BoundingBox3D& box) const noexcept;
 
-	//traversal functions
-	void RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outPoints) const noexcept;
-	void RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>& outPoints, vector<double>& outT) const noexcept;
-	void DFSTraverse(BVHNode* node, int& visitedNodes, int& visitedLeafs) const noexcept;
-	void PrecomputeEdges(BVHNode* node, int& out);
+		//sorting functions
+		void QuickSortTri(vector<Triangle>& tri, int32_t lo, int32_t hi, Axis axis) noexcept;
+		size_t partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
+		size_t partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
+		size_t partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
 
-	//Partitions a vector of triangles into 2 sets
-	size_t PartitionSet(const vector<TRIANGLE>& triangles, vector<TRIANGLE>& S1, vector<TRIANGLE>& S2) const;
+		//utility functions
+		float CalculateSurfaceAreaOfBox(const BoundingBox3D& box) const noexcept;
+		int32_t FindDepth(BVHNode* node) const noexcept;
+		bool TreeIsEmpty() const noexcept;
+		Axis FindLongestAxisOfBBox(const BoundingBox3D& box) const noexcept;
+		void CopyTriangles(vector<Triangle>& triDest, const vector<Triangle>& triOrig, size_t start, size_t end) const noexcept;
 
-	//Returns a pointer to the root of the tree
-	BVHNode* GetRoot();
+		//traversal functions
+		void RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outpoints) const noexcept;
+		void RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>& outpoints, vector<double>& outT) const noexcept;
+		void DFSTraverse(BVHNode* node, int32_t& visitedNodes, int32_t& visitedLeafs) const noexcept;
+		void PrecomputeEdges(BVHNode* node, int32_t& out);
 
-	//memory functions
-	void DeleteSubTree(BVHNode* node);
-	void DeleteTree(BVHNode** node);
-};
+		//Partitions a vector of triangles int32_to 2 sets
+		size_t PartitionSet(const vector<Triangle>& triangles, vector<Triangle>& S1, vector<Triangle>& S2) const;
+
+		//Returns a point32_ter to the root of the tree
+		BVHNode* GetRoot();
+
+		//memory functions
+		void DeleteSubTree(BVHNode* node);
+		void DeleteTree(BVHNode** node);
+	};
+}
 #endif _BVHTree

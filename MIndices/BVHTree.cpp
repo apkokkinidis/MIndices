@@ -1,6 +1,9 @@
 // Author Kokkinidis Anastasios
 //BVHTree.cpp
+#include <stdint.h>
 #include "BVHTree.h"
+
+using namespace MIndices;
 
 BVHTree::BVHTree()
 {
@@ -40,100 +43,100 @@ bool BVHTree::TreeIsEmpty() const noexcept
 	return root == nullptr;
 }
 
-BoundingBox3D BVHTree::ComputeBounds(const TRIANGLE& triangle) const
+BoundingBox3D BVHTree::ComputeBounds(const Triangle& triangle) const
 {
 	BoundingBox3D* bbox = NULL;
-	Point3D minPoint3D, maxPoint3D;
-	minPoint3D = triangle.p[0];
-	maxPoint3D = triangle.p[0];
+	Point3D minPoint32_t3D, maxPoint32_t3D;
+	minPoint32_t3D = triangle.p[0];
+	maxPoint32_t3D = triangle.p[0];
 
-	for (int i = 1; i <= 2; i++)
+	for (int32_t i = 1; i <= 2; i++)
 	{
 		//find min
-		if (triangle.p[i].x < minPoint3D.x)
+		if (triangle.p[i].x < minPoint32_t3D.x)
 		{
-			minPoint3D.x = triangle.p[i].x;
+			minPoint32_t3D.x = triangle.p[i].x;
 		}
-		if (triangle.p[i].y < minPoint3D.y)
+		if (triangle.p[i].y < minPoint32_t3D.y)
 		{
-			minPoint3D.y = triangle.p[i].y;
+			minPoint32_t3D.y = triangle.p[i].y;
 		}
-		if (triangle.p[i].z < minPoint3D.z)
+		if (triangle.p[i].z < minPoint32_t3D.z)
 		{
-			minPoint3D.z = triangle.p[i].z;
+			minPoint32_t3D.z = triangle.p[i].z;
 		}
 		//find max
-		if (triangle.p[i].x > maxPoint3D.x)
+		if (triangle.p[i].x > maxPoint32_t3D.x)
 		{
-			maxPoint3D.x = triangle.p[i].x;
+			maxPoint32_t3D.x = triangle.p[i].x;
 		}
-		if (triangle.p[i].y > maxPoint3D.y)
+		if (triangle.p[i].y > maxPoint32_t3D.y)
 		{
-			maxPoint3D.y = triangle.p[i].y;
+			maxPoint32_t3D.y = triangle.p[i].y;
 		}
-		if (triangle.p[i].z > maxPoint3D.z)
+		if (triangle.p[i].z > maxPoint32_t3D.z)
 		{
-			maxPoint3D.z = triangle.p[i].z;
+			maxPoint32_t3D.z = triangle.p[i].z;
 		}
 	}
-	bbox = new BoundingBox3D((size_t)minPoint3D.x,
-		(size_t)minPoint3D.y,
-		(size_t)minPoint3D.z,
-		(size_t)maxPoint3D.x,
-		(size_t)maxPoint3D.y,
-		(size_t)maxPoint3D.z);
+	bbox = new BoundingBox3D((size_t)minPoint32_t3D.x,
+		(size_t)minPoint32_t3D.y,
+		(size_t)minPoint32_t3D.z,
+		(size_t)maxPoint32_t3D.x,
+		(size_t)maxPoint32_t3D.y,
+		(size_t)maxPoint32_t3D.z);
 	return *bbox;
 }
 
-BoundingBox3D BVHTree::ComputeBounds(const vector<TRIANGLE>& triangles) const
+BoundingBox3D BVHTree::ComputeBounds(const vector<Triangle>& triangles) const
 {
 	assert(triangles.size() > 0);
 	BoundingBox3D* bbox = NULL;
-	Point3D minTriPoint, maxTriPoint;
-	minTriPoint = triangles[0].p[0];
-	maxTriPoint = triangles[0].p[0];
+	Point3D mint32_triPoint32_t, maxTriPoint32_t;
+	mint32_triPoint32_t = triangles[0].p[0];
+	maxTriPoint32_t = triangles[0].p[0];
 	for (size_t i = 0; i < triangles.size() - 1; i++)
 	{
 		for (size_t j = 1; j <= 2; j++)
 		{
 			//find min
-			if (triangles[i].p[j].x < minTriPoint.x)
+			if (triangles[i].p[j].x < mint32_triPoint32_t.x)
 			{
-				minTriPoint.x = triangles[i].p[j].x;
+				mint32_triPoint32_t.x = triangles[i].p[j].x;
 			}
-			if (triangles[i].p[j].y < minTriPoint.y)
+			if (triangles[i].p[j].y < mint32_triPoint32_t.y)
 			{
-				minTriPoint.y = triangles[i].p[j].y;
+				mint32_triPoint32_t.y = triangles[i].p[j].y;
 			}
-			if (triangles[i].p[j].z < minTriPoint.z)
+			if (triangles[i].p[j].z < mint32_triPoint32_t.z)
 			{
-				minTriPoint.z = triangles[i].p[j].z;
+				mint32_triPoint32_t.z = triangles[i].p[j].z;
 			}
 			//find max
-			if (triangles[i].p[j].x > maxTriPoint.x)
+			if (triangles[i].p[j].x > maxTriPoint32_t.x)
 			{
-				maxTriPoint.x = triangles[i].p[j].x;
+				maxTriPoint32_t.x = triangles[i].p[j].x;
 			}
-			if (triangles[i].p[j].y > maxTriPoint.y)
+			if (triangles[i].p[j].y > maxTriPoint32_t.y)
 			{
-				maxTriPoint.y = triangles[i].p[j].y;
+				maxTriPoint32_t.y = triangles[i].p[j].y;
 			}
-			if (triangles[i].p[j].z > maxTriPoint.z)
+			if (triangles[i].p[j].z > maxTriPoint32_t.z)
 			{
-				maxTriPoint.z = triangles[i].p[j].z;
+				maxTriPoint32_t.z = triangles[i].p[j].z;
 			}
 		}
 	}
-	bbox = new BoundingBox3D((size_t)minTriPoint.x,
-		(size_t)minTriPoint.y,
-		(size_t)minTriPoint.z,
-		(size_t)maxTriPoint.x,
-		(size_t)maxTriPoint.y,
-		(size_t)maxTriPoint.z);
+	bbox = new BoundingBox3D((size_t)mint32_triPoint32_t.x,
+		(size_t)mint32_triPoint32_t.y,
+		(size_t)mint32_triPoint32_t.z,
+		(size_t)maxTriPoint32_t.x,
+		(size_t)maxTriPoint32_t.y,
+		(size_t)maxTriPoint32_t.z);
 	return *bbox;
 }
 
-void BVHTree::TopDownBuildObjectMedian(vector<TRIANGLE> &triangles) noexcept
+void BVHTree::TopDownBuildObjectMedian(vector<Triangle> &triangles) noexcept
 {
 	if (triangles.size() > MAX_TRIANGLES_PER_LEAF)
 	{
@@ -144,10 +147,10 @@ void BVHTree::TopDownBuildObjectMedian(vector<TRIANGLE> &triangles) noexcept
 		Axis longestAxis = FindLongestAxisOfBBox(rootBox);
 
 		//Sort elements along the longest axis
-		QuickSortTri(triangles, 0, (int)triangles.size() - 1, longestAxis);
+		QuickSortTri(triangles, 0, (int32_t)triangles.size() - 1, longestAxis);
 
 		//PartitionArray
-		vector<TRIANGLE> S1, S2;
+		vector<Triangle> S1, S2;
 		size_t k = PartitionSet(triangles, S1, S2);
 
 		BoundingBox3D lbox = ComputeBounds(S1);
@@ -166,7 +169,7 @@ void BVHTree::TopDownBuildObjectMedian(vector<TRIANGLE> &triangles) noexcept
 	}
 }
 
-void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<TRIANGLE> &triangles) noexcept
+void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle> &triangles) noexcept
 {
 	if (triangles.size() > MAX_TRIANGLES_PER_LEAF)
 	{
@@ -175,10 +178,10 @@ void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<TRIANGLE> &triangl
 		Axis longestAxis = FindLongestAxisOfBBox(bbox);
 
 		//Sort elements along the longest axis
-		QuickSortTri(triangles, 0, (int)triangles.size() - 1, longestAxis);
+		QuickSortTri(triangles, 0, (int32_t)triangles.size() - 1, longestAxis);
 
-		//PartitionArray into two sets
-		vector<TRIANGLE> S1, S2;
+		//PartitionArray int32_to two sets
+		vector<Triangle> S1, S2;
 		size_t k = PartitionSet(triangles, S1, S2);
 
 		//Compute left child bounding box
@@ -199,10 +202,14 @@ void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<TRIANGLE> &triangl
 	}
 }
 
-
-void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<TRIANGLE> &triangles) noexcept
+void BVHTree::BottomUpBuild(vector<Triangle>& triangles) noexcept
 {
-	const int NUM_OF_THRDS = 2;
+}
+
+
+void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<Triangle> &triangles) noexcept
+{
+	const int32_t NUM_OF_THRDS = 2;
 
 	if (triangles.size() > MAX_TRIANGLES_PER_LEAF)
 	{
@@ -213,10 +220,10 @@ void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<TRIANGLE> &triangles) noe
 		Axis longestAxis = FindLongestAxisOfBBox(rootBox);
 
 		//Sort elements along the longest axis
-		QuickSortTri(triangles, 0, (int)triangles.size() - 1, longestAxis);
+		QuickSortTri(triangles, 0, (int32_t)triangles.size() - 1, longestAxis);
 
 		//PartitionArray
-		vector<TRIANGLE> S1, S2;
+		vector<Triangle> S1, S2;
 		size_t k = PartitionSet(triangles, S1, S2);
 
 		BoundingBox3D lbox = ComputeBounds(S1);
@@ -230,10 +237,10 @@ void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<TRIANGLE> &triangles) noe
 #pragma omp parallel
 		{
 			//check the num of threads the system has given
-			int nthrds = omp_get_num_threads();
+			int32_t nthrds = omp_get_num_threads();
 			if (nthrds > 1)
 			{
-				int id = omp_get_thread_num();
+				int32_t id = omp_get_thread_num();
 				switch (id)
 				{
 				case 0:
@@ -257,11 +264,11 @@ void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<TRIANGLE> &triangles) noe
 	}
 }
 
-//Partitions set of triangles in two sets using the median point of the set
-size_t BVHTree::PartitionSet(const vector<TRIANGLE>& triangles, vector<TRIANGLE>& S1, vector<TRIANGLE>& S2) const
+//Partitions set of triangles in two sets using the median point32_t of the set
+size_t BVHTree::PartitionSet(const vector<Triangle>& triangles, vector<Triangle>& S1, vector<Triangle>& S2) const
 {
 	//Split the object at the object median of the longest axis
-	size_t median = triangles.size() * (COORD_TYPE)0.5;
+	size_t median = static_cast<size_t>(triangles.size() * (COORD_TYPE)0.5);
 	CopyTriangles(S1, triangles, 0, median);
 	CopyTriangles(S2, triangles, median, triangles.size());
 
@@ -271,31 +278,31 @@ size_t BVHTree::PartitionSet(const vector<TRIANGLE>& triangles, vector<TRIANGLE>
 //Finds the longest axis for a given 3D bounding box starting with x axis
 Axis BVHTree::FindLongestAxisOfBBox(const BoundingBox3D& box) const noexcept
 {
-	unsigned int X = (int)box.Width();
-	unsigned int Y = (int)box.Height();;
-	unsigned int Z = (int)box.Depth();
+	uint32_t X = (int32_t)box.Width();
+	uint32_t Y = (int32_t)box.Height();;
+	uint32_t Z = (int32_t)box.Depth();
 
-	Axis longestAxis = Axis::x;
-	unsigned int max = X;
+	Axis longestAxis = Axis::X;
+	uint32_t max = X;
 	if (Y > max)
 	{
 		max = Y;
-		longestAxis = Axis::y;
+		longestAxis = Axis::Y;
 	}
 	if (Z > max)
 	{
 		max = Z;
-		longestAxis = Axis::z;
+		longestAxis = Axis::Z;
 	}
 	return longestAxis;
 }
 
 //Copies triangles to subarray at the median of the original array
-void BVHTree::CopyTriangles(vector<TRIANGLE>& triDest, const vector<TRIANGLE>& triSource, size_t indx_start, size_t indx_end) const noexcept
+void BVHTree::CopyTriangles(vector<Triangle>& triDest, const vector<Triangle>& triSource, size_t indx_start, size_t indx_end) const noexcept
 {
 	assert(triSource.size() > 0);
 
-	//assign the size up to the median point
+	//assign the size up to the median point32_t
 	size_t newCapacity = triSource.size() / 2;
 	triDest.reserve(newCapacity);
 	for (size_t i = indx_start; i < indx_end; i++)
@@ -305,7 +312,7 @@ void BVHTree::CopyTriangles(vector<TRIANGLE>& triDest, const vector<TRIANGLE>& t
 }
 
 //Computes the centroid of a triangle
-Point3D BVHTree::ComputeCentroidOfTriangle(const TRIANGLE& t) const noexcept
+Point3D BVHTree::ComputeCentroidOfTriangle(const Triangle& t) const noexcept
 {
 	COORD_TYPE xCenter = (t.p[0].x + t.p[1].x + t.p[2].x) / 3.0f;
 	COORD_TYPE yCenter = (t.p[0].y + t.p[1].y + t.p[2].y) / 3.0f;
@@ -332,16 +339,16 @@ float BVHTree::CalculateSurfaceAreaOfBox(const BoundingBox3D& box) const noexcep
 }
 
 //Quick Sort Algorithm
-void BVHTree::QuickSortTri(vector<TRIANGLE>& tri, int lo, int hi, Axis axis) noexcept
+void BVHTree::QuickSortTri(vector<Triangle>& tri, int32_t lo, int32_t hi, Axis axis) noexcept
 {
 	if (lo < hi)
 	{
 		size_t partition_idx = 0;
 		switch (axis)
 		{
-		case Axis::x: { partition_idx = partitionTriXAxis(tri, lo, hi); break; }	//partition on x axis
-		case Axis::y: { partition_idx = partitionTriYAxis(tri, lo, hi); break; }	//partition on y axis
-		case Axis::z: { partition_idx = partitionTriZAxis(tri, lo, hi); break; }	//partition on z axis
+		case Axis::X: { partition_idx = partitionTriXAxis(tri, lo, hi); break; }	//partition on x axis
+		case Axis::Y: { partition_idx = partitionTriYAxis(tri, lo, hi); break; }	//partition on y axis
+		case Axis::Z: { partition_idx = partitionTriZAxis(tri, lo, hi); break; }	//partition on z axis
 		default: break;
 		}
 		QuickSortTri(tri, lo, partition_idx, axis);
@@ -350,11 +357,11 @@ void BVHTree::QuickSortTri(vector<TRIANGLE>& tri, int lo, int hi, Axis axis) noe
 }
 
 //Partitions set using the centroid of the triangles along the x axis
-size_t BVHTree::partitionTriXAxis(vector<TRIANGLE>& tri, int lo, int hi) noexcept
+size_t BVHTree::partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
 {
 	size_t pivot_ind = lo;
-	int i = lo - 1;
-	int j = hi + 1;
+	int32_t i = lo - 1;
+	int32_t j = hi + 1;
 	Point3D p_i = { 0,0,0 };
 	Point3D p_j = { 0,0, 0 };
 	Point3D ppivot = ComputeCentroidOfTriangle(tri.at(pivot_ind));
@@ -382,11 +389,11 @@ size_t BVHTree::partitionTriXAxis(vector<TRIANGLE>& tri, int lo, int hi) noexcep
 }
 
 //Partitions set using the centroid of the triangles along the y axis
-size_t BVHTree::partitionTriYAxis(vector<TRIANGLE>& tri, int lo, int hi) noexcept
+size_t BVHTree::partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
 {
 	size_t pivot_ind = lo;
-	int i = lo - 1;
-	int j = hi + 1;
+	int32_t i = lo - 1;
+	int32_t j = hi + 1;
 	Point3D p_i = { 0, 0, 0 };
 	Point3D p_j = { 0, 0, 0 };
 
@@ -413,11 +420,11 @@ size_t BVHTree::partitionTriYAxis(vector<TRIANGLE>& tri, int lo, int hi) noexcep
 }
 
 //Partitions set using the centroid of the triangles along the z axis
-size_t BVHTree::partitionTriZAxis(vector<TRIANGLE>& tri, int lo, int hi) noexcept
+size_t BVHTree::partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
 {
 	size_t pivot_ind = lo;
-	int i = lo - 1;
-	int j = hi + 1;
+	int32_t i = lo - 1;
+	int32_t j = hi + 1;
 	Point3D p_i = { 0, 0, 0 };
 	Point3D p_j = { 0, 0, 0 };
 	Point3D ppivot = ComputeCentroidOfTriangle(tri.at(pivot_ind));
@@ -441,43 +448,43 @@ size_t BVHTree::partitionTriZAxis(vector<TRIANGLE>& tri, int lo, int hi) noexcep
 		//swap i with j
 	}
 }
-//Traverse the tree using DFS and check for any intersections with the ray
-void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outPoints) const noexcept
+//Traverse the tree using DFS and check for any int32_tersections with the ray
+void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outpoints) const noexcept
 {
 	if (node == nullptr)
 	{
 		return;
 	}
-	//check for a given ray if it intersects the bounding volume
-	if (node->Box().RayBoxIntersect(r))
+	//check for a given ray if it int32_tersects the bounding volume
+	if (node->Box().RayBoxint32_tersect(r))
 	{
 		if (node->IsLeafNode())
 		{
-			//check ray triangle intersection
+			//check ray triangle int32_tersection
 			for (auto it = node->GetTriBegin(); it != node->GetTriEnd(); ++it)
 			{
-				Point3D tmp_point;
+				Point3D tmp_point32_t;
 				double tmp_t;
-				if (r.FastRayTriangleIntersection(*it, tmp_point, tmp_t))
+				if (r.FastRayTriangleint32_tersection(*it, tmp_point32_t, tmp_t))
 				{
-					outPoints.push_back(tmp_point);
+					outpoints.push_back(tmp_point32_t);
 				}
 			}
 		}
 		//traverse left subtree then backtrack to the right tree
-		RayTraceNodes(node->left, r, outPoints);
-		RayTraceNodes(node->right, r, outPoints);
+		RayTraceNodes(node->left, r, outpoints);
+		RayTraceNodes(node->right, r, outpoints);
 	}
 }
 
-void BVHTree::RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>& outPoints, vector<double>& outT) const noexcept
+void BVHTree::RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>& outpoints, vector<double>& outT) const noexcept
 {
 	if (node == nullptr)
 	{
 		return;
 	}
-	//check for a given ray if it intersects
-	if (node->Box().RayBoxIntersect(r))
+	//check for a given ray if it int32_tersects
+	if (node->Box().RayBoxint32_tersect(r))
 	{
 		if (node->IsLeafNode())
 		{
@@ -485,37 +492,37 @@ void BVHTree::RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>
 			{
 				for (vector<TriangleEdge>::iterator it = node->GetEdgeBegin(); it != node->GetEdgeEnd(); ++it)
 				{
-					Point3D tmp_point;
+					Point3D tmp_point32_t;
 					double tmp_t;
-					if (r.FastRayTriangleIntersection(it->triangle, it->edges[0], it->edges[1], tmp_point, tmp_t))
+					if (r.FastRayTriangleint32_tersection(it->triangle, it->edges[0], it->edges[1], tmp_point32_t, tmp_t))
 					{
-						outPoints.push_back(tmp_point);
+						outpoints.push_back(tmp_point32_t);
 						outT.push_back(tmp_t);
 					}
 				}
 			}
 			else
 			{
-				//check ray triangle intersection
-				for (auto it = node->GetTriBegin(); it != node->GetTriEnd(); ++it)
+				//check ray triangle int32_tersection
+				for (auto triangle = node->GetTriBegin(); triangle != node->GetTriEnd(); ++triangle)
 				{
-					Point3D tmp_point;
+					Point3D tmp_point32_t;
 					double tmp_t;
-					if (r.FastRayTriangleIntersection(*it, tmp_point, tmp_t))
+					if (r.FastRayTriangleint32_tersection(*triangle, tmp_point32_t, tmp_t))
 					{
-						outPoints.push_back(tmp_point);
+						outpoints.push_back(tmp_point32_t);
 						outT.push_back(tmp_t);
 					}
 				}
 			}
 			//traverse left subtree then backtrack to the right tree
 		}
-		RayTraceNodesPreEdges(node->left, r, outPoints, outT);
-		RayTraceNodesPreEdges(node->right, r, outPoints, outT);
+		RayTraceNodesPreEdges(node->left, r, outpoints, outT);
+		RayTraceNodesPreEdges(node->right, r, outpoints, outT);
 	}
 }
 
-void BVHTree::DFSTraverse(BVHNode* node, int& visitedNodes, int& visitedLeafs) const noexcept
+void BVHTree::DFSTraverse(BVHNode* node, int32_t& visitedNodes, int32_t& visitedLeafs) const noexcept
 {
 	//mark nodes as visited
 	if (node == nullptr)
@@ -534,7 +541,7 @@ void BVHTree::DFSTraverse(BVHNode* node, int& visitedNodes, int& visitedLeafs) c
 	DFSTraverse(node->right, visitedNodes, visitedLeafs);
 }
 
-void BVHTree::PrecomputeEdges(BVHNode* node, int& out)
+void BVHTree::PrecomputeEdges(BVHNode* node, int32_t& out)
 {
 	if (node == nullptr)
 	{
@@ -543,21 +550,21 @@ void BVHTree::PrecomputeEdges(BVHNode* node, int& out)
 
 	if (node->IsLeafNode())
 	{
-		out = node->ComputeEdges();
+		out = node->BVHNode::ComputeEdges();
 	}
 	PrecomputeEdges(node->left, out);
 	PrecomputeEdges(node->right, out);
 }
 
 //Finds the depth of the tree
-int BVHTree::FindDepth(BVHNode* node) const noexcept
+int32_t BVHTree::FindDepth(BVHNode* node) const noexcept
 {
 	if (node == nullptr)
 	{
 		return 0;
 	}
-	int maxLeft = FindDepth(node->left);
-	int maxRight = FindDepth(node->right);
+	int32_t maxLeft = FindDepth(node->left);
+	int32_t maxRight = FindDepth(node->right);
 
 	if (maxLeft > maxRight)
 	{

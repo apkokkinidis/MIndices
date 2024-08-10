@@ -59,5 +59,8 @@
     <ClInclude Include="Array3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Products.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

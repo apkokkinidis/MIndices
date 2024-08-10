@@ -3,45 +3,52 @@
 #pragma once
 #ifndef _AnglePair
 #define _AnglePair
-#include "Structures.h"
-#include "Ray.h"
+
+#include <stdint.h>
 #include <vector>
 #include <map>
+
+//Custom headers
+#include "Structures.h"
+#include "Ray.h"
+
+
 //tabecular seperation method requires to ray trace the structure and find the points where there is empty space (reverse operation of tabecular thickness)
 //tabecular number is the number of beams the structure has, it is found by finding the entry and exit points between triangles.
-class AnglePair
+
+namespace MIndices
 {
-private:
-	int azimuth, elevation;
-	size_t tbTn;
-	double tbTh;
-public:
-	AnglePair(int a, int e);
-	AnglePair(const AnglePair& other);
-	~AnglePair();
-
-	int Azimuth() const;
-	int Elevation() const;
-	int TbTn() const;
-	double TbTh() const;
-
-	//old way of calculating indices
-	int CalculateIndices(const std::vector<Point3D>& iPoints);
-
-	//new way of calculating indices the map has to be sorted first
-	int CalculateIndices(const std::vector<VecPoint3D>& elements);
-
-	//Definition of the search method to be used by std::sort
-	static inline bool SortPairs(const AnglePair& pair1, const AnglePair& pair2)
+	class AnglePair
 	{
-		if (pair1.Elevation() == pair2.Elevation())
+	public:
+		AnglePair(int32_t a, int32_t e);
+		AnglePair(const AnglePair& other);
+		~AnglePair() = default;
+
+		int32_t Azimuth() const;
+		int32_t Elevation() const;
+		int32_t TbTn() const;
+		double TbTh() const;
+
+		//new way of calculating indices the map has to be sorted first
+		int32_t CalculateIndices(const std::vector<VecPoint3D>& elements);
+
+		//Definition of the search method to be used by std::sort
+		static inline bool SortPairs(const AnglePair& pair1, const AnglePair& pair2)
 		{
-			return pair1.Azimuth() < pair2.Azimuth();
+			if (pair1.Elevation() == pair2.Elevation())
+			{
+				return pair1.Azimuth() < pair2.Azimuth();
+			}
+			else
+			{
+				return pair1.Elevation() < pair2.Elevation();
+			}
 		}
-		else
-		{
-			return pair1.Elevation() < pair2.Elevation();
-		}
-	}
-};
+	private:
+		int32_t azimuth, elevation;
+		size_t tbTn;
+		double tbTh;
+	};
+}
 #endif _AnglePair

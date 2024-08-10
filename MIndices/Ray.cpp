@@ -1,5 +1,9 @@
 // Author Anastasios Kokkinidis 
 #include "Ray.h"
+#include "Products.h"
+
+using namespace MIndices;
+
 Ray::Ray()
 {
 	origin = { 0, 0, 0 };
@@ -33,13 +37,13 @@ Ray& Ray::operator=(const Ray& r)
 
 void Ray::Rotate(double d, Axis a)
 {
-	double r = d * rad;
+	double r = d * RAD;
 	COORD_TYPE x2 = direction.x;
 	COORD_TYPE y2 = direction.y;
 	COORD_TYPE z2 = direction.z;
 	switch (a)
 	{
-	case Axis::x:
+	case Axis::X:
 	{	
 		Point3D dirT = { x2,
 						cos(r) * y2 - sin(r) * z2,
@@ -47,7 +51,7 @@ void Ray::Rotate(double d, Axis a)
 		this->direction = dirT;
 		break;
 	}
-	case Axis::y:
+	case Axis::Y:
 	{
 		Point3D dirT = { cos(r) * x2 + sin(r) * z2,
 						y2,
@@ -55,7 +59,7 @@ void Ray::Rotate(double d, Axis a)
 		this->direction = dirT;
 		break;
 	}
-	case Axis::z:
+	case Axis::Z:
 	{
 		Point3D dirT = { cos(r) * x2 - sin(r) * y2,
 						sin(r) * x2 + cos(r) * y2,
@@ -68,14 +72,14 @@ void Ray::Rotate(double d, Axis a)
 	}
 }
 
-inline COORD_TYPE Ray::RayOriginDistFromPoint3D(const Point3D& tri) const noexcept
+inline COORD_TYPE Ray::RayOriginDistFromPoint32_t3D(const Point3D& tri) const noexcept
 {
 	COORD_TYPE dist = sqrt((tri.x - origin.x) * (tri.x - origin.x) + (tri.y - origin.y) * (tri.y - origin.y) + (tri.z - origin.z) * (tri.z - origin.z));
 	return dist;
 }
 
 //Geometric solution based on scratchpixel.com
-bool Ray::IntersectsTriangle(const TRIANGLE& triangle, Point3D &P) const noexcept
+bool Ray::intersectsTriangle(const Triangle& triangle, Point3D &P) const noexcept
 {
 	
 	Point3D v0 = triangle.p[0];
@@ -90,7 +94,7 @@ bool Ray::IntersectsTriangle(const TRIANGLE& triangle, Point3D &P) const noexcep
 	float NdotDir = DotProduct(N, direction);
 	if (fabs(NdotDir < EPSILON))
 	{
-		//they are parralel so they don't intersect
+		//they are parralel so they don't int32_tersect
 		return false;
 	}
 
@@ -103,7 +107,7 @@ bool Ray::IntersectsTriangle(const TRIANGLE& triangle, Point3D &P) const noexcep
 	//if (t < 0) return false; 
 	
 
-	//compute intersection point P using the equation P = O + t*R
+	//compute int32_tersection point32_t P using the equation P = O + t*R
 	Point3D tR = { t * direction.x, t * direction.y, t * direction.z };
 	 P = origin + tR;
 	
@@ -143,7 +147,7 @@ bool Ray::IntersectsTriangle(const TRIANGLE& triangle, Point3D &P) const noexcep
 }
 
 //No culling
-bool Ray::FastRayTriangleIntersection(const TRIANGLE& triangle, Point3D& outPoint, double &t) const noexcept
+bool Ray::FastRayTriangleint32_tersection(const Triangle& triangle, Point3D& outPoint32_t, double &t) const noexcept
 {
 	Point3D edge1, edge2, pvec, tvec, qvec;
 	edge1 = triangle.p[1] - triangle.p[0];
@@ -161,7 +165,7 @@ bool Ray::FastRayTriangleIntersection(const TRIANGLE& triangle, Point3D& outPoin
 		return false;
 	}
 	COORD_TYPE inv_det = 1.0f / det;
-	tvec = SubPoints(this->origin, triangle.p[0]);
+	tvec = Subpoints(this->origin, triangle.p[0]);
 
 	//calculate u
 	double u = DotProduct(tvec, pvec) * inv_det;
@@ -180,14 +184,14 @@ bool Ray::FastRayTriangleIntersection(const TRIANGLE& triangle, Point3D& outPoin
 		return false;
 	}
 
-	//find intersection Point
+	//find int32_tersection Point32_t
 	t = abs(DotProduct(edge2, qvec));
 	COORD_TYPE t_inv_det = abs(t * inv_det);
-	outPoint = { origin.x + direction.x * t_inv_det, origin.y + direction.y * t_inv_det, origin.z + direction.z * t_inv_det };
+	outPoint32_t = { origin.x + direction.x * t_inv_det, origin.y + direction.y * t_inv_det, origin.z + direction.z * t_inv_det };
 	return true;
 }
 
-bool Ray::FastRayTriangleIntersection(const TRIANGLE& triangle, const Point3D& edge1, const Point3D& edge2, Point3D& pointI, double& t) const noexcept
+bool Ray::FastRayTriangleint32_tersection(const Triangle& triangle, const Point3D& edge1, const Point3D& edge2, Point3D& point32_tI, double& t) const noexcept
 {
 	Point3D pvec, tvec, qvec;
 
@@ -202,7 +206,7 @@ bool Ray::FastRayTriangleIntersection(const TRIANGLE& triangle, const Point3D& e
 		return false;
 	}
 	double inv_det = 1 / det;
-	tvec = SubPoints(this->origin, triangle.p[0]);
+	tvec = Subpoints(this->origin, triangle.p[0]);
 
 	//calculate u
 	double u = DotProduct(tvec, pvec) * inv_det;
@@ -221,9 +225,9 @@ bool Ray::FastRayTriangleIntersection(const TRIANGLE& triangle, const Point3D& e
 		return false;
 	}
 
-	//find intersection Point
+	//find int32_tersection Point32_t
 	t = abs(DotProduct(edge2, qvec));
 	double t_inv_det = abs(t * inv_det);
-	pointI = { origin.x + direction.x * (COORD_TYPE)t_inv_det, origin.y + direction.y * (COORD_TYPE)t_inv_det, origin.z + direction.z * (COORD_TYPE)t_inv_det };
+	point32_tI = { origin.x + direction.x * (COORD_TYPE)t_inv_det, origin.y + direction.y * (COORD_TYPE)t_inv_det, origin.z + direction.z * (COORD_TYPE)t_inv_det };
 	return true;
 }
