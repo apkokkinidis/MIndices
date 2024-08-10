@@ -31,7 +31,7 @@ BVHNode::~BVHNode()
 	}
 }
 
-bool HasEvenint32_tersections(const vector<Triangle>& t)
+bool HasEvenintersections(const vector<Triangle>& t)
 {
 	if (t.size() % 2 == 0)
 	{

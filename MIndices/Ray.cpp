@@ -72,7 +72,7 @@ void Ray::Rotate(double d, Axis a)
 	}
 }
 
-inline COORD_TYPE Ray::RayOriginDistFromPoint32_t3D(const Point3D& tri) const noexcept
+inline COORD_TYPE Ray::RayOriginDistFromPoint3D(const Point3D& tri) const noexcept
 {
 	COORD_TYPE dist = sqrt((tri.x - origin.x) * (tri.x - origin.x) + (tri.y - origin.y) * (tri.y - origin.y) + (tri.z - origin.z) * (tri.z - origin.z));
 	return dist;
@@ -107,7 +107,7 @@ bool Ray::intersectsTriangle(const Triangle& triangle, Point3D &P) const noexcep
 	//if (t < 0) return false; 
 	
 
-	//compute int32_tersection point32_t P using the equation P = O + t*R
+	//compute intersection Point P using the equation P = O + t*R
 	Point3D tR = { t * direction.x, t * direction.y, t * direction.z };
 	 P = origin + tR;
 	
@@ -147,7 +147,7 @@ bool Ray::intersectsTriangle(const Triangle& triangle, Point3D &P) const noexcep
 }
 
 //No culling
-bool Ray::FastRayTriangleint32_tersection(const Triangle& triangle, Point3D& outPoint32_t, double &t) const noexcept
+bool Ray::FastRayTriangleIntersection(const Triangle& triangle, Point3D& outPoint, double &t) const noexcept
 {
 	Point3D edge1, edge2, pvec, tvec, qvec;
 	edge1 = triangle.p[1] - triangle.p[0];
@@ -184,14 +184,14 @@ bool Ray::FastRayTriangleint32_tersection(const Triangle& triangle, Point3D& out
 		return false;
 	}
 
-	//find int32_tersection Point32_t
+	//find intersection Point
 	t = abs(DotProduct(edge2, qvec));
 	COORD_TYPE t_inv_det = abs(t * inv_det);
-	outPoint32_t = { origin.x + direction.x * t_inv_det, origin.y + direction.y * t_inv_det, origin.z + direction.z * t_inv_det };
+	outPoint = { origin.x + direction.x * t_inv_det, origin.y + direction.y * t_inv_det, origin.z + direction.z * t_inv_det };
 	return true;
 }
 
-bool Ray::FastRayTriangleint32_tersection(const Triangle& triangle, const Point3D& edge1, const Point3D& edge2, Point3D& point32_tI, double& t) const noexcept
+bool Ray::FastRayTriangleIntersection(const Triangle& triangle, const Point3D& edge1, const Point3D& edge2, Point3D& PointI, double& t) const noexcept
 {
 	Point3D pvec, tvec, qvec;
 
@@ -225,9 +225,20 @@ bool Ray::FastRayTriangleint32_tersection(const Triangle& triangle, const Point3
 		return false;
 	}
 
-	//find int32_tersection Point32_t
+	//find intersection Point
 	t = abs(DotProduct(edge2, qvec));
 	double t_inv_det = abs(t * inv_det);
-	point32_tI = { origin.x + direction.x * (COORD_TYPE)t_inv_det, origin.y + direction.y * (COORD_TYPE)t_inv_det, origin.z + direction.z * (COORD_TYPE)t_inv_det };
+	PointI = { origin.x + direction.x * (COORD_TYPE)t_inv_det, origin.y + direction.y * (COORD_TYPE)t_inv_det, origin.z + direction.z * (COORD_TYPE)t_inv_det };
 	return true;
+}
+
+//Rotates an array of rays
+//@param degrees of rotation
+//@param rotation axis
+void MIndices::RotateRays(double d, Axis a, std::vector<Ray>& ray)
+{
+	for (auto it = ray.begin(); it != ray.end(); ++it)
+	{
+		it->Rotate(d, a);
+	}
 }

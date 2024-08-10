@@ -365,47 +365,47 @@ namespace MIndices
 		static BoundingBox3D ComputeBounds(const std::vector<Triangle>& triangles)
 		{
 			BoundingBox3D* bbox = NULL;
-			Point3D mint32_triPoint32_t, maxTriPoint32_t;
-			mint32_triPoint32_t = triangles[0].p[0];
-			maxTriPoint32_t = triangles[0].p[0];
+			Point3D mint32_triPoint, maxTriPoint;
+			mint32_triPoint = triangles[0].p[0];
+			maxTriPoint = triangles[0].p[0];
 			for (size_t i = 0; i < triangles.size() - 1; i++)
 			{
 				for (size_t j = 1; j <= 2; j++)
 				{
 					//find min
-					if (triangles[i].p[j].x < mint32_triPoint32_t.x)
+					if (triangles[i].p[j].x < mint32_triPoint.x)
 					{
-						mint32_triPoint32_t.x = triangles[i].p[j].x;
+						mint32_triPoint.x = triangles[i].p[j].x;
 					}
-					if (triangles[i].p[j].y < mint32_triPoint32_t.y)
+					if (triangles[i].p[j].y < mint32_triPoint.y)
 					{
-						mint32_triPoint32_t.y = triangles[i].p[j].y;
+						mint32_triPoint.y = triangles[i].p[j].y;
 					}
-					if (triangles[i].p[j].z < mint32_triPoint32_t.z)
+					if (triangles[i].p[j].z < mint32_triPoint.z)
 					{
-						mint32_triPoint32_t.z = triangles[i].p[j].z;
+						mint32_triPoint.z = triangles[i].p[j].z;
 					}
 					//find max
-					if (triangles[i].p[j].x > maxTriPoint32_t.x)
+					if (triangles[i].p[j].x > maxTriPoint.x)
 					{
-						maxTriPoint32_t.x = triangles[i].p[j].x;
+						maxTriPoint.x = triangles[i].p[j].x;
 					}
-					if (triangles[i].p[j].y > maxTriPoint32_t.y)
+					if (triangles[i].p[j].y > maxTriPoint.y)
 					{
-						maxTriPoint32_t.y = triangles[i].p[j].y;
+						maxTriPoint.y = triangles[i].p[j].y;
 					}
-					if (triangles[i].p[j].z > maxTriPoint32_t.z)
+					if (triangles[i].p[j].z > maxTriPoint.z)
 					{
-						maxTriPoint32_t.z = triangles[i].p[j].z;
+						maxTriPoint.z = triangles[i].p[j].z;
 					}
 				}
 			}
-			bbox = new BoundingBox3D((size_t)mint32_triPoint32_t.x,
-				(size_t)mint32_triPoint32_t.y,
-				(size_t)mint32_triPoint32_t.z,
-				(size_t)maxTriPoint32_t.x,
-				(size_t)maxTriPoint32_t.y,
-				(size_t)maxTriPoint32_t.z);
+			bbox = new BoundingBox3D((size_t)mint32_triPoint.x,
+				(size_t)mint32_triPoint.y,
+				(size_t)mint32_triPoint.z,
+				(size_t)maxTriPoint.x,
+				(size_t)maxTriPoint.y,
+				(size_t)maxTriPoint.z);
 			return *bbox;
 		}
 

@@ -33,10 +33,6 @@ bool has_precomputed_edges = false;
 //Forward declarations
 int32_t ComputeIndices(BVHTree* bvh, vector<Ray>& r, vector<AnglePair>& pairs);
 int32_t ComputeIndicesParallel(BVHTree* bvh, vector<Ray>& r, vector<AnglePair>& pairs);
-inline void RotateRays(double d, Axis a, vector<Ray>& ray);
-
-int32_t Print32_tPairs(const std::string& fPath, const std::vector<AnglePair>& pairs, int32_t duration);
-void SavePairs(const std::string& fPath, const std::vector<AnglePair>& pairs);
 
 //utility functions
 int32_t FindCharByEndOfString(const std::string& str, char c);
@@ -138,7 +134,7 @@ int32_t main(int32_t argc, char* argv[])
 	std::cout << "Total time : " << durMinutes << " minutes" << std::endl;
 	delete bvh;
 
-	//print32_t results int32_to file
+	//print32_t results into file
 	if (res == 1)
 	{
 		if (parallel_flag)
@@ -147,13 +143,13 @@ int32_t main(int32_t argc, char* argv[])
 			std::sort(pairs.begin(), pairs.end(), AnglePair::SortPairs);
 			int32_t indx = FindCharByEndOfString(filename, '\\');
 			std::string file = filename.substr(indx + 1, filename.length() - 3).append("NT_").append(std::to_string(NUM_OF_THREADS_X_16)).append("_Pairs_Parallel.txt");
-			int32_t r = Print32_tPairs(file, pairs, durMinutes);
+			int32_t r = PrintPairs(file, pairs, durMinutes);
 		}
 		else
 		{
 			int32_t indx = FindCharByEndOfString(filename, '\\');
 			std::string file = filename.substr(indx + 1, filename.length() - 3).append("_Pairs.txt");
-			int32_t r = Print32_tPairs(file, pairs, durMinutes);
+			int32_t r = PrintPairs(file, pairs, durMinutes);
 		}
 	}
 	return 0;
@@ -172,8 +168,8 @@ int32_t FindCharByEndOfString(const std::string& str, char c)
 	return -1;
 }
 
-//Sort points based on their distance to the ray origin.
-inline void Sortpoints(std::vector<Point3D>& points, const Ray& ray)
+//Sort points array based on their distance to the ray origin.
+void Sortpoints(std::vector<Point3D>& points, const Ray& ray)
 {
 	std::sort(points.begin(), points.end(), [ray](const Point3D& p1, const Point3D& p2)
 		{
@@ -184,62 +180,6 @@ inline void Sortpoints(std::vector<Point3D>& points, const Ray& ray)
 		});
 }
 
-
-//Rotates an array of rays
-//@param degrees of rotation
-//@param rotation axis
-inline void RotateRays(double d, Axis a, vector<Ray>& ray)
-{
-	for (auto it = ray.begin(); it != ray.end(); ++it)
-	{
-		it->Rotate(d, a);
-	}
-}
-
-int32_t Print32_tPairs(const std::string& fPath, const std::vector<AnglePair>& pairs, int32_t duration)
-{
-	std::ofstream file(fPath, std::ios::out | std::ios::app);
-	if (file.is_open())
-	{
-		file << "Total runtime : " << duration << std::endl;
-		for (size_t i = 0; i < pairs.size(); i++)
-		{
-			file << "Azimuth : " << pairs[i].Azimuth()
-				<< " Elevation : " << pairs[i].Elevation()
-				<< " Tabecular Number : " << pairs[i].TbTn()
-				<< " Tabecular Thickness : " << pairs[i].TbTh()
-				<< std::endl;;
-		}
-		file.close();
-		return 1;
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-void SavePairs(const std::string& fPath, const std::vector<AnglePair>& pairs)
-{
-	const int32_t step = 180;
-	std::ofstream file(fPath, std::ios::out | std::ios::app);
-	if (file.is_open())
-	{
-		for (size_t i = 0; i < pairs.size(); i += step)
-		{
-			double sum = 0.0f;
-			double mean = 0.0f;
-			for (size_t j = 0; j < step; j++)
-			{
-				sum += pairs[i + j].TbTh();
-			}
-			mean = sum / step;
-			file << i / step << "\t"	//step
-				<< mean << std::endl;	//tabecular thickness
-		}
-		file.close();
-	}
-}
 
 int32_t ComputeIndices(BVHTree* bvh, vector<Ray>& rays, vector<AnglePair>& pairs)
 {

@@ -61,10 +61,10 @@ namespace MIndices
 		void DFSTraverse(BVHNode* node, int32_t& visitedNodes, int32_t& visitedLeafs) const noexcept;
 		void PrecomputeEdges(BVHNode* node, int32_t& out);
 
-		//Partitions a vector of triangles int32_to 2 sets
+		//Partitions a vector of triangles into 2 sets
 		size_t PartitionSet(const vector<Triangle>& triangles, vector<Triangle>& S1, vector<Triangle>& S2) const;
 
-		//Returns a point32_ter to the root of the tree
+		//Returns a Pointer to the root of the tree
 		BVHNode* GetRoot();
 
 		//memory functions

@@ -323,12 +323,12 @@ namespace MIndices
 
 		inline bool CubeInOutSurface(const MCube& cube, int32_t& cubeindex) const noexcept;
 		inline Triangle GenerateTriangle(const Point3D(&edges)[12], int32_t cubeIndx, int32_t edgeIndx) const noexcept;
-		inline Point3D FindEdgeMidpoint32_t(const Point3D& p1, const Point3D& p2) const noexcept;
+		inline Point3D FindEdgeMidPoint(const Point3D& p1, const Point3D& p2) const noexcept;
 
-		//print32_ting functions
-		bool Print32_tCubesToFile(const std::string& fPath);
-		bool Print32_tTrianglesToFile(const vector<Triangle>& vecTriangles, const std::string& fPath);
-		bool Print32_tTrianglesToFile(const vector<Triangle>& vecTriangles, const size_t bufferSize, const std::string& fPath);
+		//Printing functions
+		bool PrintCubesToFile(const std::string& fPath);
+		bool PrintTrianglesToFile(const vector<Triangle>& vecTriangles, const std::string& fPath);
+		bool PrintTrianglesToFile(const vector<Triangle>& vecTriangles, const size_t bufferSize, const std::string& fPath);
 
 		//save to file
 		bool SaveToFile(const vector<Triangle>& triangles, const char* FileSpec) const;

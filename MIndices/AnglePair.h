@@ -50,5 +50,8 @@ namespace MIndices
 		size_t tbTn;
 		double tbTh;
 	};
+
+	int32_t PrintPairs(const std::string& fPath, const std::vector<AnglePair>& pairs, int32_t duration);
+	void SavePairs(const std::string& fPath, const std::vector<AnglePair>& pairs);
 }
 #endif _AnglePair

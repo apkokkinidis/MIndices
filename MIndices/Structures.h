@@ -43,11 +43,11 @@ namespace MIndices
 		}
 	}Point3D;
 
-	typedef struct Point32_tT
+	typedef struct PointT
 	{
-		Point3D iPoint32_t;
+		Point3D iPoint;
 		double t;
-	}Point32_tT;
+	}PointT;
 
 	typedef struct {
 		Point3D p1;
@@ -61,7 +61,7 @@ namespace MIndices
 
 	typedef struct MCube
 	{
-		Point3D point32_t[8];
+		Point3D Point[8];
 		bool val[8];
 	}Cube;
 

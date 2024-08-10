@@ -9,7 +9,6 @@
 
 namespace MIndices
 {
-
 	constexpr double PI = 3.14159265359;;
 	constexpr double RAD = PI / 180;
 	constexpr double EPSILON = 0.0000001;
@@ -32,13 +31,13 @@ namespace MIndices
 
 		//rotate ray by degrees
 		void Rotate(double d, Axis axis);
-		inline COORD_TYPE RayOriginDistFromPoint32_t3D(const Point3D& tri) const noexcept;
+		inline COORD_TYPE RayOriginDistFromPoint3D(const Point3D& tri) const noexcept;
 
-		//int32_tersection tests
+		//intersection tests
 		bool intersectsTriangle(const Triangle& triangle, Point3D& P) const noexcept;
 		//MT algorithm approach
-		bool FastRayTriangleint32_tersection(const Triangle& triangle, Point3D& iPoint32_t, double& t) const noexcept;
-		bool FastRayTriangleint32_tersection(const Triangle& triangle, const Point3D& edge1, const Point3D& edge2, Point3D& iPoint32_t, double& t) const noexcept;
+		bool FastRayTriangleIntersection(const Triangle& triangle, Point3D& iPoint, double& t) const noexcept;
+		bool FastRayTriangleIntersection(const Triangle& triangle, const Point3D& edge1, const Point3D& edge2, Point3D& iPoint, double& t) const noexcept;
 	};
 
 	//Creates an array of rays of X * Y size
@@ -49,7 +48,7 @@ namespace MIndices
 		~RayGenerator() = default;
 		RayGenerator(size_t DimX, size_t DimY, size_t diagonal)
 		{
-			//point32_t in direction of z
+			//Point in direction of z
 			COORD_TYPE z = 0.0f;
 
 			rays.reserve(DimX * DimY);
@@ -71,5 +70,10 @@ namespace MIndices
 	private:
 		std::vector<Ray> rays;
 	};
+
+	//Rotates an array of rays
+	//@param degrees of rotation
+	//@param rotation axis
+	void RotateRays(double d, Axis a, std::vector<Ray>& ray);
 }
 #endif RAY_H//  RAY_H

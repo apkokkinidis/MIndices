@@ -15,60 +15,60 @@ MarchingCubes::MarchingCubes(Array3D* voxels, int32_t DimX, int32_t DimY, int32_
 			for (int32_t i = 1; i < DimX; i++)
 			{
 				MCube cube{ 0 };
-				Point3D point32_t[8]{ 0 };
+				Point3D Point[8]{ 0 };
 
 				// x	y	z	v1
-				point32_t[0].x = i;
-				point32_t[0].y = j;
-				point32_t[0].z = k;
+				Point[0].x = i;
+				Point[0].y = j;
+				Point[0].z = k;
 
 				// x + 1	y	z	v2
-				point32_t[1].x = i + 1;
-				point32_t[1].y = j;
-				point32_t[1].z = k;
+				Point[1].x = i + 1;
+				Point[1].y = j;
+				Point[1].z = k;
 
 				// x + 1	 y	z + 1	v3
-				point32_t[2].x = i + 1;
-				point32_t[2].y = j;
-				point32_t[2].z = k + 1;
+				Point[2].x = i + 1;
+				Point[2].y = j;
+				Point[2].z = k + 1;
 
 				// x	y 	z + 1	v4
-				point32_t[3].x = i;
-				point32_t[3].y = j;
-				point32_t[3].z = k + 1;
+				Point[3].x = i;
+				Point[3].y = j;
+				Point[3].z = k + 1;
 
 				// x	y + 1	z	v5
-				point32_t[4].x = i;
-				point32_t[4].y = j + 1;
-				point32_t[4].z = k;
+				Point[4].x = i;
+				Point[4].y = j + 1;
+				Point[4].z = k;
 
 				// x + 1	y + 1	z	v6
-				point32_t[5].x = i + 1;
-				point32_t[5].y = j + 1;
-				point32_t[5].z = k;
+				Point[5].x = i + 1;
+				Point[5].y = j + 1;
+				Point[5].z = k;
 
 				// x + 1	y + 1	z + 1	v7
-				point32_t[6].x = i + 1;
-				point32_t[6].y = j + 1;
-				point32_t[6].z = k + 1;
+				Point[6].x = i + 1;
+				Point[6].y = j + 1;
+				Point[6].z = k + 1;
 
 				// x	y + 1	z + 1	v8
-				point32_t[7].x = i;
-				point32_t[7].y = j + 1;
-				point32_t[7].z = k + 1;
+				Point[7].x = i;
+				Point[7].y = j + 1;
+				Point[7].z = k + 1;
 
 				//asign points to the cube
-				std::copy(std::begin(point32_t), std::end(point32_t), std::begin(cube.point32_t));
+				std::copy(std::begin(Point), std::end(Point), std::begin(cube.Point));
 
 				//asign values to the cube
-				cube.val[0] = voxels->IsElementFilled((size_t)point32_t[0].x - 1, (size_t)point32_t[0].y - 1, (size_t)point32_t[0].z - 1);
-				cube.val[1] = voxels->IsElementFilled((size_t)point32_t[1].x - 1, (size_t)point32_t[1].y - 1, (size_t)point32_t[1].z - 1);
-				cube.val[2] = voxels->IsElementFilled((size_t)point32_t[2].x - 1, (size_t)point32_t[2].y - 1, (size_t)point32_t[2].z - 1);
-				cube.val[3] = voxels->IsElementFilled((size_t)point32_t[3].x - 1, (size_t)point32_t[3].y - 1, (size_t)point32_t[3].z - 1);
-				cube.val[4] = voxels->IsElementFilled((size_t)point32_t[4].x - 1, (size_t)point32_t[4].y - 1, (size_t)point32_t[4].z - 1);
-				cube.val[5] = voxels->IsElementFilled((size_t)point32_t[5].x - 1, (size_t)point32_t[5].y - 1, (size_t)point32_t[5].z - 1);
-				cube.val[6] = voxels->IsElementFilled((size_t)point32_t[6].x - 1, (size_t)point32_t[6].y - 1, (size_t)point32_t[6].z - 1);
-				cube.val[7] = voxels->IsElementFilled((size_t)point32_t[7].x - 1, (size_t)point32_t[7].y - 1, (size_t)point32_t[7].z - 1);
+				cube.val[0] = voxels->IsElementFilled((size_t)Point[0].x - 1, (size_t)Point[0].y - 1, (size_t)Point[0].z - 1);
+				cube.val[1] = voxels->IsElementFilled((size_t)Point[1].x - 1, (size_t)Point[1].y - 1, (size_t)Point[1].z - 1);
+				cube.val[2] = voxels->IsElementFilled((size_t)Point[2].x - 1, (size_t)Point[2].y - 1, (size_t)Point[2].z - 1);
+				cube.val[3] = voxels->IsElementFilled((size_t)Point[3].x - 1, (size_t)Point[3].y - 1, (size_t)Point[3].z - 1);
+				cube.val[4] = voxels->IsElementFilled((size_t)Point[4].x - 1, (size_t)Point[4].y - 1, (size_t)Point[4].z - 1);
+				cube.val[5] = voxels->IsElementFilled((size_t)Point[5].x - 1, (size_t)Point[5].y - 1, (size_t)Point[5].z - 1);
+				cube.val[6] = voxels->IsElementFilled((size_t)Point[6].x - 1, (size_t)Point[6].y - 1, (size_t)Point[6].z - 1);
+				cube.val[7] = voxels->IsElementFilled((size_t)Point[7].x - 1, (size_t)Point[7].y - 1, (size_t)Point[7].z - 1);
 
 				//assign cube to the cube vector
 				cubes.push_back(cube);
@@ -86,7 +86,7 @@ MarchingCubes::~MarchingCubes()
 	}
 }
 
-//Triangulates cubes, extracts surface information from the cubes int32_to an array of triangles.
+//Triangulates cubes, extracts surface information from the cubes into an array of triangles.
 void MarchingCubes::TriangulateCubes(std::vector<Triangle>& outTriangles) noexcept
 {
 	outTriangles.reserve(cubes.size());
@@ -98,51 +98,51 @@ void MarchingCubes::TriangulateCubes(std::vector<Triangle>& outTriangles) noexce
 		{
 			if (edgeTable[cubeindex] & 1)
 			{
-				edges[0] = FindEdgeMidpoint32_t(it->point32_t[0], it->point32_t[1]);
+				edges[0] = FindEdgeMidPoint(it->Point[0], it->Point[1]);
 			}
 			if (edgeTable[cubeindex] & 2)
 			{
-				edges[1] = FindEdgeMidpoint32_t(it->point32_t[1], it->point32_t[2]);
+				edges[1] = FindEdgeMidPoint(it->Point[1], it->Point[2]);
 			}
 			if (edgeTable[cubeindex] & 4)
 			{
-				edges[2] = FindEdgeMidpoint32_t(it->point32_t[2], it->point32_t[3]);
+				edges[2] = FindEdgeMidPoint(it->Point[2], it->Point[3]);
 			}
 			if (edgeTable[cubeindex] & 8)
 			{
-				edges[3] = FindEdgeMidpoint32_t(it->point32_t[3], it->point32_t[0]);
+				edges[3] = FindEdgeMidPoint(it->Point[3], it->Point[0]);
 			}
 			if (edgeTable[cubeindex] & 16)
 			{
-				edges[4] = FindEdgeMidpoint32_t(it->point32_t[4], it->point32_t[5]);
+				edges[4] = FindEdgeMidPoint(it->Point[4], it->Point[5]);
 			}
 			if (edgeTable[cubeindex] & 32)
 			{
-				edges[5] = FindEdgeMidpoint32_t(it->point32_t[5], it->point32_t[6]);
+				edges[5] = FindEdgeMidPoint(it->Point[5], it->Point[6]);
 			}
 			if (edgeTable[cubeindex] & 64)
 			{
-				edges[6] = FindEdgeMidpoint32_t(it->point32_t[6], it->point32_t[7]);
+				edges[6] = FindEdgeMidPoint(it->Point[6], it->Point[7]);
 			}
 			if (edgeTable[cubeindex] & 128)
 			{
-				edges[7] = FindEdgeMidpoint32_t(it->point32_t[7], it->point32_t[4]);
+				edges[7] = FindEdgeMidPoint(it->Point[7], it->Point[4]);
 			}
 			if (edgeTable[cubeindex] & 256)
 			{
-				edges[8] = FindEdgeMidpoint32_t(it->point32_t[4], it->point32_t[0]);
+				edges[8] = FindEdgeMidPoint(it->Point[4], it->Point[0]);
 			}
 			if (edgeTable[cubeindex] & 512)
 			{
-				edges[9] = FindEdgeMidpoint32_t(it->point32_t[1], it->point32_t[5]);
+				edges[9] = FindEdgeMidPoint(it->Point[1], it->Point[5]);
 			}
 			if (edgeTable[cubeindex] & 1024)
 			{
-				edges[10] = FindEdgeMidpoint32_t(it->point32_t[2], it->point32_t[6]);
+				edges[10] = FindEdgeMidPoint(it->Point[2], it->Point[6]);
 			}
 			if (edgeTable[cubeindex] & 2048)
 			{
-				edges[11] = FindEdgeMidpoint32_t(it->point32_t[3], it->point32_t[7]);
+				edges[11] = FindEdgeMidPoint(it->Point[3], it->Point[7]);
 			}
 			for (size_t i = 0; triTable[cubeindex][i] != -1; i += 3)
 			{
@@ -186,25 +186,25 @@ inline Triangle MarchingCubes::GenerateTriangle(const Point3D(&edges)[12], int32
 	return { p1, p2, p3 };
 }
 
-//Finds the midpoint32_t of the given edge
-inline Point3D MarchingCubes::FindEdgeMidpoint32_t(const Point3D& p1, const Point3D& p2) const noexcept
+//Finds the midPoint of the given edge
+inline Point3D MarchingCubes::FindEdgeMidPoint(const Point3D& p1, const Point3D& p2) const noexcept
 {
-	Point3D midPoint32_t{ 0 };
-	midPoint32_t.x = (p1.x + p2.x) * 0.5f;
-	midPoint32_t.y = (p1.y + p2.y) * 0.5f;
-	midPoint32_t.z = (p1.z + p2.z) * 0.5f;
+	Point3D midPoint{ 0 };
+	midPoint.x = (p1.x + p2.x) * 0.5f;
+	midPoint.y = (p1.y + p2.y) * 0.5f;
+	midPoint.z = (p1.z + p2.z) * 0.5f;
 
-	return midPoint32_t;
+	return midPoint;
 }
 
-//Print32_ts triangles to a file
-bool MarchingCubes::Print32_tTrianglesToFile(const vector<Triangle>& vecTriangles, const std::string& fPath)
+//Prints triangles to a file
+bool MarchingCubes::PrintTrianglesToFile(const vector<Triangle>& vecTriangles, const std::string& fPath)
 {
 	int32_t triCounter = 0;
 	std::ofstream file(fPath, std::ios::out | std::ios::app);
 	if (file.is_open())
 	{
-		std::cout << "Print32_ting triangles int32_to file " << fPath << std::endl;
+		std::cout << "Printing triangles into file " << fPath << std::endl;
 		file << "	X	Y	Z" << std::endl;
 		std::vector<Triangle>::const_iterator const_it;
 		for (const_it = vecTriangles.begin(); const_it != vecTriangles.end(); ++const_it)
@@ -225,14 +225,14 @@ bool MarchingCubes::Print32_tTrianglesToFile(const vector<Triangle>& vecTriangle
 	}
 }
 
-//Print32_ts triangles to a file using a buffer
-bool MarchingCubes::Print32_tTrianglesToFile(const vector<Triangle>& vecTriangles, const size_t bufferSize, const std::string& fPath)
+//Prints triangles to a file using a buffer
+bool MarchingCubes::PrintTrianglesToFile(const vector<Triangle>& vecTriangles, const size_t bufferSize, const std::string& fPath)
 {
 	int32_t triCounter = 0;
 	std::ofstream file(fPath, std::ios::out | std::ios::app);
 	if (file.is_open())
 	{
-		std::cout << "Print32_ting triangles int32_to file " << fPath << std::endl;
+		std::cout << "Printing triangles into file " << fPath << std::endl;
 		file << "	X	Y	Z" << std::endl;
 		std::vector<Triangle>::const_iterator const_it;
 		for (const_it = vecTriangles.begin(); const_it != vecTriangles.end(); ++const_it)
@@ -296,14 +296,14 @@ bool MarchingCubes::SaveToFile(const vector<Triangle>& triangles, const char* Fi
 	return true;
 }
 
-//Print32_ts the cubes to a file
-bool MarchingCubes::Print32_tCubesToFile(const std::string& fPath)
+//Prints the cubes to a file
+bool MarchingCubes::PrintCubesToFile(const std::string& fPath)
 {
 	int32_t cubeCounter = 0;
 	std::ofstream file(fPath, std::ios::out | std::ios::app);
 	if (file.is_open())
 	{
-		std::cout << "Print32_ting cubes int32_to file " << fPath << std::endl;
+		std::cout << "Printing cubes into file " << fPath << std::endl;
 		file << "	X	Y	Z	ELEMENT Filled 0 | 1" << std::endl;
 		std::vector<MCube>::iterator it;
 		for (it = cubes.begin(); it != cubes.end(); ++it)
@@ -311,7 +311,7 @@ bool MarchingCubes::Print32_tCubesToFile(const std::string& fPath)
 			file << "\n \t-------Cube " << ++cubeCounter << " ---------\t" << std::endl;
 			for (int32_t i = 0; i < 8; i++)
 			{
-				file << "	" << it->point32_t[i].x << "	" << it->point32_t[i].y << "	" << it->point32_t[i].z << "	" << it->val[i] << std::endl;
+				file << "	" << it->Point[i].x << "	" << it->Point[i].y << "	" << it->Point[i].z << "	" << it->val[i] << std::endl;
 			}
 		}
 		std::cout << "Done!" << std::endl;
