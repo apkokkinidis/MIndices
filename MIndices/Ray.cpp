@@ -88,10 +88,10 @@ bool Ray::intersectsTriangle(const Triangle& triangle, Point3D &P) const noexcep
 
 	//compute plane's normal
 	Point3D N = ComputeNormal(triangle);
-	float area = sqrtf(N.x * N.x + N.y * N.y + N.z * N.z);
+	float area = sqrtf(static_cast<float>(N.x * N.x + N.y * N.y + N.z * N.z));
 
 	//check if ray is paraller to triangle
-	float NdotDir = DotProduct(N, direction);
+	double NdotDir = DotProduct(N, direction);
 	if (fabs(NdotDir < EPSILON))
 	{
 		//they are parralel so they don't int32_tersect
@@ -99,10 +99,10 @@ bool Ray::intersectsTriangle(const Triangle& triangle, Point3D &P) const noexcep
 	}
 
 	//compute D parameter
-	float d = DotProduct(N, v0);
+	double d = DotProduct(N, v0);
 
 	//compute t
-	float t = (DotProduct(N, origin) + d) / NdotDir;
+	double t = (DotProduct(N, origin) + d) / NdotDir;
 	// check if the triangle is in behind the ray
 	//if (t < 0) return false; 
 	

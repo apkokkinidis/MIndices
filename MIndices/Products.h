@@ -11,9 +11,9 @@ namespace MIndices
 		return C;
 	}
 
-	inline const COORD_TYPE DotProduct(const Point3D& A, const Point3D& B) noexcept
+	inline const double DotProduct(const Point3D& A, const Point3D& B) noexcept
 	{
-		return A.x * B.x + A.y * B.y + A.z * B.z;
+		return static_cast<double>(A.x * B.x + A.y * B.y + A.z * B.z);
 	}
 
 	inline const Point3D Subpoints(const Point3D& p1, const Point3D& p2) noexcept

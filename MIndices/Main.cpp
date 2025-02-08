@@ -34,9 +34,6 @@ bool has_precomputed_edges = false;
 int32_t ComputeIndices(BVHTree* bvh, vector<Ray>& r, vector<AnglePair>& pairs);
 int32_t ComputeIndicesParallel(BVHTree* bvh, vector<Ray>& r, vector<AnglePair>& pairs);
 
-//utility functions
-int32_t FindCharByEndOfString(const std::string& str, char c);
-
 //sort method for std::sort
 inline void Sortpoints(std::vector<Point3D>& points, const Ray& ray);
 
@@ -77,7 +74,7 @@ int32_t main(int32_t argc, char* argv[])
 	DimZ = array3D->GetDimZ();
 
 	/*----------------Marching Cubes-------------------*/
-	MarchingCubes cubes(array3D, DimX, DimY, DimZ);
+	MarchingCubes cubes(array3D, static_cast<int32_t>(DimX), static_cast<int32_t>(DimY), static_cast<int32_t>(DimZ));
 	delete array3D;
 
 	vector<Triangle> vecTriang;
@@ -141,31 +138,18 @@ int32_t main(int32_t argc, char* argv[])
 		{
 			//sort angle pairs
 			std::sort(pairs.begin(), pairs.end(), AnglePair::SortPairs);
-			int32_t indx = FindCharByEndOfString(filename, '\\');
+			auto indx = filename.find_last_of('\\');
 			std::string file = filename.substr(indx + 1, filename.length() - 3).append("NT_").append(std::to_string(NUM_OF_THREADS_X_16)).append("_Pairs_Parallel.txt");
 			int32_t r = PrintPairs(file, pairs, durMinutes);
 		}
 		else
 		{
-			int32_t indx = FindCharByEndOfString(filename, '\\');
+			auto indx = filename.find_last_of('\\');
 			std::string file = filename.substr(indx + 1, filename.length() - 3).append("_Pairs.txt");
 			int32_t r = PrintPairs(file, pairs, durMinutes);
 		}
 	}
 	return 0;
-}
-
-int32_t FindCharByEndOfString(const std::string& str, char c)
-{
-	for (auto i = str.length() - 1; i > 1; i--)
-	{
-		if (str[i] == c)
-		{
-			return i;
-		}
-	}
-	//character not found return -1.
-	return -1;
 }
 
 //Sort points array based on their distance to the ray origin.

@@ -136,7 +136,7 @@ BoundingBox3D BVHTree::ComputeBounds(const vector<Triangle>& triangles) const
 	return *bbox;
 }
 
-void BVHTree::TopDownBuildObjectMedian(vector<Triangle> &triangles) noexcept
+void BVHTree::TopDownBuildObjectMedian(vector<Triangle>& triangles) noexcept
 {
 	if (triangles.size() > MAX_TRIANGLES_PER_LEAF)
 	{
@@ -169,7 +169,7 @@ void BVHTree::TopDownBuildObjectMedian(vector<Triangle> &triangles) noexcept
 	}
 }
 
-void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle> &triangles) noexcept
+void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle>& triangles) noexcept
 {
 	if (triangles.size() > MAX_TRIANGLES_PER_LEAF)
 	{
@@ -207,7 +207,7 @@ void BVHTree::BottomUpBuild(vector<Triangle>& triangles) noexcept
 }
 
 
-void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<Triangle> &triangles) noexcept
+void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<Triangle>& triangles) noexcept
 {
 	const int32_t NUM_OF_THRDS = 2;
 
@@ -246,9 +246,11 @@ void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<Triangle> &triangles) noe
 				case 0:
 					//recursively build left subtree
 					TopDownBuildObjectMedian(root->left, S1);
+					break;
 				case 1:
 					//recursively build right subtree
 					TopDownBuildObjectMedian(root->right, S2);
+					break;
 				default:
 					break;
 				}
@@ -360,9 +362,9 @@ COORD_TYPE MIndices::BVHTree::SelectPointAxis(const Point3D& p, Axis axis) noexc
 {
 	switch (axis)
 	{
-	case Axis::X :{ return p.x; }
-	case Axis::Y :{ return p.y; }
-	case Axis::Z :{ return p.z; }
+	case Axis::X: { return p.x; }
+	case Axis::Y: { return p.y; }
+	case Axis::Z: { return p.z; }
 	default: break;
 	}
 	return COORD_TYPE(0.0f);
@@ -396,6 +398,7 @@ int32_t BVHTree::partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi
 		std::swap(tri[i], tri[j]);
 		//swap i with j
 	}
+	return 0;
 }
 
 //Partitions set using the centroid of the triangles along the y axis
@@ -427,6 +430,7 @@ int32_t BVHTree::partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi
 		std::swap(tri[i], tri[j]);
 		//swap i with j
 	}
+	return 0;
 }
 
 //Partitions set using the centroid of the triangles along the z axis
@@ -457,6 +461,7 @@ int32_t BVHTree::partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi
 		std::swap(tri[i], tri[j]);
 		//swap i with j
 	}
+	return 0;
 }
 //Traverse the tree using DFS and check for any intersections with the ray
 void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outpoints) const noexcept

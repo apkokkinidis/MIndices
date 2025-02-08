@@ -8,54 +8,54 @@ using namespace MIndices;
 MarchingCubes::MarchingCubes(Array3D* voxels, int32_t DimX, int32_t DimY, int32_t DimZ)
 {
 	cubes.reserve((DimX - 1) * (DimY - 1) * (DimZ - 1));
-	for (int32_t k = 1; k < DimZ; k++)
+	for (int32_t k = 1; k < DimZ; ++k)
 	{
-		for (int32_t j = 1; j < DimY; j++)
+		for (int32_t j = 1; j < DimY; ++j)
 		{
-			for (int32_t i = 1; i < DimX; i++)
+			for (int32_t i = 1; i < DimX; ++i)
 			{
 				MCube cube{ 0 };
 				Point3D Point[8]{ 0 };
 
 				// x	y	z	v1
-				Point[0].x = i;
-				Point[0].y = j;
-				Point[0].z = k;
+				Point[0].x = static_cast<COORD_TYPE>(i);
+				Point[0].y = static_cast<COORD_TYPE>(j);
+				Point[0].z = static_cast<COORD_TYPE>(k);
 
 				// x + 1	y	z	v2
-				Point[1].x = i + 1;
-				Point[1].y = j;
-				Point[1].z = k;
+				Point[1].x = static_cast<COORD_TYPE>(i + 1);
+				Point[1].y = static_cast<COORD_TYPE>(j);
+				Point[1].z = static_cast<COORD_TYPE>(k);
 
 				// x + 1	 y	z + 1	v3
-				Point[2].x = i + 1;
-				Point[2].y = j;
-				Point[2].z = k + 1;
+				Point[2].x = static_cast<COORD_TYPE>(i + 1);
+				Point[2].y = static_cast<COORD_TYPE>(j);
+				Point[2].z = static_cast<COORD_TYPE>(k + 1);
 
 				// x	y 	z + 1	v4
-				Point[3].x = i;
-				Point[3].y = j;
-				Point[3].z = k + 1;
+				Point[3].x = static_cast<COORD_TYPE>(i);
+				Point[3].y = static_cast<COORD_TYPE>(j);
+				Point[3].z = static_cast<COORD_TYPE>(k + 1);
 
 				// x	y + 1	z	v5
-				Point[4].x = i;
-				Point[4].y = j + 1;
-				Point[4].z = k;
+				Point[4].x = static_cast<COORD_TYPE>(i);
+				Point[4].y = static_cast<COORD_TYPE>(j + 1);
+				Point[4].z = static_cast<COORD_TYPE>(k);
 
 				// x + 1	y + 1	z	v6
-				Point[5].x = i + 1;
-				Point[5].y = j + 1;
-				Point[5].z = k;
+				Point[5].x = static_cast<COORD_TYPE>(i + 1);
+				Point[5].y = static_cast<COORD_TYPE>(j + 1);
+				Point[5].z = static_cast<COORD_TYPE>(k);
 
 				// x + 1	y + 1	z + 1	v7
-				Point[6].x = i + 1;
-				Point[6].y = j + 1;
-				Point[6].z = k + 1;
+				Point[6].x = static_cast<COORD_TYPE>(i + 1);
+				Point[6].y = static_cast<COORD_TYPE>(j + 1);
+				Point[6].z = static_cast<COORD_TYPE>(k + 1);
 
 				// x	y + 1	z + 1	v8
-				Point[7].x = i;
-				Point[7].y = j + 1;
-				Point[7].z = k + 1;
+				Point[7].x = static_cast<COORD_TYPE>(i);
+				Point[7].y = static_cast<COORD_TYPE>(j + 1);
+				Point[7].z = static_cast<COORD_TYPE>(k + 1);
 
 				//asign points to the cube
 				std::copy(std::begin(Point), std::end(Point), std::begin(cube.Point));
@@ -146,7 +146,7 @@ void MarchingCubes::TriangulateCubes(std::vector<Triangle>& outTriangles) noexce
 			}
 			for (size_t i = 0; triTable[cubeindex][i] != -1; i += 3)
 			{
-				Triangle triangle = GenerateTriangle(edges, cubeindex, i);
+				Triangle triangle = GenerateTriangle(edges, cubeindex, static_cast<int32_t>(i));
 				outTriangles.push_back(triangle);
 			}
 		}
