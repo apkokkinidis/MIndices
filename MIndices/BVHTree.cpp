@@ -356,8 +356,20 @@ void BVHTree::QuickSortTri(vector<Triangle>& tri, int32_t lo, int32_t hi, Axis a
 	}
 }
 
+COORD_TYPE MIndices::BVHTree::SelectPointAxis(const Point3D& p, Axis axis) noexcept
+{
+	switch (axis)
+	{
+	case Axis::X :{ return p.x; }
+	case Axis::Y :{ return p.y; }
+	case Axis::Z :{ return p.z; }
+	default: break;
+	}
+	return COORD_TYPE(0.0f);
+}
+
 //Partitions set using the centroid of the triangles along the x axis
-size_t BVHTree::partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
+int32_t BVHTree::partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
 {
 	int32_t pivot_ind = lo;
 	int32_t i = lo - 1;
@@ -369,14 +381,12 @@ size_t BVHTree::partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi)
 	{
 		do
 		{
-			i++;
-
+			++i;
 			p_i = ComputeCentroidOfTriangle(tri[i]);
 		} while (p_i.x < pivot.x);
 		do
 		{
-			j--;
-
+			--j;
 			p_j = ComputeCentroidOfTriangle(tri[j]);
 		} while (p_j.x > pivot.x);
 		if (i >= j)
@@ -389,7 +399,7 @@ size_t BVHTree::partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi)
 }
 
 //Partitions set using the centroid of the triangles along the y axis
-size_t BVHTree::partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
+int32_t BVHTree::partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
 {
 	size_t pivot_ind = lo;
 	int32_t i = lo - 1;
@@ -402,12 +412,12 @@ size_t BVHTree::partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi)
 	{
 		do
 		{
-			i++;
+			++i;
 			p_i = ComputeCentroidOfTriangle(tri[i]);
 		} while (p_i.y < pivot.y);
 		do
 		{
-			j--;
+			--j;
 			p_j = ComputeCentroidOfTriangle(tri[j]);
 		} while (p_j.y > pivot.y);
 		if (i >= j)
@@ -420,7 +430,7 @@ size_t BVHTree::partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi)
 }
 
 //Partitions set using the centroid of the triangles along the z axis
-size_t BVHTree::partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
+int32_t BVHTree::partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
 {
 	size_t pivot_ind = lo;
 	int32_t i = lo - 1;
@@ -432,12 +442,12 @@ size_t BVHTree::partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi)
 	{
 		do
 		{
-			i++;
+			++i;
 			p_i = ComputeCentroidOfTriangle(tri[i]);
 		} while (p_i.z < ppivot.z);
 		do
 		{
-			j--;
+			--j;
 			p_j = ComputeCentroidOfTriangle(tri[j]);
 		} while (p_j.z > ppivot.z);
 		if (i >= j)

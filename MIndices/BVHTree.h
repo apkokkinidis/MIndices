@@ -44,9 +44,10 @@ namespace MIndices
 
 		//sorting functions
 		void QuickSortTri(vector<Triangle>& tri, int32_t lo, int32_t hi, Axis axis) noexcept;
-		size_t partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
-		size_t partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
-		size_t partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
+		COORD_TYPE SelectPointAxis(const Point3D& p, Axis axis) noexcept;
+		int32_t partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
+		int32_t partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
+		int32_t partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
 
 		//utility functions
 		float CalculateSurfaceAreaOfBox(const BoundingBox3D& box) const noexcept;
