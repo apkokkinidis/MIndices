@@ -312,18 +312,11 @@ namespace MIndices
 
 	class MarchingCubes
 	{
-	private:
-		vector<MCube> cubes;
-
 	public:
 		MarchingCubes(Array3D* voxels, int32_t DimX, int32_t DimY, int32_t DimZ);
 		~MarchingCubes();
 
 		void TriangulateCubes(std::vector<Triangle>& outTriangles) noexcept;
-
-		inline bool CubeInOutSurface(const MCube& cube, int32_t& cubeindex) const noexcept;
-		inline Triangle GenerateTriangle(const Point3D(&edges)[12], int32_t cubeIndx, int32_t edgeIndx) const noexcept;
-		inline Point3D FindEdgeMidPoint(const Point3D& p1, const Point3D& p2) const noexcept;
 
 		//Printing functions
 		bool PrintCubesToFile(const std::string& fPath);
@@ -332,6 +325,13 @@ namespace MIndices
 
 		//save to file
 		bool SaveToFile(const vector<Triangle>& triangles, const char* FileSpec) const;
+
+	private:
+		vector<MCube> cubes;
+
+		inline bool CubeInOutSurface(const MCube& cube, int32_t& cubeindex) const noexcept;
+		inline Triangle GenerateTriangle(const Point3D(&edges)[12], int32_t cubeIndx, int32_t edgeIndx) const noexcept;
+		inline Point3D FindEdgeMidPoint(const Point3D& p1, const Point3D& p2) const noexcept;
 	};
 }
 #endif  Cubes_H
