@@ -22,6 +22,7 @@
     <ClCompile Include="AnglePair.cpp" />
     <ClCompile Include="BVHNode.cpp" />
     <ClCompile Include="BVHTree.cpp" />
+    <ClCompile Include="FileIOHandler.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MarchingCubes.cpp" />
     <ClCompile Include="Ray.cpp" />
@@ -32,6 +33,8 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BVHNode.h" />
     <ClInclude Include="BVHTree.h" />
+    <ClInclude Include="FileIOHandler.h" />
+    <ClInclude Include="IFileIOHandler.h" />
     <ClInclude Include="MarchingCubes.h" />
     <ClInclude Include="Products.h" />
     <ClInclude Include="Ray.h" />
