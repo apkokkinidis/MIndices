@@ -62,7 +62,7 @@ namespace MIndices
 				DimZ = other.DimZ;
 				PlaneXY = other.PlaneXY;
 
-				for (size_t count = 0; count < DimX * DimY * DimZ; count++)
+				for (size_t count = 0; count < DimX * DimY * DimZ; ++count)
 				{
 					Array[count] = other.Array[count];
 				}   // for, copy values
@@ -445,9 +445,8 @@ namespace MIndices
 			DimZ = Other.DimZ;
 			PlaneXY = Other.PlaneXY;
 
-			for (size_t count = 0; count < DimX * DimY * DimZ; count++)
+			for (size_t count = 0; count < DimX * DimY * DimZ; ++count)
 			{
-#pragma warning( suppress : 6386)
 				Array[count] = Other.Array[count];
 			}   // for, copy values
 
@@ -463,7 +462,7 @@ namespace MIndices
 				return false;
 			}   // if
 
-			for (size_t count = 0; count < (DimX * DimY * DimZ); count++)
+			for (size_t count = 0; count < (DimX * DimY * DimZ); ++count)
 			{
 				if (Array[count] != Other.Array[count]) return false;
 			}   // for
