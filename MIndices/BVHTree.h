@@ -19,8 +19,6 @@ namespace MIndices
 
 	class BVHTree
 	{
-	private:
-		BVHNode* root;
 	public:
 		BVHTree();
 		~BVHTree();
@@ -32,22 +30,11 @@ namespace MIndices
 		void TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle>& triangles) noexcept;
 
 		//Bottom-up build methods
-		void BottomUpBuild(vector<Triangle>& triangles) noexcept;
+		void BottomUpBuild(vector<Triangle>& triangles) noexcept;	//ToDo implementation missing
 
 		//Compute bounds functions
 		BoundingBox3D ComputeBounds(const vector<Triangle>& triangles) const;
 		BoundingBox3D ComputeBounds(const Triangle& triangle) const;
-
-		//Compute centroid functions
-		Point3D ComputeCentroidOfTriangle(const Triangle& t) const noexcept;
-		Point3D ComputeCentroidOfBoundingBox(const BoundingBox3D& box) const noexcept;
-
-		//sorting functions
-		void QuickSortTri(vector<Triangle>& tri, int32_t lo, int32_t hi, Axis axis) noexcept;
-		COORD_TYPE SelectPointAxis(const Point3D& p, Axis axis) noexcept;
-		int32_t partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
-		int32_t partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
-		int32_t partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
 
 		//utility functions
 		float CalculateSurfaceAreaOfBox(const BoundingBox3D& box) const noexcept;
@@ -67,6 +54,20 @@ namespace MIndices
 
 		//Returns a Pointer to the root of the tree
 		BVHNode* GetRoot();
+
+	private:
+		BVHNode* root;
+
+		//sorting functions
+		void QuickSortTri(vector<Triangle>& tri, int32_t lo, int32_t hi, Axis axis) noexcept;
+		COORD_TYPE SelectPointAxis(const Point3D& p, Axis axis) noexcept;
+		int32_t partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
+		int32_t partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
+		int32_t partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept;
+
+		//Compute centroid functions
+		Point3D ComputeCentroidOfTriangle(const Triangle& t) const noexcept;
+		Point3D ComputeCentroidOfBoundingBox(const BoundingBox3D& box) const noexcept;
 
 		//memory functions
 		void DeleteSubTree(BVHNode* node);

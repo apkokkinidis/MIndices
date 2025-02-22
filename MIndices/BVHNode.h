@@ -41,7 +41,6 @@ namespace MIndices
 
 		void ClearTriangles();
 
-		//Compute the edges of all the triangles in this node
 		int32_t ComputeEdges();
 
 	private:

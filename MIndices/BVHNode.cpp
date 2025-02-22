@@ -52,6 +52,7 @@ void BVHNode::SetTriangles(const vector<Triangle>& triangles)
 	this->triangles = triangles;
 }
 
+//Deletes triangles belonging to node.
 void BVHNode::ClearTriangles()
 {
 	if (!triangles.empty())
@@ -60,6 +61,7 @@ void BVHNode::ClearTriangles()
 	}
 }
 
+//Compute the edges of all the triangles in this node
 int32_t BVHNode::ComputeEdges()
 {
 	size_t s = triangles.size();
@@ -86,7 +88,7 @@ int32_t BVHNode::ComputeEdges()
 
 bool BVHNode::IsLeafNode() const
 {
-	return (NULL == left && NULL == right);
+	return (nullptr == left && nullptr == right);
 }
 
 BoundingBox3D BVHNode::Box() const noexcept

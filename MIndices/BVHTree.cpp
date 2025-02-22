@@ -204,6 +204,7 @@ void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle>& triangl
 
 void BVHTree::BottomUpBuild(vector<Triangle>& triangles) noexcept
 {
+	//ToDO implement bottom up hierarchy construction.
 }
 
 
