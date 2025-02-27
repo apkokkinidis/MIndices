@@ -1,7 +1,5 @@
 // Author Anastasios Kokkinidis 
 #pragma once
-#ifndef STRUCTURES_H
-#define STRUCTURES_H
 
 #include <vector>
 
@@ -11,6 +9,13 @@ namespace MIndices
 	typedef double COORD_TYPE;
 
 	enum class Axis { X, Y, Z };
+
+	enum class ElementTypes : uint8_t
+	{
+		EMPTY,
+		FILLED,
+		VARIOUS,
+	};
 
 	/* ----------------------------- */
 	/* Struct definitions go in here */
@@ -84,4 +89,3 @@ namespace MIndices
 
 	using VecPoint3D = std::vector<Point3D>;
 }
-#endif STRUCTURES_H
