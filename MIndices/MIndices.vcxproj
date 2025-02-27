@@ -20,15 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnglePair.cpp" />
+    <ClCompile Include="Array.cpp" />
     <ClCompile Include="BVHNode.cpp" />
     <ClCompile Include="BVHTree.cpp" />
     <ClCompile Include="FileIOHandler.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MarchingCubes.cpp" />
+    <ClCompile Include="MIndice.cpp" />
     <ClCompile Include="Ray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnglePair.h" />
+    <ClInclude Include="Array.h" />
     <ClInclude Include="Array3D.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BVHNode.h" />
@@ -36,6 +39,7 @@
     <ClInclude Include="FileIOHandler.h" />
     <ClInclude Include="IFileIOHandler.h" />
     <ClInclude Include="MarchingCubes.h" />
+    <ClInclude Include="MIndice.h" />
     <ClInclude Include="Products.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Structures.h" />
