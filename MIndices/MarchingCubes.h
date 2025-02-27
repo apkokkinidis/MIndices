@@ -12,6 +12,7 @@
 //Custom headers
 #include "Structures.h"
 #include "Array3D.h"
+#include "Array.h"
 
 using std::vector;
 
@@ -314,7 +315,8 @@ namespace MIndices
 	{
 	public:
 		MarchingCubes(Array3D* voxels, int32_t DimX, int32_t DimY, int32_t DimZ);
-		~MarchingCubes();
+		MarchingCubes(std::unique_ptr<Array> voxels, size_t dim_x, size_t dim_y, size_t dim_z);
+		~MarchingCubes() = default;
 
 		void TriangulateCubes(std::vector<Triangle>& outTriangles) noexcept;
 
@@ -328,6 +330,7 @@ namespace MIndices
 
 	private:
 		vector<MCube> cubes;
+		vector<VoxelCube> vCubes;
 
 		inline bool CubeInOutSurface(const MCube& cube, int32_t& cubeindex) const noexcept;
 		inline Triangle GenerateTriangle(const Point3D(&edges)[12], int32_t cubeIndx, int32_t edgeIndx) const noexcept;

@@ -78,12 +78,73 @@ MarchingCubes::MarchingCubes(Array3D* voxels, int32_t DimX, int32_t DimY, int32_
 	cubes.shrink_to_fit();
 }
 
-MarchingCubes::~MarchingCubes()
+MIndices::MarchingCubes::MarchingCubes(std::unique_ptr<Array> voxels, size_t dim_x, size_t dim_y, size_t dim_z)
 {
-	if (!this->cubes.empty())
+	vCubes.reserve((dim_x - 1) * (dim_y - 1) * (dim_z - 1));
+	for (int32_t k = 1; k < dim_z; ++k)
 	{
-		this->cubes.clear();
-	}
+		for (int32_t j = 1; j < dim_y; ++j)
+		{
+			for (int32_t i = 1; i < dim_x; ++i)
+			{
+				VoxelCube vCube{ 0 };
+
+				// x	y	z	v1
+				vCube.v[0].p.x = static_cast<COORD_TYPE>(i);
+				vCube.v[0].p.y = static_cast<COORD_TYPE>(j);
+				vCube.v[0].p.z = static_cast<COORD_TYPE>(k);
+
+				// x + 1	y	z	v2
+				vCube.v[1].p.x = static_cast<COORD_TYPE>(i + 1);
+				vCube.v[1].p.y = static_cast<COORD_TYPE>(j);
+				vCube.v[1].p.z = static_cast<COORD_TYPE>(k);
+
+				// x + 1	 y	z + 1	v3
+				vCube.v[2].p.x = static_cast<COORD_TYPE>(i + 1);
+				vCube.v[2].p.y = static_cast<COORD_TYPE>(j);
+				vCube.v[2].p.z = static_cast<COORD_TYPE>(k + 1);
+
+				// x	y 	z + 1	v4
+				vCube.v[3].p.x = static_cast<COORD_TYPE>(i);
+				vCube.v[3].p.y = static_cast<COORD_TYPE>(j);
+				vCube.v[3].p.z = static_cast<COORD_TYPE>(k + 1);
+
+				// x	y + 1	z	v5
+				vCube.v[4].p.x = static_cast<COORD_TYPE>(i);
+				vCube.v[4].p.y = static_cast<COORD_TYPE>(j + 1);
+				vCube.v[4].p.z = static_cast<COORD_TYPE>(k);
+
+				// x + 1	y + 1	z	v6
+				vCube.v[5].p.x = static_cast<COORD_TYPE>(i + 1);
+				vCube.v[5].p.y = static_cast<COORD_TYPE>(j + 1);
+				vCube.v[5].p.z = static_cast<COORD_TYPE>(k);
+
+				// x + 1	y + 1	z + 1	v7
+				vCube.v[6].p.x = static_cast<COORD_TYPE>(i + 1);
+				vCube.v[6].p.y = static_cast<COORD_TYPE>(j + 1);
+				vCube.v[6].p.z = static_cast<COORD_TYPE>(k + 1);
+
+				// x	y + 1	z + 1	v8
+				vCube.v[7].p.x = static_cast<COORD_TYPE>(i);
+				vCube.v[7].p.y = static_cast<COORD_TYPE>(j + 1);
+				vCube.v[7].p.z = static_cast<COORD_TYPE>(k + 1);
+
+				//ToDo refactor the below assignments as I understand it is hard to read and maintain.
+				vCube.v[0].val = (bool)voxels->GetElementType((size_t)vCube.v[0].p.x - 1, (size_t)vCube.v[0].p.y - 1, (size_t)vCube.v[0].p.z - 1);
+				vCube.v[1].val = (bool)voxels->GetElementType((size_t)vCube.v[1].p.x - 1, (size_t)vCube.v[1].p.y - 1, (size_t)vCube.v[1].p.z - 1);
+				vCube.v[2].val = (bool)voxels->GetElementType((size_t)vCube.v[2].p.x - 1, (size_t)vCube.v[2].p.y - 1, (size_t)vCube.v[2].p.z - 1);
+				vCube.v[3].val = (bool)voxels->GetElementType((size_t)vCube.v[3].p.x - 1, (size_t)vCube.v[3].p.y - 1, (size_t)vCube.v[3].p.z - 1);
+				vCube.v[4].val = (bool)voxels->GetElementType((size_t)vCube.v[4].p.x - 1, (size_t)vCube.v[4].p.y - 1, (size_t)vCube.v[4].p.z - 1);
+				vCube.v[5].val = (bool)voxels->GetElementType((size_t)vCube.v[5].p.x - 1, (size_t)vCube.v[5].p.y - 1, (size_t)vCube.v[5].p.z - 1);
+				vCube.v[6].val = (bool)voxels->GetElementType((size_t)vCube.v[6].p.x - 1, (size_t)vCube.v[6].p.y - 1, (size_t)vCube.v[6].p.z - 1);
+				vCube.v[7].val = (bool)voxels->GetElementType((size_t)vCube.v[7].p.x - 1, (size_t)vCube.v[7].p.y - 1, (size_t)vCube.v[7].p.z - 1);
+
+				//assign cube to the cube vector
+				vCubes.push_back(vCube);
+			}//for X
+		}//for Y
+	}//for Z
+	vCubes.shrink_to_fit();
 }
 
 //Triangulates cubes, extracts surface information from the cubes into an array of triangles.
