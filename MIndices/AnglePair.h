@@ -1,8 +1,6 @@
 // Author Anastasios Kokkinidis 
 //AnglePair.h
 #pragma once
-#ifndef _AnglePair
-#define _AnglePair
 
 #include <stdint.h>
 #include <vector>
@@ -18,6 +16,9 @@
 
 namespace MIndices
 {
+	constexpr int32_t ELEVATION = 90;
+	constexpr int32_t AZIMUTH = 180;
+
 	class AnglePair
 	{
 	public:
@@ -54,4 +55,3 @@ namespace MIndices
 	int32_t PrintPairs(const std::string& fPath, const std::vector<AnglePair>& pairs, int32_t duration);
 	void SavePairs(const std::string& fPath, const std::vector<AnglePair>& pairs);
 }
-#endif _AnglePair
