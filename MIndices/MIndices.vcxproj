@@ -28,6 +28,7 @@
     <ClCompile Include="MarchingCubes.cpp" />
     <ClCompile Include="MIndice.cpp" />
     <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="RayGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnglePair.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="MIndice.h" />
     <ClInclude Include="Products.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="RayGrid.h" />
     <ClInclude Include="Structures.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

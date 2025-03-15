@@ -10,6 +10,7 @@
 #include "Array3D.h"
 #include "MarchingCubes.h"
 #include "Ray.h"
+#include "RayGrid.h"
 #include "BVHTree.h"
 #include "AnglePair.h"
 #include "Structures.h"
@@ -17,15 +18,6 @@
 
 namespace MIndices
 {
-	enum class initState
-	{
-		noInit,
-		initDefault,
-		initMCubes,
-		initBVH,
-		RayGeneration,
-		IndiceComputation
-	};
 
 	class MIndice
 	{
@@ -37,17 +29,23 @@ namespace MIndices
 		void Init(const std::string& filename);
 		void InitMCubes(bool deleteArr);
 		void InitBVH();
+		void InitRayGrid();
 
 		void PrintVoxels(std::string& filename);
-
+		void printPairs(std::string& filename);
+		int32_t ComputeIndice();
 		void TriangulateArray();
+		BVHTree* GetBVHRoot() { return bvh; }
 	private:
+
+		int32_t RayTraceBVHNodes(std::vector<VecPoint3D>& outPoints);
 		std::unique_ptr<Array> arr;
 		std::vector<Triangle> triArr;
+		std::vector<AnglePair> pairs;
 		IFileIOHandler& fileIOHandler;
 		MarchingCubes* mCubes;
 		BVHTree* bvh;
-		std::vector<Triangle> triangleMesh;
+		RayGrid* rayGrid;
 		size_t dim_x, dim_y, dim_z;
 	};
 

@@ -1,7 +1,5 @@
 // Author Anastasios Kokkinidis 
 #pragma once
-#ifndef RAY_H
-#define RAY_H
 
 #include "Structures.h"
 #include <math.h>
@@ -12,12 +10,11 @@ namespace MIndices
 	constexpr double PI = 3.14159265359;;
 	constexpr double RAD = PI / 180;
 	constexpr double EPSILON = 0.0000001;
+	constexpr COORD_TYPE numeric_epsilon = std::numeric_limits<COORD_TYPE>::epsilon();
 
 	class Ray
 	{
-	private:
-		Point3D origin;
-		Point3D direction;
+
 	public:
 		Ray();
 		Ray(Point3D _origin, Point3D direction);
@@ -33,11 +30,16 @@ namespace MIndices
 		void Rotate(double d, Axis axis);
 		inline COORD_TYPE RayOriginDistFromPoint3D(const Point3D& tri) const noexcept;
 
+		void sortVecPoint3D(VecPoint3D& points) const noexcept;
+
 		//intersection tests
 		bool intersectsTriangle(const Triangle& triangle, Point3D& P) const noexcept;
 		//MT algorithm approach
 		bool FastRayTriangleIntersection(const Triangle& triangle, Point3D& iPoint, double& t) const noexcept;
 		bool FastRayTriangleIntersection(const Triangle& triangle, const Point3D& edge1, const Point3D& edge2, Point3D& iPoint, double& t) const noexcept;
+	private:
+		Point3D origin;
+		Point3D direction;
 	};
 
 	//Creates an array of rays of X * Y size
@@ -76,4 +78,3 @@ namespace MIndices
 	//@param rotation axis
 	void RotateRays(double d, Axis a, std::vector<Ray>& ray);
 }
-#endif RAY_H//  RAY_H

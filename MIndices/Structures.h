@@ -72,13 +72,13 @@ namespace MIndices
 
 	typedef struct Voxel
 	{
-		Point3D p;
+		Point3D point;
 		bool val;
 	}Voxel;
 
 	typedef struct VoxelCube
 	{
-		Voxel v[8];
+		Voxel vertex[8];
 	}CubeV;
 
 	typedef struct

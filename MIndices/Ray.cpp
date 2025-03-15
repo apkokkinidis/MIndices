@@ -1,5 +1,6 @@
 // Author Anastasios Kokkinidis 
 #include "Ray.h"
+#include <algorithm>
 #include "Products.h"
 
 using namespace MIndices;
@@ -76,6 +77,17 @@ inline COORD_TYPE Ray::RayOriginDistFromPoint3D(const Point3D& tri) const noexce
 {
 	COORD_TYPE dist = sqrt((tri.x - origin.x) * (tri.x - origin.x) + (tri.y - origin.y) * (tri.y - origin.y) + (tri.z - origin.z) * (tri.z - origin.z));
 	return dist;
+}
+
+//sort points based on the distance from the origin of the ray
+void MIndices::Ray::sortVecPoint3D(VecPoint3D& points) const noexcept
+{
+	std::sort(points.begin(), points.end(), [*this](const Point3D& p1, const Point3D& p2)
+		{
+			COORD_TYPE dist1 = sqrt((p1.x - origin.x) * (p1.x - origin.x) + (p1.y - origin.y) * (p1.y - origin.y) + (p1.z - origin.z) * (p1.z - origin.z));
+			COORD_TYPE dist2 = sqrt((p2.x - origin.x) * (p2.x - origin.x) + (p2.y - origin.y) * (p2.y - origin.y) + (p2.z - origin.z) * (p2.z - origin.z));
+			return dist2 > dist1;
+		});
 }
 
 //Geometric solution based on scratchpixel.com
