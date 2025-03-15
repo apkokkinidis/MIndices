@@ -319,6 +319,7 @@ namespace MIndices
 		~MarchingCubes() = default;
 
 		void TriangulateCubes(std::vector<Triangle>& outTriangles) noexcept;
+		void TriangulateVCubes(std::vector<Triangle>& outTriangles) noexcept;
 
 		//Printing functions
 		bool PrintCubesToFile(const std::string& fPath);
@@ -333,6 +334,7 @@ namespace MIndices
 		vector<VoxelCube> vCubes;
 
 		inline bool CubeInOutSurface(const MCube& cube, int32_t& cubeindex) const noexcept;
+		inline bool CubeInOutSurface(const VoxelCube& cube, int32_t& cubeindex) const noexcept;
 		inline Triangle GenerateTriangle(const Point3D(&edges)[12], int32_t cubeIndx, int32_t edgeIndx) const noexcept;
 		inline Point3D FindEdgeMidPoint(const Point3D& p1, const Point3D& p2) const noexcept;
 	};

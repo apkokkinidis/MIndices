@@ -90,54 +90,54 @@ MIndices::MarchingCubes::MarchingCubes(std::unique_ptr<Array> voxels, size_t dim
 				VoxelCube vCube{ 0 };
 
 				// x	y	z	v1
-				vCube.v[0].p.x = static_cast<COORD_TYPE>(i);
-				vCube.v[0].p.y = static_cast<COORD_TYPE>(j);
-				vCube.v[0].p.z = static_cast<COORD_TYPE>(k);
+				vCube.vertex[0].point.x = static_cast<COORD_TYPE>(i);
+				vCube.vertex[0].point.y = static_cast<COORD_TYPE>(j);
+				vCube.vertex[0].point.z = static_cast<COORD_TYPE>(k);
 
 				// x + 1	y	z	v2
-				vCube.v[1].p.x = static_cast<COORD_TYPE>(i + 1);
-				vCube.v[1].p.y = static_cast<COORD_TYPE>(j);
-				vCube.v[1].p.z = static_cast<COORD_TYPE>(k);
+				vCube.vertex[1].point.x = static_cast<COORD_TYPE>(i + 1);
+				vCube.vertex[1].point.y = static_cast<COORD_TYPE>(j);
+				vCube.vertex[1].point.z = static_cast<COORD_TYPE>(k);
 
 				// x + 1	 y	z + 1	v3
-				vCube.v[2].p.x = static_cast<COORD_TYPE>(i + 1);
-				vCube.v[2].p.y = static_cast<COORD_TYPE>(j);
-				vCube.v[2].p.z = static_cast<COORD_TYPE>(k + 1);
+				vCube.vertex[2].point.x = static_cast<COORD_TYPE>(i + 1);
+				vCube.vertex[2].point.y = static_cast<COORD_TYPE>(j);
+				vCube.vertex[2].point.z = static_cast<COORD_TYPE>(k + 1);
 
 				// x	y 	z + 1	v4
-				vCube.v[3].p.x = static_cast<COORD_TYPE>(i);
-				vCube.v[3].p.y = static_cast<COORD_TYPE>(j);
-				vCube.v[3].p.z = static_cast<COORD_TYPE>(k + 1);
+				vCube.vertex[3].point.x = static_cast<COORD_TYPE>(i);
+				vCube.vertex[3].point.y = static_cast<COORD_TYPE>(j);
+				vCube.vertex[3].point.z = static_cast<COORD_TYPE>(k + 1);
 
 				// x	y + 1	z	v5
-				vCube.v[4].p.x = static_cast<COORD_TYPE>(i);
-				vCube.v[4].p.y = static_cast<COORD_TYPE>(j + 1);
-				vCube.v[4].p.z = static_cast<COORD_TYPE>(k);
+				vCube.vertex[4].point.x = static_cast<COORD_TYPE>(i);
+				vCube.vertex[4].point.y = static_cast<COORD_TYPE>(j + 1);
+				vCube.vertex[4].point.z = static_cast<COORD_TYPE>(k);
 
 				// x + 1	y + 1	z	v6
-				vCube.v[5].p.x = static_cast<COORD_TYPE>(i + 1);
-				vCube.v[5].p.y = static_cast<COORD_TYPE>(j + 1);
-				vCube.v[5].p.z = static_cast<COORD_TYPE>(k);
+				vCube.vertex[5].point.x = static_cast<COORD_TYPE>(i + 1);
+				vCube.vertex[5].point.y = static_cast<COORD_TYPE>(j + 1);
+				vCube.vertex[5].point.z = static_cast<COORD_TYPE>(k);
 
 				// x + 1	y + 1	z + 1	v7
-				vCube.v[6].p.x = static_cast<COORD_TYPE>(i + 1);
-				vCube.v[6].p.y = static_cast<COORD_TYPE>(j + 1);
-				vCube.v[6].p.z = static_cast<COORD_TYPE>(k + 1);
+				vCube.vertex[6].point.x = static_cast<COORD_TYPE>(i + 1);
+				vCube.vertex[6].point.y = static_cast<COORD_TYPE>(j + 1);
+				vCube.vertex[6].point.z = static_cast<COORD_TYPE>(k + 1);
 
 				// x	y + 1	z + 1	v8
-				vCube.v[7].p.x = static_cast<COORD_TYPE>(i);
-				vCube.v[7].p.y = static_cast<COORD_TYPE>(j + 1);
-				vCube.v[7].p.z = static_cast<COORD_TYPE>(k + 1);
+				vCube.vertex[7].point.x = static_cast<COORD_TYPE>(i);
+				vCube.vertex[7].point.y = static_cast<COORD_TYPE>(j + 1);
+				vCube.vertex[7].point.z = static_cast<COORD_TYPE>(k + 1);
 
 				//ToDo refactor the below assignments as I understand it is hard to read and maintain.
-				vCube.v[0].val = (bool)voxels->GetElementType((size_t)vCube.v[0].p.x - 1, (size_t)vCube.v[0].p.y - 1, (size_t)vCube.v[0].p.z - 1);
-				vCube.v[1].val = (bool)voxels->GetElementType((size_t)vCube.v[1].p.x - 1, (size_t)vCube.v[1].p.y - 1, (size_t)vCube.v[1].p.z - 1);
-				vCube.v[2].val = (bool)voxels->GetElementType((size_t)vCube.v[2].p.x - 1, (size_t)vCube.v[2].p.y - 1, (size_t)vCube.v[2].p.z - 1);
-				vCube.v[3].val = (bool)voxels->GetElementType((size_t)vCube.v[3].p.x - 1, (size_t)vCube.v[3].p.y - 1, (size_t)vCube.v[3].p.z - 1);
-				vCube.v[4].val = (bool)voxels->GetElementType((size_t)vCube.v[4].p.x - 1, (size_t)vCube.v[4].p.y - 1, (size_t)vCube.v[4].p.z - 1);
-				vCube.v[5].val = (bool)voxels->GetElementType((size_t)vCube.v[5].p.x - 1, (size_t)vCube.v[5].p.y - 1, (size_t)vCube.v[5].p.z - 1);
-				vCube.v[6].val = (bool)voxels->GetElementType((size_t)vCube.v[6].p.x - 1, (size_t)vCube.v[6].p.y - 1, (size_t)vCube.v[6].p.z - 1);
-				vCube.v[7].val = (bool)voxels->GetElementType((size_t)vCube.v[7].p.x - 1, (size_t)vCube.v[7].p.y - 1, (size_t)vCube.v[7].p.z - 1);
+				vCube.vertex[0].val = (bool)voxels->GetElementType((size_t)vCube.vertex[0].point.x - 1, (size_t)vCube.vertex[0].point.y - 1, (size_t)vCube.vertex[0].point.z - 1);
+				vCube.vertex[1].val = (bool)voxels->GetElementType((size_t)vCube.vertex[1].point.x - 1, (size_t)vCube.vertex[1].point.y - 1, (size_t)vCube.vertex[1].point.z - 1);
+				vCube.vertex[2].val = (bool)voxels->GetElementType((size_t)vCube.vertex[2].point.x - 1, (size_t)vCube.vertex[2].point.y - 1, (size_t)vCube.vertex[2].point.z - 1);
+				vCube.vertex[3].val = (bool)voxels->GetElementType((size_t)vCube.vertex[3].point.x - 1, (size_t)vCube.vertex[3].point.y - 1, (size_t)vCube.vertex[3].point.z - 1);
+				vCube.vertex[4].val = (bool)voxels->GetElementType((size_t)vCube.vertex[4].point.x - 1, (size_t)vCube.vertex[4].point.y - 1, (size_t)vCube.vertex[4].point.z - 1);
+				vCube.vertex[5].val = (bool)voxels->GetElementType((size_t)vCube.vertex[5].point.x - 1, (size_t)vCube.vertex[5].point.y - 1, (size_t)vCube.vertex[5].point.z - 1);
+				vCube.vertex[6].val = (bool)voxels->GetElementType((size_t)vCube.vertex[6].point.x - 1, (size_t)vCube.vertex[6].point.y - 1, (size_t)vCube.vertex[6].point.z - 1);
+				vCube.vertex[7].val = (bool)voxels->GetElementType((size_t)vCube.vertex[7].point.x - 1, (size_t)vCube.vertex[7].point.y - 1, (size_t)vCube.vertex[7].point.z - 1);
 
 				//assign cube to the cube vector
 				vCubes.push_back(vCube);
@@ -215,6 +215,73 @@ void MarchingCubes::TriangulateCubes(std::vector<Triangle>& outTriangles) noexce
 	outTriangles.shrink_to_fit();
 }
 
+void MIndices::MarchingCubes::TriangulateVCubes(std::vector<Triangle>& outTriangles) noexcept
+{
+	outTriangles.reserve(vCubes.size());
+	for (auto& cube : vCubes)
+	{
+		Point3D edges[12]{};
+		int32_t cubeindex;
+		if (!CubeInOutSurface(cube, cubeindex))
+		{
+			if (edgeTable[cubeindex] & 1)
+			{
+				edges[0] = FindEdgeMidPoint(cube.vertex[0].point, cube.vertex[0].point);
+			}
+			if (edgeTable[cubeindex] & 2)
+			{
+				edges[1] = FindEdgeMidPoint(cube.vertex[1].point, cube.vertex[2].point);
+			}
+			if (edgeTable[cubeindex] & 4)
+			{
+				edges[2] = FindEdgeMidPoint(cube.vertex[2].point, cube.vertex[3].point);
+			}
+			if (edgeTable[cubeindex] & 8)
+			{
+				edges[3] = FindEdgeMidPoint(cube.vertex[3].point, cube.vertex[0].point);
+			}
+			if (edgeTable[cubeindex] & 16)
+			{
+				edges[4] = FindEdgeMidPoint(cube.vertex[4].point, cube.vertex[5].point);
+			}
+			if (edgeTable[cubeindex] & 32)
+			{
+				edges[5] = FindEdgeMidPoint(cube.vertex[5].point, cube.vertex[6].point);
+			}
+			if (edgeTable[cubeindex] & 64)
+			{
+				edges[6] = FindEdgeMidPoint(cube.vertex[6].point, cube.vertex[7].point);
+			}
+			if (edgeTable[cubeindex] & 128)
+			{
+				edges[7] = FindEdgeMidPoint(cube.vertex[7].point, cube.vertex[4].point);
+			}
+			if (edgeTable[cubeindex] & 256)
+			{
+				edges[8] = FindEdgeMidPoint(cube.vertex[4].point, cube.vertex[0].point);
+			}
+			if (edgeTable[cubeindex] & 512)
+			{
+				edges[9] = FindEdgeMidPoint(cube.vertex[1].point, cube.vertex[5].point);
+			}
+			if (edgeTable[cubeindex] & 1024)
+			{
+				edges[10] = FindEdgeMidPoint(cube.vertex[2].point, cube.vertex[6].point);
+			}
+			if (edgeTable[cubeindex] & 2048)
+			{
+				edges[11] = FindEdgeMidPoint(cube.vertex[3].point, cube.vertex[7].point);
+			}
+			for (int32_t i = 0; triTable[cubeindex][i] != -1; i += 3)
+			{
+				Triangle triangle = GenerateTriangle(edges, cubeindex, i);
+				outTriangles.push_back(triangle);
+			}
+		}
+	}
+	outTriangles.shrink_to_fit();
+}
+
 /*
 	Determine if the cube is entirely in/out of the surface.
 	@param	a constant reference to an existing Cube.
@@ -231,6 +298,21 @@ inline bool MarchingCubes::CubeInOutSurface(const MCube& cube, int32_t& cubeinde
 	if (cube.val[5]) cubeindex |= 32;
 	if (cube.val[6]) cubeindex |= 64;
 	if (cube.val[7]) cubeindex |= 128;
+
+	return edgeTable[cubeindex] == 0;
+}
+
+inline bool MIndices::MarchingCubes::CubeInOutSurface(const VoxelCube& cube, int32_t& cubeindex) const noexcept
+{
+	cubeindex = 0;
+	if (cube.vertex[0].val) cubeindex |= 1;
+	if (cube.vertex[1].val) cubeindex |= 2;
+	if (cube.vertex[2].val) cubeindex |= 4;
+	if (cube.vertex[3].val) cubeindex |= 8;
+	if (cube.vertex[4].val) cubeindex |= 16;
+	if (cube.vertex[5].val) cubeindex |= 32;
+	if (cube.vertex[6].val) cubeindex |= 64;
+	if (cube.vertex[7].val) cubeindex |= 128;
 
 	return edgeTable[cubeindex] == 0;
 }
