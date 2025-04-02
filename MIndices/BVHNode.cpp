@@ -91,7 +91,7 @@ bool BVHNode::IsLeafNode() const
 	return (nullptr == left && nullptr == right);
 }
 
-BoundingBox3D BVHNode::Box() const noexcept
+const BoundingBox3D& BVHNode::Box() const noexcept
 {
 	return bbox;
 }
@@ -124,6 +124,11 @@ std::vector<TriangleEdge>::iterator BVHNode::GetEdgeBegin()
 std::vector<TriangleEdge>::iterator BVHNode::GetEdgeEnd()
 {
 	return edges.end();
+}
+
+std::span<const Triangle> MIndices::BVHNode::triangleSpan()
+{
+	return triangles;
 }
 
 size_t BVHNode::GetNumOfTriangles() const

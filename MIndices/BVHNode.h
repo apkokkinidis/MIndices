@@ -1,8 +1,7 @@
 //BVHNode.h
 #pragma once
-#ifndef _BVHNode
-#define _BVHNode
 #include "BoundingBox.h"
+#include <span>
 #include "Structures.h"
 #include <vector>
 
@@ -27,13 +26,14 @@ namespace MIndices
 		bool HasComputedEdges() const;
 
 		//Get functions
-		BoundingBox3D Box() const noexcept;
+		const BoundingBox3D& Box() const noexcept;
 		vector<Triangle> GetTriangles() const noexcept;
 		vector<TriangleEdge> GetEdges() const noexcept;
 		std::vector<Triangle>::iterator GetTriBegin();
 		std::vector<Triangle>::iterator GetTriEnd();
 		std::vector<TriangleEdge>::iterator GetEdgeBegin();
 		std::vector<TriangleEdge>::iterator GetEdgeEnd();
+		std::span<const Triangle> triangleSpan();
 
 		//Set functions
 		void SetBBox(const BoundingBox3D& newBBox);
@@ -50,4 +50,3 @@ namespace MIndices
 
 	};
 }
-#endif _BVHNode
