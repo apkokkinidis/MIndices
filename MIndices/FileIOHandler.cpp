@@ -9,7 +9,6 @@
 int FileIOHandler::readFile(const std::string& filename, MIndices::Array& voxelArray)
 {
 	size_t totalElemNum =0, elemNum = 0, i = 0, k = 0, j = 0;
-	//ToDo implement read for .txt files
 	std::ifstream file(filename);
 	if (!file)
 	{
@@ -45,14 +44,31 @@ int FileIOHandler::readFile(const std::string& filename, MIndices::Array& voxelA
 	return 0;
 }
 
-int FileIOHandler::exportToFile(std::string& filename, const MIndices::Array& voxelArray)
+int32_t FileIOHandler::exportToFile(const std::string& filename, const MIndices::Array& voxelArray)
 {
 	//ToDo implement export for .txt files
 	return 0;
 }
 
-int FileIOHandler::exportToFile(std::string& filename, const std::vector<MIndices::Triangle>& triArray)
+int32_t FileIOHandler::exportToFile(const std::string& filename, const std::vector<MIndices::Triangle>& triArray)
 {
 	//ToDo implement export for .txt files
+	return 0;
+}
+
+int32_t FileIOHandler::exportToFile(const std::string& filename, const std::vector<MIndices::AnglePair>& pairs)
+{
+	std::ostringstream buffer;
+	for (const auto& pair : pairs)
+	{
+		buffer << "Azimuth : " << pair.Azimuth() << " Elevation : " << pair.Elevation() << " Tabecular  Number : " << pair.TbTn() << " Tabecular Thickness : " << pair.TbTh() << std::endl;
+	}
+	std::ofstream file(filename, std::ios::app);	//use trunc to clear file contents
+	if (!file)
+	{
+		std::cerr << " Error while writing to file : " << filename << std::endl;
+		return 1;
+	}
+	file << buffer.str();
 	return 0;
 }
