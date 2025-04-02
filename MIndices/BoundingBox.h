@@ -296,7 +296,7 @@ namespace MIndices
 			return true;
 		}
 
-		inline bool RayBoxint32_tersect(const Ray& r) const noexcept
+		inline bool RayBoxintersect(const Ray& r) const noexcept
 		{
 			COORD_TYPE inv_dirX = 1 / r.GetDirection().x;
 			COORD_TYPE inv_dirY = 1 / r.GetDirection().y;

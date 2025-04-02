@@ -471,8 +471,8 @@ void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outpoi
 	{
 		return;
 	}
-	//check for a given ray if it int32_tersects the bounding volume
-	if (node->Box().RayBoxint32_tersect(r))
+	//check for a given ray if it intersects the bounding volume
+	if (node->Box().RayBoxintersect(r))
 	{
 		if (node->IsLeafNode())
 		{
@@ -500,7 +500,8 @@ void BVHTree::RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>
 		return;
 	}
 	//check for a given ray if it int32_tersects
-	if (node->Box().RayBoxint32_tersect(r))
+	//check for a given ray if it intersects
+	if (node->Box().RayBoxintersect(r))
 	{
 		if (node->IsLeafNode())
 		{
