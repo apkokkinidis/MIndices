@@ -55,9 +55,12 @@ void MIndice::PrintVoxels(std::string& filename)
 	}
 }
 
-void MIndices::MIndice::printPairs(std::string& filename)
+void MIndices::MIndice::printPairs(const std::string& filename) const
 {
-	fileIOHandler.exportToFile(filename, pairs);
+	if (!pairs.empty())
+	{
+		fileIOHandler.exportToFile(filename, pairs);
+	}
 }
 
 int32_t MIndices::MIndice::ComputeIndice()

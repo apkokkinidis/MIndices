@@ -32,7 +32,7 @@ namespace MIndices
 		void InitRayGrid();
 
 		void PrintVoxels(std::string& filename);
-		void printPairs(std::string& filename);
+		void printPairs(const std::string& filename) const;
 		int32_t ComputeIndice();
 		void TriangulateArray();
 		BVHTree* GetBVHRoot() { return bvh; }
