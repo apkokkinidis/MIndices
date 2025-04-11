@@ -6,7 +6,7 @@
 #include <chrono>
 
 //custom headers
-#include "Array.h"
+#include "Vector3D.h"
 #include "Array3D.h"
 #include "MarchingCubes.h"
 #include "Ray.h"
@@ -39,7 +39,7 @@ namespace MIndices
 	private:
 
 		int32_t RayTraceBVHNodes(std::vector<VecPoint3D>& outPoints);
-		std::unique_ptr<Array> arr;
+		std::unique_ptr<Vector3D> arr;
 		std::vector<Triangle> triArr;
 		std::vector<AnglePair> pairs;
 		IFileIOHandler& fileIOHandler;

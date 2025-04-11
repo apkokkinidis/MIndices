@@ -5,7 +5,7 @@ using namespace MIndices;
 
 MIndice::MIndice(size_t dim_x, size_t dim_y, size_t dim_z, IFileIOHandler& fileIOHandler) : dim_x(dim_x), dim_y(dim_y), dim_z(dim_z), fileIOHandler(fileIOHandler)
 {
-	arr = std::make_unique<Array>(dim_x, dim_y, dim_z);
+	arr = std::make_unique<Vector3D>(dim_x, dim_y, dim_z);
 	mCubes = nullptr;
 	bvh = nullptr;
 	rayGrid = nullptr;

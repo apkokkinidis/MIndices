@@ -6,7 +6,7 @@
 #include <iostream>
 #include "Structures.h"
 
-int FileIOHandler::readFile(const std::string& filename, MIndices::Array& voxelArray)
+int FileIOHandler::readFile(const std::string& filename, MIndices::Vector3D& voxelArray)
 {
 	size_t totalElemNum =0, elemNum = 0, i = 0, k = 0, j = 0;
 	std::ifstream file(filename);
@@ -44,7 +44,7 @@ int FileIOHandler::readFile(const std::string& filename, MIndices::Array& voxelA
 	return 0;
 }
 
-int32_t FileIOHandler::exportToFile(const std::string& filename, const MIndices::Array& voxelArray)
+int32_t FileIOHandler::exportToFile(const std::string& filename, const MIndices::Vector3D& voxelArray)
 {
 	//ToDo implement export for .txt files
 	return 0;
