@@ -45,9 +45,9 @@ namespace MIndices
 
 		//traversal functions
 		void RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outpoints) const noexcept;
-		void RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>& outpoints, vector<double>& outT) const noexcept;
+		void RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>& outpoints, vector<double>& outT) const noexcept;	//ToDO unused method
 		void DFSTraverse(BVHNode* node, int32_t& visitedNodes, int32_t& visitedLeafs) const noexcept;
-		void PrecomputeEdges(BVHNode* node, int32_t& out);
+		void PrecomputeEdges(BVHNode* node, int32_t& out);	//ToDO unused method
 
 		//Partitions a vector of triangles into 2 sets
 		size_t PartitionSet(const vector<Triangle>& triangles, vector<Triangle>& S1, vector<Triangle>& S2) const;

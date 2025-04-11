@@ -477,11 +477,11 @@ void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outpoi
 		if (node->IsLeafNode())
 		{
 			//check ray triangle intersection
-			for (auto it = node->GetTriBegin(); it != node->GetTriEnd(); ++it)
+			for (const auto &triangle : node->triangleSpan())
 			{
 				Point3D tmp_Point;
 				double tmp_t;
-				if (r.FastRayTriangleIntersection(*it, tmp_Point, tmp_t))
+				if (r.FastRayTriangleIntersection(triangle, tmp_Point, tmp_t))
 				{
 					outpoints.push_back(tmp_Point);
 				}
@@ -499,7 +499,6 @@ void BVHTree::RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>
 	{
 		return;
 	}
-	//check for a given ray if it int32_tersects
 	//check for a given ray if it intersects
 	if (node->Box().RayBoxintersect(r))
 	{
