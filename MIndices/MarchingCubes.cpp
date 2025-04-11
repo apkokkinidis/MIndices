@@ -78,7 +78,7 @@ MarchingCubes::MarchingCubes(Array3D* voxels, int32_t DimX, int32_t DimY, int32_
 	cubes.shrink_to_fit();
 }
 
-MIndices::MarchingCubes::MarchingCubes(std::unique_ptr<Array> voxels, size_t dim_x, size_t dim_y, size_t dim_z)
+MarchingCubes::MarchingCubes(std::unique_ptr<Vector3D>, size_t dim_x, size_t dim_y, size_t dim_z)
 {
 	vCubes.reserve((dim_x - 1) * (dim_y - 1) * (dim_z - 1));
 	for (int32_t k = 1; k < dim_z; ++k)
