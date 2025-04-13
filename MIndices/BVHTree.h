@@ -1,8 +1,7 @@
 // Author Kokkinidis Anastasios
 //BVHTree.h
 #pragma once
-#ifndef _BVHTree
-#define _BVHTree
+
 #include "BoundingBox.h"
 #include "Structures.h"
 #include "BVHNode.h"
@@ -15,7 +14,7 @@ using std::vector;
 
 namespace MIndices
 {
-	constexpr uint32_t MAX_TRIANGLES_PER_LEAF = 4;
+	constexpr uint32_t MAX_TRIANGLES_PER_LEAF = 1;
 
 	class BVHTree
 	{
@@ -27,7 +26,6 @@ namespace MIndices
 		//Top-down build methods using standard recursion
 		void TopDownBuildObjectMedian(vector<Triangle>& triangles) noexcept;
 		void TopDowwBuildObjectMedian_Parralel(vector<Triangle>& triangles) noexcept;
-		void TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle>& triangles) noexcept;
 
 		//Bottom-up build methods
 		void BottomUpBuild(vector<Triangle>& triangles) noexcept;	//ToDo implementation missing
@@ -49,14 +47,20 @@ namespace MIndices
 		void DFSTraverse(BVHNode* node, int32_t& visitedNodes, int32_t& visitedLeafs) const noexcept;
 		void PrecomputeEdges(BVHNode* node, int32_t& out);	//ToDO unused method
 
-		//Partitions a vector of triangles into 2 sets
-		size_t PartitionSet(const vector<Triangle>& triangles, vector<Triangle>& S1, vector<Triangle>& S2) const;
 
 		//Returns a Pointer to the root of the tree
 		BVHNode* GetRoot();
+		void SetRoot(BVHNode* node);
 
 	private:
 		BVHNode* root;
+
+		//Hierarchy construction functions
+		//Top-down build methods using standard recursion
+		void TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle>& triangles) noexcept;
+
+		//Partitions a vector of triangles into 2 sets
+		size_t PartitionSet(const vector<Triangle>& triangles, vector<Triangle>& S1, vector<Triangle>& S2) const;
 
 		//sorting functions
 		void QuickSortTri(vector<Triangle>& tri, int32_t lo, int32_t hi, Axis axis) noexcept;
@@ -74,4 +78,3 @@ namespace MIndices
 		void DeleteTree(BVHNode** node);
 	};
 }
-#endif _BVHTree

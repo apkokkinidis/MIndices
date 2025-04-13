@@ -1,6 +1,7 @@
 // Author Kokkinidis Anastasios
 //BVHTree.cpp
 #include <stdint.h>
+#include <algorithm>
 #include "BVHTree.h"
 
 using namespace MIndices;
@@ -18,6 +19,14 @@ BVHTree::~BVHTree()
 BVHNode* BVHTree::GetRoot()
 {
 	return root;
+}
+
+void MIndices::BVHTree::SetRoot(BVHNode* node)
+{
+	if (node)
+	{
+		root = node;
+	}
 }
 
 void BVHTree::DeleteTree(BVHNode** tree)
@@ -45,7 +54,6 @@ bool BVHTree::TreeIsEmpty() const noexcept
 
 BoundingBox3D BVHTree::ComputeBounds(const Triangle& triangle) const
 {
-	BoundingBox3D* bbox = NULL;
 	Point3D minPoint3D, maxPoint3D;
 	minPoint3D = triangle.p[0];
 	maxPoint3D = triangle.p[0];
@@ -79,61 +87,46 @@ BoundingBox3D BVHTree::ComputeBounds(const Triangle& triangle) const
 			maxPoint3D.z = triangle.p[i].z;
 		}
 	}
-	bbox = new BoundingBox3D((size_t)minPoint3D.x,
-		(size_t)minPoint3D.y,
-		(size_t)minPoint3D.z,
-		(size_t)maxPoint3D.x,
-		(size_t)maxPoint3D.y,
-		(size_t)maxPoint3D.z);
-	return *bbox;
+	return BoundingBox3D(
+		static_cast<size_t>(minPoint3D.x),
+		static_cast<size_t>(minPoint3D.y),
+		static_cast<size_t>(minPoint3D.z),
+		static_cast<size_t>(maxPoint3D.x),
+		static_cast<size_t>(maxPoint3D.y),
+		static_cast<size_t>(maxPoint3D.z));
 }
 
 BoundingBox3D BVHTree::ComputeBounds(const vector<Triangle>& triangles) const
 {
 	assert(triangles.size() > 0);
-	BoundingBox3D* bbox = NULL;
-	Point3D mint32_triPoint, maxTriPoint;
-	mint32_triPoint = triangles[0].p[0];
+	Point3D minTriPoint, maxTriPoint;
+	minTriPoint = triangles[0].p[0];
 	maxTriPoint = triangles[0].p[0];
-	for (size_t i = 0; i < triangles.size() - 1; i++)
+
+	const int32_t TriLength = 3;
+
+	for (const auto& triangle : triangles)
 	{
-		for (size_t j = 1; j <= 2; j++)
+		for (int32_t i = 0; i < TriLength; ++i)
 		{
 			//find min
-			if (triangles[i].p[j].x < mint32_triPoint.x)
-			{
-				mint32_triPoint.x = triangles[i].p[j].x;
-			}
-			if (triangles[i].p[j].y < mint32_triPoint.y)
-			{
-				mint32_triPoint.y = triangles[i].p[j].y;
-			}
-			if (triangles[i].p[j].z < mint32_triPoint.z)
-			{
-				mint32_triPoint.z = triangles[i].p[j].z;
-			}
+			minTriPoint.x = std::min(minTriPoint.x, triangle.p[i].x);
+			minTriPoint.y = std::min(minTriPoint.y, triangle.p[i].y);
+			minTriPoint.z = std::min(minTriPoint.z, triangle.p[i].z);
 			//find max
-			if (triangles[i].p[j].x > maxTriPoint.x)
-			{
-				maxTriPoint.x = triangles[i].p[j].x;
-			}
-			if (triangles[i].p[j].y > maxTriPoint.y)
-			{
-				maxTriPoint.y = triangles[i].p[j].y;
-			}
-			if (triangles[i].p[j].z > maxTriPoint.z)
-			{
-				maxTriPoint.z = triangles[i].p[j].z;
-			}
+			maxTriPoint.x = std::max(maxTriPoint.x, triangle.p[i].x);
+			maxTriPoint.y = std::max(maxTriPoint.y, triangle.p[i].y);
+			maxTriPoint.z = std::max(maxTriPoint.z, triangle.p[i].z);
 		}
 	}
-	bbox = new BoundingBox3D((size_t)mint32_triPoint.x,
-		(size_t)mint32_triPoint.y,
-		(size_t)mint32_triPoint.z,
-		(size_t)maxTriPoint.x,
-		(size_t)maxTriPoint.y,
-		(size_t)maxTriPoint.z);
-	return *bbox;
+
+	return BoundingBox3D(
+		static_cast<size_t>(minTriPoint.x),
+		static_cast<size_t>(minTriPoint.y),
+		static_cast<size_t>(minTriPoint.z),
+		static_cast<size_t>(maxTriPoint.x),
+		static_cast<size_t>(maxTriPoint.y),
+		static_cast<size_t>(maxTriPoint.z));
 }
 
 void BVHTree::TopDownBuildObjectMedian(vector<Triangle>& triangles) noexcept
@@ -477,7 +470,7 @@ void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outpoi
 		if (node->IsLeafNode())
 		{
 			//check ray triangle intersection
-			for (const auto &triangle : node->triangleSpan())
+			for (const auto& triangle : node->triangleSpan())
 			{
 				Point3D tmp_Point;
 				double tmp_t;
