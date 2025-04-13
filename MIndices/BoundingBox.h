@@ -32,12 +32,14 @@ namespace MIndices
 		inline BoundingBox2D()
 			: x1(0), y1(0), x2(0), y2(0)
 
-		{}	// Default constructor
+		{
+		}	// Default constructor
 
 		inline BoundingBox2D(const COORD_TYPE_BB _x1, const COORD_TYPE_BB _y1,
 			const COORD_TYPE_BB _x2, const COORD_TYPE_BB _y2) noexcept
 			: x1(min(_x1, _x2)), y1(min(_y1, _y2)), x2(max(_x1, _x2)), y2(max(_y1, _y2))
-		{}	// Constructor
+		{
+		}	// Constructor
 
 		inline BoundingBox2D(const size_t _x1, const size_t _y1,
 			const size_t _x2, const size_t _y2) noexcept
@@ -147,13 +149,15 @@ namespace MIndices
 	public:
 		inline BoundingBox3D()
 			: x1(0), y1(0), z1(0), x2(0), y2(0), z2(0)
-		{}	// Default constructor
+		{
+		}	// Default constructor
 
 		inline BoundingBox3D(const COORD_TYPE_BB _x1, const COORD_TYPE_BB _y1, const COORD_TYPE_BB _z1,
 			const COORD_TYPE_BB _x2, const COORD_TYPE_BB _y2, const COORD_TYPE_BB _z2) noexcept
 			: x1(min(_x1, _x2)), y1(min(_y1, _y2)), z1(min(_z1, _z2)),
 			x2(max(_x1, _x2)), y2(max(_y1, _y2)), z2(max(_z1, _z2))
-		{}	// Constructor
+		{
+		}	// Constructor
 
 		inline BoundingBox3D(const size_t _x1, const size_t _y1, const size_t _z1,
 			const size_t _x2, const size_t _y2, const size_t _z2) noexcept
@@ -192,6 +196,13 @@ namespace MIndices
 				z2 = AABB.z2;
 			}	// if
 		}	// Copy constructor
+
+		bool operator==(const BoundingBox3D& other)
+		{
+			return this->x1 == other.x1 && this->x2 == other.x2 &&
+				this->y1 == other.y1 && this->y2 == other.y2 && 
+				this->z1 == other.z1 && this->z2 == other.z2;
+		}
 
 		inline ~BoundingBox3D() noexcept
 		{
