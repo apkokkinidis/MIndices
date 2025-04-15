@@ -20,7 +20,7 @@ void MIndice::Init(const std::string& filename)
 //@deleteArr provides option to deallocate memory used for the binary voxel array
 void MIndices::MIndice::InitMCubes(bool deleteArr)
 {
-	mCubes = new MarchingCubes(std::move(arr), dim_x, dim_y, dim_z);
+	mCubes = std::make_unique<MarchingCubes>(std::move(arr), dim_x, dim_y, dim_z);
 	mCubes->TriangulateVCubes(triArr);
 	if (deleteArr)
 	{
@@ -30,7 +30,7 @@ void MIndices::MIndice::InitMCubes(bool deleteArr)
 
 void MIndices::MIndice::InitBVH()
 {
-	bvh = new BVHTree();
+	bvh = std::make_unique<BVHTree>();
 	bvh->TopDownBuildObjectMedian(triArr);
 	if (bvh->TreeIsEmpty())
 		std::cerr << "Failed to build BVH." << std::endl;
@@ -44,7 +44,7 @@ void MIndices::MIndice::InitBVH()
 
 void MIndices::MIndice::InitRayGrid()
 {
-	rayGrid = new RayGrid(dim_x, dim_y, bvh->GetRoot()->Box().Diagonal());
+	rayGrid = std::make_unique<RayGrid>(dim_x, dim_y, bvh->GetRoot()->Box().Diagonal());
 }
 
 void MIndice::PrintVoxels(std::string& filename)
@@ -71,6 +71,7 @@ int32_t MIndices::MIndice::ComputeIndice()
 
 	for (int32_t e = 0; e < ELEVATION; ++e)
 	{
+		std::chrono::high_resolution_clock::time_point start_f = std::chrono::high_resolution_clock::now();
 		for (int32_t a = 0; a < AZIMUTH; ++a)
 		{
 			std::vector<VecPoint3D> points;
@@ -83,28 +84,23 @@ int32_t MIndices::MIndice::ComputeIndice()
 			rayGrid->RotateRays(DEGREE, Axis::X);
 		}
 		rayGrid->RotateRays(DEGREE, Axis::Z);
+		std::chrono::high_resolution_clock::time_point stop_f = std::chrono::high_resolution_clock::now();
+		std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(stop_f - start_f);
+		std::cout << "Cycle " << e + 1 << " from: " << ELEVATION << " duration: " << dur.count() << " sec" << std::endl;
 	}
 	return 0;
 }
 
-void MIndice::TriangulateArray()
-{
-	if (mCubes != nullptr)
-	{
-		mCubes->TriangulateCubes(triArr);
-	}
-}
-
-int32_t MIndices::MIndice::RayTraceBVHNodes(std::vector<VecPoint3D> &outPoints)
+int32_t MIndices::MIndice::RayTraceBVHNodes(std::vector<VecPoint3D>& outPoints)
 {
 	if (rayGrid->empty()) { return 1; }
 
 	if (bvh->TreeIsEmpty()) { return 2; }
 
 	BVHNode* root = bvh->GetRoot();
-	VecPoint3D points;
-	for (const auto &ray : rayGrid->getRaySpan())
+	for (const auto& ray : rayGrid->getRaySpan())
 	{
+		VecPoint3D points;
 		bvh->RayTraceNodes(root, ray, points);
 		if (!points.empty() && points.size() % 2 == 0)
 		{

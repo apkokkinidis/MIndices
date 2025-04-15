@@ -34,8 +34,6 @@ namespace MIndices
 		void PrintVoxels(std::string& filename);
 		void printPairs(const std::string& filename) const;
 		int32_t ComputeIndice();
-		void TriangulateArray();
-		BVHTree* GetBVHRoot() { return bvh; }
 	private:
 
 		int32_t RayTraceBVHNodes(std::vector<VecPoint3D>& outPoints);
@@ -43,9 +41,9 @@ namespace MIndices
 		std::vector<Triangle> triArr;
 		std::vector<AnglePair> pairs;
 		IFileIOHandler& fileIOHandler;
-		MarchingCubes* mCubes;
-		BVHTree* bvh;
-		RayGrid* rayGrid;
+		std::unique_ptr<MarchingCubes> mCubes;
+		std::unique_ptr<RayGrid> rayGrid;
+		std::unique_ptr<BVHTree> bvh;
 		size_t dim_x, dim_y, dim_z;
 	};
 
