@@ -332,12 +332,9 @@ inline Triangle MarchingCubes::GenerateTriangle(const Point3D(&edges)[12], int32
 //Finds the midPoint of the given edge
 inline Point3D MarchingCubes::FindEdgeMidPoint(const Point3D& p1, const Point3D& p2) const noexcept
 {
-	Point3D midPoint{ 0 };
-	midPoint.x = (p1.x + p2.x) * 0.5f;
-	midPoint.y = (p1.y + p2.y) * 0.5f;
-	midPoint.z = (p1.z + p2.z) * 0.5f;
-
-	return midPoint;
+	return { (p1.x + p2.x) * static_cast<COORD_TYPE>(0.5),
+		(p1.y + p2.y) * static_cast<COORD_TYPE>(0.5),
+		(p1.z + p2.z) * static_cast<COORD_TYPE>(0.5) };
 }
 
 //Prints triangles to a file
