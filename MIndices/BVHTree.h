@@ -75,6 +75,5 @@ namespace MIndices
 
 		//memory functions
 		void DeleteSubTree(BVHNode* node);
-		void DeleteTree(BVHNode** node);
 	};
 }

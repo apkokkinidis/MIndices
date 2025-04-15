@@ -13,7 +13,8 @@ BVHTree::BVHTree()
 
 BVHTree::~BVHTree()
 {
-	DeleteTree(&root);
+	DeleteSubTree(root);
+	root = nullptr;
 }
 
 BVHNode* BVHTree::GetRoot()
@@ -28,13 +29,6 @@ void MIndices::BVHTree::SetRoot(BVHNode* node)
 		root = node;
 	}
 }
-
-void BVHTree::DeleteTree(BVHNode** tree)
-{
-	DeleteSubTree(*tree);
-	*tree = nullptr;
-}
-
 
 void BVHTree::DeleteSubTree(BVHNode* node)
 {
