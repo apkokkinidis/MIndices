@@ -1,4 +1,5 @@
 ﻿#include "Vector3D.h"
+#include <stdexcept>
 
 using namespace MIndices;
 
@@ -24,5 +25,9 @@ ElementTypes MIndices::Vector3D::GetElementType(size_t indx) const noexcept
 
 ElementTypes MIndices::Vector3D::GetElementType(size_t dim_x, size_t dim_y, size_t dim_z) const noexcept
 {
+	if (dim_x > this->dim_x || dim_y > this->dim_y || dim_z > this->dim_z)
+	{
+		throw std::out_of_range("Voxel array index is out of bounds.");
+	}
 	return voxelArray[GetIndex(dim_x, dim_y, dim_z)];
 }
