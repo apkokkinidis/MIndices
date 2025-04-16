@@ -1,5 +1,6 @@
 {
   "dependencies": [
-    "boost-config"
+    "boost-config",
+    "boost-program-options"
   ]
 }
