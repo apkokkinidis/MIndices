@@ -46,6 +46,13 @@ namespace MIndices
 			Point3D p = { x, y, z };
 			return p;
 		}
+
+		bool operator==(const Point3D& other) const
+		{
+			return this->x == other.x &&
+				this->y == other.y &&
+				this->z == other.z;
+		}
 	}Point3D;
 
 	typedef struct PointT
@@ -54,14 +61,21 @@ namespace MIndices
 		double t;
 	}PointT;
 
-	typedef struct {
+	typedef struct Edge3D {
 		Point3D p1;
 		Point3D p2;
 	}Edge3D;
 
-	typedef struct
+	typedef struct Triangle
 	{
 		Point3D p[3];
+
+		bool operator==(const Triangle& other) const
+		{
+			return this->p[0] == other.p[0] &&
+				this->p[1] == other.p[1] &&
+				this->p[2] == other.p[2];
+		}
 	} Triangle;
 
 	typedef struct MCube
