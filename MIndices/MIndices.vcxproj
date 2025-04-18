@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnglePair.cpp" />
+    <ClCompile Include="CmdParser.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="BVHNode.cpp" />
     <ClCompile Include="BVHTree.cpp" />
@@ -32,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnglePair.h" />
+    <ClInclude Include="CmdParser.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Array3D.h" />
     <ClInclude Include="BoundingBox.h" />

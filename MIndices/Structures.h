@@ -8,6 +8,19 @@ namespace MIndices
 
 	typedef double COORD_TYPE;
 
+	enum class ParallelThreads
+	{
+		off,			// 0 - off
+		enabled_auto,	// 1 - enabled auto
+		enabled_2,		// 2 - enabled 2 threads
+		enabled_4,		// 3 - enabled 4 threads
+		enabled_6,		// 4 - enabled 6 threads
+		enabled_8,		// 5 - enabled 8 threads
+		enabled_10,		// 6 - enabled 10 threads
+		enabled_12,		// 7 - enabled 12 threads
+		count			// 8 - keep count of enums
+	};
+
 	enum class Axis { X, Y, Z };
 
 	enum class ElementTypes : uint8_t
