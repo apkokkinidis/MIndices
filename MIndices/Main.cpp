@@ -18,6 +18,7 @@
 #include "Ray.h"
 #include "BVHTree.h"
 #include "AnglePair.h"
+#include "CmdParser.h"
 
 using std::vector;
 using namespace MIndices;
@@ -45,28 +46,29 @@ int32_t main(int32_t argc, char* argv[])
 		return -1;
 	}
 
-	size_t DimX;
-	size_t DimY;
-	size_t DimZ;
-	std::string filename;
-	for (int32_t i = 1; i < argc; i++)
+	CMDParser::CmdParser parser;
+	if (!parser.ParseArguements(argc, argv))
 	{
-		filename.append(argv[i]);
+		return -1;
 	}
-	std::cout << "Input file dimensions" << std::endl << "X: ";
-	std::cin >> DimX;
-	std::cout << "Y: ";
-	std::cin >> DimY;
-	std::cout << "Z: ";
-	std::cin >> DimZ;
+
+	size_t DimX, DimY, DimZ;
+	std::cout << "Enter the file dimensions." << std::endl;
+	DimX = parser.ParseInput<int32_t>(" X : ");
+	DimY = parser.ParseInput<int32_t>(" Y : ");
+	DimZ = parser.ParseInput<int32_t>(" Z : ");
+
+	std::string fileName = parser.Filename();
+	auto indx = fileName.find_last_of('\\');
+	const std::string file2 = fileName.substr(indx + 1, fileName.length() - 3).append("_Pairs-New.txt");
 	Array3D* array3D = new Array3D(DimX, DimY, DimZ);
-	if (array3D->LoadFromFile(filename.c_str()))
+	if (array3D->LoadFromFile(fileName.c_str()))
 	{
-		std::cout << "Loaded file " << filename.c_str() << std::endl;
+		std::cout << "Loaded file " << fileName.c_str() << std::endl;
 	}
 	else
 	{
-		std::cout << "Failed to load file " << filename.c_str() << std::endl;
+		std::cout << "Failed to load file " << fileName.c_str() << std::endl;
 		return -1;
 	}
 	DimX = array3D->GetDimX();
@@ -112,7 +114,6 @@ int32_t main(int32_t argc, char* argv[])
 
 	//RayTraceVolume
 	vector<AnglePair> pairs;
-	vector<double> t;
 
 	int32_t res = 0;
 	std::cout << "Ray tracing volume." << std::endl;
@@ -131,21 +132,21 @@ int32_t main(int32_t argc, char* argv[])
 	std::cout << "Total time : " << durMinutes << " minutes" << std::endl;
 	delete bvh;
 
-	//print32_t results into file
+	//print results into file
 	if (res == 1)
 	{
 		if (parallel_flag)
 		{
 			//sort angle pairs
 			std::sort(pairs.begin(), pairs.end(), AnglePair::SortPairs);
-			auto indx = filename.find_last_of('\\');
-			std::string file = filename.substr(indx + 1, filename.length() - 3).append("NT_").append(std::to_string(NUM_OF_THREADS_X_16)).append("_Pairs_Parallel.txt");
+			auto indx = fileName.find_last_of('\\');
+			std::string file = fileName.substr(indx + 1, fileName.length() - 3).append("NT_").append(std::to_string(NUM_OF_THREADS_X_16)).append("_Pairs_Parallel.txt");
 			int32_t r = PrintPairs(file, pairs, durMinutes);
 		}
 		else
 		{
-			auto indx = filename.find_last_of('\\');
-			std::string file = filename.substr(indx + 1, filename.length() - 3).append("_Pairs.txt");
+			auto indx = fileName.find_last_of('\\');
+			std::string file = fileName.substr(indx + 1, fileName.length() - 3).append("_Pairs.txt");
 			int32_t r = PrintPairs(file, pairs, durMinutes);
 		}
 	}
@@ -170,12 +171,12 @@ int32_t ComputeIndices(BVHTree* bvh, vector<Ray>& rays, vector<AnglePair>& pairs
 	BVHNode* root = bvh->GetRoot();
 	if (rays.empty())
 	{
-		//print32_t error and exit early
+		//print error and exit early
 		std::cerr << "The ray vector is empty." << std::endl;
 		return -1;
 	}
 	pairs.reserve(90 * 180);
-	//Test rays for any int32_tersections with the structure, then rotate them 
+	//Test rays for any intersections with the structure, then rotate them 
 	for (int32_t e = 0; e < 90; e++)
 	{
 		std::chrono::high_resolution_clock::time_point start_f = std::chrono::high_resolution_clock::now();
@@ -214,7 +215,7 @@ int32_t ComputeIndices(BVHTree* bvh, vector<Ray>& rays, vector<AnglePair>& pairs
 
 int32_t ComputeIndicesParallel(BVHTree* bvh, vector<Ray>& r, vector<AnglePair>& pairs)
 {
-	//Test rays for int32_tersections then rotate them 
+	//Test rays for intersections then rotate them 
 	for (int32_t e = 0; e < 90; e++)
 	{
 		std::chrono::high_resolution_clock::time_point start_f = std::chrono::high_resolution_clock::now();
