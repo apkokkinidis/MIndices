@@ -27,7 +27,7 @@ namespace MIndices
 		~MIndice() = default;
 
 		void Init(const std::string& filename);
-		void InitMCubes(bool deleteArr);
+		void InitMCubes(bool deleteArr = false);
 		void InitBVH();
 		void InitRayGrid();
 

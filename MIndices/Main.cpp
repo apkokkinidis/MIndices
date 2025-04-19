@@ -17,6 +17,8 @@
 #include "MarchingCubes.h"
 #include "Ray.h"
 #include "BVHTree.h"
+#include "MIndice.h"
+#include "FileIOHandler.h"
 #include "AnglePair.h"
 #include "CmdParser.h"
 
@@ -28,10 +30,10 @@ constexpr uint32_t NUM_OF_THREADS_X_16 = 16;
 constexpr uint32_t NUM_OF_THREADS_X_8 = 8;
 constexpr uint32_t NUM_OF_THREADS_X_4 = 4;
 constexpr uint32_t NUM_OF_THREADS_X_2 = 2;
-bool parallel_flag = true;
+bool parallel_flag = false;
 bool has_precomputed_edges = false;
 
-//Forward declarations
+//Indice computation functions
 int32_t ComputeIndices(BVHTree* bvh, vector<Ray>& r, vector<AnglePair>& pairs);
 int32_t ComputeIndicesParallel(BVHTree* bvh, vector<Ray>& r, vector<AnglePair>& pairs);
 
@@ -58,98 +60,19 @@ int32_t main(int32_t argc, char* argv[])
 	DimY = parser.ParseInput<int32_t>(" Y : ");
 	DimZ = parser.ParseInput<int32_t>(" Z : ");
 
-	std::string fileName = parser.Filename();
-	auto indx = fileName.find_last_of('\\');
-	const std::string file2 = fileName.substr(indx + 1, fileName.length() - 3).append("_Pairs-New.txt");
-	Array3D* array3D = new Array3D(DimX, DimY, DimZ);
-	if (array3D->LoadFromFile(fileName.c_str()))
-	{
-		std::cout << "Loaded file " << fileName.c_str() << std::endl;
-	}
-	else
-	{
-		std::cout << "Failed to load file " << fileName.c_str() << std::endl;
-		return -1;
-	}
-	DimX = array3D->GetDimX();
-	DimY = array3D->GetDimY();
-	DimZ = array3D->GetDimZ();
+	std::string filename = parser.Filename();
+	auto indx = filename.find_last_of('\\');
+	const std::string outFilename = filename.substr(indx + 1, filename.length() - 3).append("_Pairs-New.txt");
 
-	/*----------------Marching Cubes-------------------*/
-	MarchingCubes cubes(array3D, static_cast<int32_t>(DimX), static_cast<int32_t>(DimY), static_cast<int32_t>(DimZ));
-	delete array3D;
+	FileIOHandler fileHandler;
+	std::unique_ptr<MIndice> indices = std::make_unique<MIndice>(DimX, DimY, DimZ, fileHandler);
+	indices->Init(filename);
+	indices->InitMCubes();
+	indices->InitBVH();
+	indices->InitRayGrid();
+	indices->ComputeIndice();
+	indices->printPairs(outFilename);
 
-	vector<Triangle> vecTriang;
-	std::cout << "Running MC algorithm." << std::endl;
-	cubes.TriangulateCubes(vecTriang);
-	cubes.SaveToFile(vecTriang, "Triangles.txt");
-	std::cout << "MC finished, resulting triangles number = " << vecTriang.size() << std::endl;
-
-	/*----------------Bounding Volume Hierarchy construction-------------------*/
-	std::cout << "Building Bounding Volume Hierarchy" << std::endl;
-	std::chrono::high_resolution_clock::time_point start_f_bvh = std::chrono::high_resolution_clock::now();
-	BVHTree* bvh = new BVHTree();
-	bvh->TopDownBuildObjectMedian(vecTriang);
-	vecTriang.clear();
-	if (bvh->TreeIsEmpty())
-	{
-		std::cerr << "Failed to build BVH." << std::endl;
-		return -1;
-	}
-	std::chrono::high_resolution_clock::time_point stop_f_bvh = std::chrono::high_resolution_clock::now();
-	std::chrono::milliseconds dur_f_bvh = std::chrono::duration_cast<std::chrono::milliseconds>(stop_f_bvh - start_f_bvh);
-	std::cout << "Hierarchy construction finished. Time : " << dur_f_bvh.count() << " milliseconds." << std::endl;
-
-	BVHNode* tree = bvh->GetRoot();
-	int32_t treeDepth = bvh->FindDepth(tree);
-	int32_t numNodes = 0;
-	int32_t numLeaves = 0;
-	bvh->DFSTraverse(tree, numNodes, numLeaves);
-	std::cout << "Tree depth : " << treeDepth << " No.Nodes : " << numNodes << " No.Leaves : " << numLeaves << std::endl;
-
-	/*----------------Ray Generation -------------------*/
-	size_t diagonal = tree->Box().Diagonal();
-	RayGenerator rayGenerator(DimX, DimY, diagonal);
-	vector<Ray> r = rayGenerator.Rays();
-
-	//RayTraceVolume
-	vector<AnglePair> pairs;
-
-	int32_t res = 0;
-	std::cout << "Ray tracing volume." << std::endl;
-	std::chrono::high_resolution_clock::time_point start_f = std::chrono::high_resolution_clock::now();
-	if (parallel_flag)
-	{
-		res = ComputeIndicesParallel(bvh, r, pairs);
-	}
-	else
-	{
-		res = ComputeIndices(bvh, r, pairs);
-	}
-	std::chrono::high_resolution_clock::time_point stop_f = std::chrono::high_resolution_clock::now();
-	std::chrono::minutes dur_f = std::chrono::duration_cast<std::chrono::minutes>(stop_f - start_f);
-	int32_t durMinutes = dur_f.count();
-	std::cout << "Total time : " << durMinutes << " minutes" << std::endl;
-	delete bvh;
-
-	//print results into file
-	if (res == 1)
-	{
-		if (parallel_flag)
-		{
-			//sort angle pairs
-			std::sort(pairs.begin(), pairs.end(), AnglePair::SortPairs);
-			auto indx = fileName.find_last_of('\\');
-			std::string file = fileName.substr(indx + 1, fileName.length() - 3).append("NT_").append(std::to_string(NUM_OF_THREADS_X_16)).append("_Pairs_Parallel.txt");
-			int32_t r = PrintPairs(file, pairs, durMinutes);
-		}
-		else
-		{
-			auto indx = fileName.find_last_of('\\');
-			std::string file = fileName.substr(indx + 1, fileName.length() - 3).append("_Pairs.txt");
-			int32_t r = PrintPairs(file, pairs, durMinutes);
-		}
-	}
 	return 0;
 }
 
