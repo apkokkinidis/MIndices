@@ -17,7 +17,7 @@ namespace MIndices
 		size_t GetIndex(size_t x, size_t y, size_t z) const noexcept;
 		void SetElement(size_t x, size_t y, size_t z, ElementTypes elm) noexcept;
 		ElementTypes GetElementType(size_t indx) const noexcept;
-		ElementTypes GetElementType(size_t dim_x, size_t dim_y, size_t dim_z) const noexcept;
+		ElementTypes GetElementType(size_t dim_x, size_t dim_y, size_t dim_z) const;
 	
 	protected:
 		std::vector<ElementTypes> voxelArray;
