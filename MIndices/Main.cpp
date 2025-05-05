@@ -66,12 +66,19 @@ int32_t main(int32_t argc, char* argv[])
 
 	FileIOHandler fileHandler;
 	std::unique_ptr<MIndice> indices = std::make_unique<MIndice>(DimX, DimY, DimZ, fileHandler);
-	indices->Init(filename);
-	indices->InitMCubes();
-	indices->InitBVH();
-	indices->InitRayGrid();
-	indices->ComputeIndice();
-	indices->printPairs(outFilename);
+	try
+	{
+		indices->Init(filename);
+		indices->InitMCubes();
+		indices->InitBVH();
+		indices->InitRayGrid();
+		indices->ComputeIndice();
+		indices->printPairs(outFilename);
+	}
+	catch (std::runtime_error& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
 
 	return 0;
 }
