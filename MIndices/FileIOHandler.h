@@ -12,8 +12,8 @@ public:
 	FileIOHandler() = default;
 	~FileIOHandler() override = default;
 
-	int32_t readFile(const std::string& filename, MIndices::Vector3D &voxelArray) override;
-	int32_t exportToFile(const std::string& filename, const MIndices::Vector3D& voxelArray) override;
-	int32_t exportToFile(const std::string& filename, const std::vector<MIndices::Triangle>& triArray) override;
-	int32_t exportToFile(const std::string& filename, const std::vector<MIndices::AnglePair>& pairs) override;
+	bool readFile(const std::string& filename, MIndices::Vector3D &voxelArray) override;
+	bool exportToFile(const std::string& filename, const MIndices::Vector3D& voxelArray) override;
+	bool exportToFile(const std::string& filename, const std::vector<MIndices::Triangle>& triArray) override;
+	bool exportToFile(const std::string& filename, const std::vector<MIndices::AnglePair>& pairs) override;
 };
