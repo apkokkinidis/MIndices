@@ -23,7 +23,7 @@ ElementTypes MIndices::Vector3D::GetElementType(size_t indx) const noexcept
 	return voxelArray[indx];
 }
 
-ElementTypes MIndices::Vector3D::GetElementType(size_t dim_x, size_t dim_y, size_t dim_z) const noexcept
+ElementTypes MIndices::Vector3D::GetElementType(size_t dim_x, size_t dim_y, size_t dim_z) const
 {
 	if (dim_x > this->dim_x || dim_y > this->dim_y || dim_z > this->dim_z)
 	{
