@@ -3,6 +3,18 @@
 
 using namespace MIndices;
 
+//State map can be configured to allow multiple valid transitions. Currently only 1 valid transition is allowed.
+const std::unordered_map<InitState, std::unordered_set<InitState>> MIndice::stateMap = {
+	{InitState::initial,			{InitState::vector3DInit}},
+	{InitState::vector3DInit,		{InitState::marchingCubesInit}},
+	{InitState::marchingCubesInit,	{InitState::bvhInit}},
+	{InitState::bvhInit,			{InitState::rayGridInit}},
+	{InitState::rayGridInit,		{InitState::computeIndice}},
+	{InitState::computeIndice,		{InitState::complete}},
+	{InitState::complete,			{}},
+	{InitState::failed,				{}}
+};
+
 MIndice::MIndice(size_t dim_x, size_t dim_y, size_t dim_z, IFileIOHandler& fileIOHandler) : dim_x(dim_x), dim_y(dim_y), dim_z(dim_z), fileIOHandler(fileIOHandler)
 {
 	vector3D = std::make_unique<Vector3D>(dim_x, dim_y, dim_z);
@@ -13,27 +25,33 @@ MIndice::MIndice(size_t dim_x, size_t dim_y, size_t dim_z, IFileIOHandler& fileI
 
 void MIndice::Init(const std::string& filename)
 {
-	fileIOHandler.readFile(filename, *vector3D);
-	state = InitState::vector3DInit;
+	if (fileIOHandler.readFile(filename, *vector3D))
+	{
+		UpdateState(InitState::vector3DInit, "Init");
+	}
+	else
+	{
+		state = InitState::failed; //force state to failed when there is file read error.
+	}
 }
 
 //Initialization method for the marching cubes object.
 //@deleteArr provides option to deallocate memory used for the binary voxel array
 void MIndices::MIndice::InitMCubes(bool deleteArr)
 {
-	ExpectState(InitState::vector3DInit, "InitMCubes");
+	UpdateState(InitState::marchingCubesInit, "InitMCubes");
 	mCubes = std::make_unique<MarchingCubes>(std::move(vector3D), dim_x, dim_y, dim_z);
 	mCubes->TriangulateVCubes(triArr);
-	state = InitState::marchingCubesInit;
 	if (deleteArr)
 	{
 		vector3D.reset(nullptr);	//free memory
 	}
+	std::cout << "Initialized Marching Cubes, Triangles : " << triArr.size() << std::endl;
 }
 
 void MIndices::MIndice::InitBVH()
 {
-	ExpectState(InitState::marchingCubesInit, "InitBvh");
+	UpdateState(InitState::bvhInit, "InitBvh");
 	bvh = std::make_unique<BVHTree>();
 	bvh->TopDownBuildObjectMedian(triArr);
 	if (bvh->TreeIsEmpty())
@@ -41,19 +59,19 @@ void MIndices::MIndice::InitBVH()
 		state = InitState::failed;
 		throw std::runtime_error("Failed to build BVH tree.");
 	};
-	state = InitState::bvhInit;
+	std::cout << "Initialized Bounding Volume Hierarchy" << std::endl;
 }
 
 void MIndices::MIndice::InitRayGrid()
-{	
-	ExpectState(InitState::bvhInit, "InitRayGrid");
+{
+	UpdateState(InitState::rayGridInit, "InitRayGrid");
 	rayGrid = std::make_unique<RayGrid>(dim_x, dim_y, bvh->GetRoot()->Box().Diagonal());
 	if (rayGrid->empty())
 	{
 		state = InitState::failed;
 		throw std::runtime_error("Failed to create ray grid.");
 	}
-	state = InitState::rayGridInit;
+	std::cout << "Initialized Ray Grid" << std::endl;
 }
 
 void MIndice::printVoxels(std::string& filename)
@@ -88,11 +106,7 @@ void MIndices::MIndice::printBvhDepth(const std::string& filename) const
 
 int32_t MIndices::MIndice::ComputeIndice()
 {
-	if (state != InitState::rayGridInit)
-	{
-		throw std::runtime_error("ComputeIndice must be called after InitRayGrid.");
-	}
-
+	UpdateState(InitState::computeIndice, "ComputeIndice");
 	if (bvh->TreeIsEmpty() || rayGrid->empty()) { return 1; }
 
 	pairs.reserve(ELEVATION * AZIMUTH);
@@ -116,17 +130,8 @@ int32_t MIndices::MIndice::ComputeIndice()
 		std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(stop_f - start_f);
 		std::cout << "Cycle " << e + 1 << " from: " << ELEVATION << " duration: " << dur.count() << " sec" << std::endl;
 	}
+	UpdateState(InitState::complete, "ComputeIndice");
 	return 0;
-}
-
-void MIndices::MIndice::ExpectState(InitState expected, std::string&& func_name) const
-{
-	if (expected != state)
-	{
-		throw std::runtime_error(func_name + " called in wrong state. Expected: " +
-			std::to_string(static_cast<int>(expected)) + ", Current: " +
-			std::to_string(static_cast<int>(state)));
-	}
 }
 
 int32_t MIndices::MIndice::RayTraceBVHNodes(std::vector<VecPoint3D>& outPoints)
@@ -148,4 +153,21 @@ int32_t MIndices::MIndice::RayTraceBVHNodes(std::vector<VecPoint3D>& outPoints)
 		}
 	}
 	return 0;
+}
+
+bool MIndices::MIndice::IsValidState(InitState newState) const
+{
+	auto it = stateMap.find(state);
+	return it != stateMap.end() ? it->second.contains(newState) : false;
+}
+
+void MIndices::MIndice::UpdateState(const InitState newState, std::string&& func_name)
+{
+	if (!IsValidState(newState))
+	{
+		throw std::runtime_error(func_name + " Error, incorrect state transititon "
+			+ std::to_string(static_cast<int32_t>(state)) + " -> "
+			+ std::to_string(static_cast<int32_t>(newState)));
+	}
+	state = newState;
 }
