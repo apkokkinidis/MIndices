@@ -6,14 +6,14 @@
 #include <iostream>
 #include "Structures.h"
 
-int FileIOHandler::readFile(const std::string& filename, MIndices::Vector3D& voxelArray)
+bool FileIOHandler::readFile(const std::string& filename, MIndices::Vector3D& voxelArray)
 {
 	size_t totalElemNum =0, elemNum = 0, i = 0, k = 0, j = 0;
 	std::ifstream file(filename);
 	if (!file)
 	{
 		std::cerr << "Cannot open the file: " << filename << std::endl;
-		return 1;
+		return false;
 	}
 
 	std::string line;
@@ -28,7 +28,7 @@ int FileIOHandler::readFile(const std::string& filename, MIndices::Vector3D& vox
 	if (0 == totalElemNum)
 	{
 		std::cerr << "Wrong number of elements." << std::endl;
-		return 1;
+		return false;
 	}
 
 	while (file >> elemNum >> i >> j >> k)
@@ -39,24 +39,24 @@ int FileIOHandler::readFile(const std::string& filename, MIndices::Vector3D& vox
 	if (file.bad())
 	{
 		std::cerr << "IO failure. Possible corrupt data read." << std::endl;
-		return 1;
+		return false;
 	}
-	return 0;
+	return true;
 }
 
-int32_t FileIOHandler::exportToFile(const std::string& filename, const MIndices::Vector3D& voxelArray)
+bool FileIOHandler::exportToFile(const std::string& filename, const MIndices::Vector3D& voxelArray)
 {
 	//ToDo implement export for .txt files
-	return 0;
+	return true;
 }
 
-int32_t FileIOHandler::exportToFile(const std::string& filename, const std::vector<MIndices::Triangle>& triArray)
+bool FileIOHandler::exportToFile(const std::string& filename, const std::vector<MIndices::Triangle>& triArray)
 {
 	//ToDo implement export for .txt files
-	return 0;
+	return true;
 }
 
-int32_t FileIOHandler::exportToFile(const std::string& filename, const std::vector<MIndices::AnglePair>& pairs)
+bool FileIOHandler::exportToFile(const std::string& filename, const std::vector<MIndices::AnglePair>& pairs)
 {
 	std::ostringstream buffer;
 	for (const auto& pair : pairs)
@@ -67,8 +67,8 @@ int32_t FileIOHandler::exportToFile(const std::string& filename, const std::vect
 	if (!file)
 	{
 		std::cerr << " Error while writing to file : " << filename << std::endl;
-		return 1;
+		return false;
 	}
 	file << buffer.str();
-	return 0;
+	return true;
 }

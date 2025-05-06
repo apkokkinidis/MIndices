@@ -9,8 +9,8 @@ class IFileIOHandler
 {
 public:
 	virtual ~IFileIOHandler() = default;
-	virtual int32_t readFile(const std::string& filename, MIndices::Vector3D &voxelArray) = 0;
-	virtual int32_t exportToFile(const std::string& filename, const MIndices::Vector3D &voxelArray) = 0;
-	virtual int32_t exportToFile(const std::string& filename, const std::vector<MIndices::Triangle> &triArray) = 0;
-	virtual int32_t exportToFile(const std::string& filename, const std::vector<MIndices::AnglePair> &pairs) = 0;
+	virtual bool readFile(const std::string& filename, MIndices::Vector3D &voxelArray) = 0;
+	virtual bool exportToFile(const std::string& filename, const MIndices::Vector3D &voxelArray) = 0;
+	virtual bool exportToFile(const std::string& filename, const std::vector<MIndices::Triangle> &triArray) = 0;
+	virtual bool exportToFile(const std::string& filename, const std::vector<MIndices::AnglePair> &pairs) = 0;
 };
