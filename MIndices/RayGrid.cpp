@@ -31,6 +31,23 @@ void RayGrid::RotateRays(double d, Axis axis)
 	}
 }
 
+//Computes the rotational grid for all rays for given elevation & azimuth pairs.
+//@param value of elevation to rotate the rays
+//@param value of azimuth to rotate the rays
+RotationGrid MIndices::RayGrid::ComputeRotationGrid(int32_t elevation, int32_t azimuth)
+{
+	RotationGrid rotationGrid;
+	for (int i = 0; i < elevation; ++i)
+	{
+		for (int32_t j = 0; j < azimuth; ++j)
+		{
+			RotateRays(DEGREE, Axis::X, i, j, rotationGrid);
+		}
+		RotateRays(DEGREE, Axis::Z, i, 0, rotationGrid);
+	}
+	return rotationGrid;
+}
+
 const std::vector<Ray>& MIndices::RayGrid::getRays() const noexcept
 {
 	return rays;
@@ -44,4 +61,14 @@ std::span<const Ray> MIndices::RayGrid::getRaySpan() const noexcept
 const bool MIndices::RayGrid::empty() const noexcept
 {
 	return rays.empty();
+}
+
+void MIndices::RayGrid::RotateRays(double d, Axis axis, int32_t elevation, int32_t azimuth, RotationGrid& rotationGrid)
+{
+	auto tmp_rays = rays;
+	for (auto& ray : tmp_rays)
+	{
+		ray.Rotate(d, Axis::X);
+	}
+	rotationGrid.emplace_back(AzthElevPair{elevation, azimuth}, std::move(tmp_rays));
 }

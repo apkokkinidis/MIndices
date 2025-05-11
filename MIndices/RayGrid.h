@@ -6,8 +6,7 @@
 
 namespace MIndices
 {
-	constexpr double DEGREE = 1.0;
-
+	using RotationGrid = std::vector<std::pair<AzthElevPair, std::vector<Ray>>>;
 	//Creates an array of rays of X * Y size
 	class RayGrid
 	{
@@ -17,11 +16,13 @@ namespace MIndices
 		RayGrid(size_t DimX, size_t DimY, size_t diagonal);
 
 		void RotateRays(double d, Axis axis);
+		RotationGrid ComputeRotationGrid(int32_t elevation, int32_t azimuth);
 		const std::vector<Ray> &getRays() const noexcept;
 		std::span<const Ray> getRaySpan() const noexcept;
 		const bool empty() const noexcept;
 	private:
 		std::vector<Ray> rays;
+		void RotateRays(double d, Axis axis, int32_t elevation, int32_t azimuth, RotationGrid& rotationGrid);
 	};
 
 }

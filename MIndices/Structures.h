@@ -134,4 +134,6 @@ namespace MIndices
 	}TriangleEdge;
 
 	using VecPoint3D = std::vector<Point3D>;
+
+	using AzthElevPair = std::pair<int32_t, int32_t>;
 }
