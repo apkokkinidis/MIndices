@@ -11,6 +11,9 @@ namespace MIndices
 	constexpr double RAD = PI / 180;
 	constexpr double EPSILON = 0.0000001;
 	constexpr COORD_TYPE numeric_epsilon = std::numeric_limits<COORD_TYPE>::epsilon();
+	constexpr double DEGREE = 1.0;
+	constexpr int32_t ELEVATION = 90;
+	constexpr int32_t AZIMUTH = 180;
 
 	class Ray
 	{

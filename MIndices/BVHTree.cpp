@@ -90,7 +90,7 @@ BoundingBox3D BVHTree::ComputeBounds(const Triangle& triangle) const
 		static_cast<size_t>(maxPoint3D.z));
 }
 
-BoundingBox3D BVHTree::ComputeBounds(const vector<Triangle>& triangles) const
+BoundingBox3D BVHTree::ComputeBounds(const std::vector<Triangle>& triangles) const
 {
 	assert(triangles.size() > 0);
 	Point3D minTriPoint, maxTriPoint;
@@ -123,7 +123,7 @@ BoundingBox3D BVHTree::ComputeBounds(const vector<Triangle>& triangles) const
 		static_cast<size_t>(maxTriPoint.z));
 }
 
-void BVHTree::TopDownBuildObjectMedian(vector<Triangle>& triangles) noexcept
+void BVHTree::TopDownBuildObjectMedian(std::vector<Triangle>& triangles) noexcept
 {
 	if (triangles.size() > MAX_TRIANGLES_PER_LEAF)
 	{
@@ -137,7 +137,7 @@ void BVHTree::TopDownBuildObjectMedian(vector<Triangle>& triangles) noexcept
 		QuickSortTri(triangles, 0, (int32_t)triangles.size() - 1, longestAxis);
 
 		//PartitionArray
-		vector<Triangle> S1, S2;
+		std::vector<Triangle> S1, S2;
 		size_t k = PartitionSet(triangles, S1, S2);
 
 		BoundingBox3D lbox = ComputeBounds(S1);
@@ -156,7 +156,7 @@ void BVHTree::TopDownBuildObjectMedian(vector<Triangle>& triangles) noexcept
 	}
 }
 
-void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle>& triangles) noexcept
+void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, std::vector<Triangle>& triangles) noexcept
 {
 	if (triangles.size() > MAX_TRIANGLES_PER_LEAF)
 	{
@@ -168,7 +168,7 @@ void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle>& triangl
 		QuickSortTri(triangles, 0, (int32_t)triangles.size() - 1, longestAxis);
 
 		//PartitionArray into two sets
-		vector<Triangle> S1, S2;
+		std::vector<Triangle> S1, S2;
 		size_t k = PartitionSet(triangles, S1, S2);
 
 		//Compute left child bounding box
@@ -189,13 +189,13 @@ void BVHTree::TopDownBuildObjectMedian(BVHNode* pnode, vector<Triangle>& triangl
 	}
 }
 
-void BVHTree::BottomUpBuild(vector<Triangle>& triangles) noexcept
+void BVHTree::BottomUpBuild(std::vector<Triangle>& triangles) noexcept
 {
 	//ToDO implement bottom up hierarchy construction.
 }
 
 
-void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<Triangle>& triangles) noexcept
+void BVHTree::TopDowwBuildObjectMedian_Parralel(std::vector<Triangle>& triangles) noexcept
 {
 	const int32_t NUM_OF_THRDS = 2;
 
@@ -211,7 +211,7 @@ void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<Triangle>& triangles) noe
 		QuickSortTri(triangles, 0, (int32_t)triangles.size() - 1, longestAxis);
 
 		//PartitionArray
-		vector<Triangle> S1, S2;
+		std::vector<Triangle> S1, S2;
 		size_t k = PartitionSet(triangles, S1, S2);
 
 		BoundingBox3D lbox = ComputeBounds(S1);
@@ -255,7 +255,7 @@ void BVHTree::TopDowwBuildObjectMedian_Parralel(vector<Triangle>& triangles) noe
 }
 
 //Partitions set of triangles in two sets using the median Point of the set
-size_t BVHTree::PartitionSet(const vector<Triangle>& triangles, vector<Triangle>& S1, vector<Triangle>& S2) const
+size_t BVHTree::PartitionSet(const std::vector<Triangle>& triangles, std::vector<Triangle>& S1, std::vector<Triangle>& S2) const
 {
 	//Split the object at the object median of the longest axis
 	size_t median = static_cast<size_t>(triangles.size() * (COORD_TYPE)0.5);
@@ -288,7 +288,7 @@ Axis BVHTree::FindLongestAxisOfBBox(const BoundingBox3D& box) const noexcept
 }
 
 //Copies triangles to subarray at the median of the original array
-void BVHTree::CopyTriangles(vector<Triangle>& triDest, const vector<Triangle>& triSource, size_t indx_start, size_t indx_end) const noexcept
+void BVHTree::CopyTriangles(std::vector<Triangle>& triDest, const std::vector<Triangle>& triSource, size_t indx_start, size_t indx_end) const noexcept
 {
 	assert(triSource.size() > 0);
 
@@ -329,7 +329,7 @@ float BVHTree::CalculateSurfaceAreaOfBox(const BoundingBox3D& box) const noexcep
 }
 
 //Quick Sort Algorithm
-void BVHTree::QuickSortTri(vector<Triangle>& tri, int32_t lo, int32_t hi, Axis axis) noexcept
+void BVHTree::QuickSortTri(std::vector<Triangle>& tri, int32_t lo, int32_t hi, Axis axis) noexcept
 {
 	if (lo < hi)
 	{
@@ -359,7 +359,7 @@ COORD_TYPE MIndices::BVHTree::SelectPointAxis(const Point3D& p, Axis axis) noexc
 }
 
 //Partitions set using the centroid of the triangles along the x axis
-int32_t BVHTree::partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
+int32_t BVHTree::partitionTriXAxis(std::vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
 {
 	int32_t pivot_ind = lo;
 	int32_t i = lo - 1;
@@ -390,7 +390,7 @@ int32_t BVHTree::partitionTriXAxis(vector<Triangle>& tri, int32_t lo, int32_t hi
 }
 
 //Partitions set using the centroid of the triangles along the y axis
-int32_t BVHTree::partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
+int32_t BVHTree::partitionTriYAxis(std::vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
 {
 	size_t pivot_ind = lo;
 	int32_t i = lo - 1;
@@ -422,7 +422,7 @@ int32_t BVHTree::partitionTriYAxis(vector<Triangle>& tri, int32_t lo, int32_t hi
 }
 
 //Partitions set using the centroid of the triangles along the z axis
-int32_t BVHTree::partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
+int32_t BVHTree::partitionTriZAxis(std::vector<Triangle>& tri, int32_t lo, int32_t hi) noexcept
 {
 	size_t pivot_ind = lo;
 	int32_t i = lo - 1;
@@ -452,7 +452,7 @@ int32_t BVHTree::partitionTriZAxis(vector<Triangle>& tri, int32_t lo, int32_t hi
 	return 0;
 }
 //Traverse the tree using DFS and check for any intersections with the ray
-void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outpoints) const noexcept
+void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, std::vector<Point3D>& outpoints) const noexcept
 {
 	if (node == nullptr)
 	{
@@ -480,7 +480,7 @@ void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, vector<Point3D>& outpoi
 	}
 }
 
-void BVHTree::RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>& outpoints, vector<double>& outT) const noexcept
+void BVHTree::RayTraceNodesPreEdges(BVHNode* node, const Ray& r, std::vector<Point3D>& outpoints, std::vector<double>& outT) const noexcept
 {
 	if (node == nullptr)
 	{
@@ -493,7 +493,7 @@ void BVHTree::RayTraceNodesPreEdges(BVHNode* node, const Ray& r, vector<Point3D>
 		{
 			if (node->HasComputedEdges())
 			{
-				for (vector<TriangleEdge>::iterator it = node->GetEdgeBegin(); it != node->GetEdgeEnd(); ++it)
+				for (std::vector<TriangleEdge>::iterator it = node->GetEdgeBegin(); it != node->GetEdgeEnd(); ++it)
 				{
 					Point3D tmp_Point;
 					double tmp_t;

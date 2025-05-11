@@ -4,7 +4,7 @@
 
 using namespace MIndices;
 
-BVHNode::BVHNode(BoundingBox3D b, vector<Triangle> tri) : bbox(b), triangles(tri), right(nullptr), left(nullptr)
+BVHNode::BVHNode(BoundingBox3D b, std::vector<Triangle> tri) : bbox(b), triangles(tri), right(nullptr), left(nullptr)
 {
 }
 
@@ -31,7 +31,7 @@ BVHNode::~BVHNode()
 	}
 }
 
-bool HasEvenintersections(const vector<Triangle>& t)
+bool HasEvenintersections(const std::vector<Triangle>& t)
 {
 	if (t.size() % 2 == 0)
 	{
@@ -47,7 +47,7 @@ void BVHNode::SetBBox(const BoundingBox3D& newBBox)
 	bbox = newBBox;
 }
 
-void BVHNode::SetTriangles(const vector<Triangle>& triangles)
+void BVHNode::SetTriangles(const std::vector<Triangle>& triangles)
 {
 	this->triangles = triangles;
 }
@@ -96,12 +96,12 @@ const BoundingBox3D& BVHNode::Box() const noexcept
 	return bbox;
 }
 
-vector<Triangle> BVHNode::GetTriangles() const noexcept
+std::vector<Triangle> BVHNode::GetTriangles() const noexcept
 {
 	return triangles;
 }
 
-vector<TriangleEdge> BVHNode::GetEdges() const noexcept
+std::vector<TriangleEdge> BVHNode::GetEdges() const noexcept
 {
 	return edges;
 }

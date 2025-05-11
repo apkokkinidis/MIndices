@@ -338,7 +338,7 @@ inline Point3D MarchingCubes::FindEdgeMidPoint(const Point3D& p1, const Point3D&
 }
 
 //Prints triangles to a file
-bool MarchingCubes::PrintTrianglesToFile(const vector<Triangle>& vecTriangles, const std::string& fPath)
+bool MarchingCubes::PrintTrianglesToFile(const std::vector<Triangle>& vecTriangles, const std::string& fPath)
 {
 	int32_t triCounter = 0;
 	std::ofstream file(fPath, std::ios::out | std::ios::app);
@@ -366,7 +366,7 @@ bool MarchingCubes::PrintTrianglesToFile(const vector<Triangle>& vecTriangles, c
 }
 
 //Prints triangles to a file using a buffer
-bool MarchingCubes::PrintTrianglesToFile(const vector<Triangle>& vecTriangles, const size_t bufferSize, const std::string& fPath)
+bool MarchingCubes::PrintTrianglesToFile(const std::vector<Triangle>& vecTriangles, const size_t bufferSize, const std::string& fPath)
 {
 	int32_t triCounter = 0;
 	std::ofstream file(fPath, std::ios::out | std::ios::app);
@@ -407,7 +407,7 @@ bool MarchingCubes::PrintTrianglesToFile(const vector<Triangle>& vecTriangles, c
 	}
 }
 
-bool MarchingCubes::SaveToFile(const vector<Triangle>& triangles, const char* FileSpec) const
+bool MarchingCubes::SaveToFile(const std::vector<Triangle>& triangles, const char* FileSpec) const
 {
 	FILE* file = (FILE*)fopen(FileSpec, "w+");
 	if (file == nullptr)

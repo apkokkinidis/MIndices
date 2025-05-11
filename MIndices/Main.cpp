@@ -19,8 +19,8 @@
 #include "BVHTree.h"
 #include "MIndice.h"
 #include "FileIOHandler.h"
-#include "AnglePair.h"
 #include "CmdParser.h"
+#include "AnglePair.h"
 
 using std::vector;
 using namespace MIndices;
@@ -65,7 +65,7 @@ int32_t main(int32_t argc, char* argv[])
 	const std::string outFilename = filename.substr(indx + 1, filename.length() - 3).append("_Pairs-New.txt");
 
 	FileIOHandler fileHandler;
-	std::unique_ptr<MIndice> indices = std::make_unique<MIndice>(DimX, DimY, DimZ, fileHandler);
+	std::unique_ptr<MIndice> indices = std::make_unique<MIndice>(DimX, DimY, DimZ, fileHandler, parser.Threads());
 	try
 	{
 		indices->Init(filename);

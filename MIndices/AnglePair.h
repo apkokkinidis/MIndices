@@ -16,8 +16,6 @@
 
 namespace MIndices
 {
-	constexpr int32_t ELEVATION = 90;
-	constexpr int32_t AZIMUTH = 180;
 
 	class AnglePair
 	{
@@ -25,6 +23,9 @@ namespace MIndices
 		AnglePair(int32_t a, int32_t e);
 		AnglePair(const AnglePair& other);
 		~AnglePair() = default;
+		AnglePair(AnglePair&&) = default;
+		AnglePair& operator=(AnglePair&&) = default;
+		AnglePair& operator=(const AnglePair& other) = default;
 
 		int32_t Azimuth() const;
 		int32_t Elevation() const;

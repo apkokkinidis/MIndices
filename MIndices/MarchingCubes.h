@@ -2,8 +2,6 @@
 //MarchingCubes.h
 //Lookup table by Paul Boorke http://paulbourke.net/geometry/polygonise/
 #pragma once
-#ifndef Cubes_H
-#define Cubes_H
 
 #include <string>
 #include <vector>
@@ -13,8 +11,6 @@
 #include "Structures.h"
 #include "Array3D.h"
 #include "Vector3D.h"
-
-using std::vector;
 
 namespace MIndices
 {
@@ -323,15 +319,15 @@ namespace MIndices
 
 		//Printing functions
 		bool PrintCubesToFile(const std::string& fPath);
-		bool PrintTrianglesToFile(const vector<Triangle>& vecTriangles, const std::string& fPath);
-		bool PrintTrianglesToFile(const vector<Triangle>& vecTriangles, const size_t bufferSize, const std::string& fPath);
+		bool PrintTrianglesToFile(const std::vector<Triangle>& vecTriangles, const std::string& fPath);
+		bool PrintTrianglesToFile(const std::vector<Triangle>& vecTriangles, const size_t bufferSize, const std::string& fPath);
 
 		//save to file
-		bool SaveToFile(const vector<Triangle>& triangles, const char* FileSpec) const;
+		bool SaveToFile(const std::vector<Triangle>&triangles, const char* FileSpec) const;
 
 	private:
-		vector<MCube> cubes;
-		vector<VoxelCube> vCubes;
+		std::vector<MCube> cubes;
+		std::vector<VoxelCube> vCubes;
 
 		inline bool CubeInOutSurface(const MCube& cube, int32_t& cubeindex) const noexcept;
 		inline bool CubeInOutSurface(const VoxelCube& cube, int32_t& cubeindex) const noexcept;
@@ -339,4 +335,3 @@ namespace MIndices
 		inline Point3D FindEdgeMidPoint(const Point3D& p1, const Point3D& p2) const noexcept;
 	};
 }
-#endif  Cubes_H

@@ -2,6 +2,8 @@
 #pragma once
 
 #include <vector>
+#include <array>
+#include <thread>
 
 namespace MIndices
 {
@@ -21,7 +23,24 @@ namespace MIndices
 		count			// 8 - keep count of enums
 	};
 
-	enum class Axis { X, Y, Z };
+	const std::array<uint32_t, static_cast<int32_t>(ParallelThreads::count)> threadMap =
+	{
+		0u,													// 0 - off
+		std::thread::hardware_concurrency(),				// 1 - enabled auto
+		2u,													// 2 - enabled 2 threads
+		4u,													// 3 - enabled 4 threads
+		6u,													// 4 - enabled 6 threads
+		8u,													// 5 - enabled 8 threads
+		10u,												// 6 - enabled 10 threads
+		12u													// 7 - enabled 12 threads
+	};
+
+	enum class Axis 
+	{
+		X,
+		Y,
+		Z
+	};
 
 	enum class ElementTypes : uint8_t
 	{
@@ -115,4 +134,6 @@ namespace MIndices
 	}TriangleEdge;
 
 	using VecPoint3D = std::vector<Point3D>;
+
+	using AzthElevPair = std::pair<int32_t, int32_t>;
 }
