@@ -48,6 +48,16 @@ RotationGrid MIndices::RayGrid::ComputeRotationGrid(int32_t elevation, int32_t a
 	return rotationGrid;
 }
 
+std::span<const std::vector<Ray>> MIndices::RayGrid::ComputeAzimuthRays(int32_t steps)
+{
+	for (int32_t i = 0; i < steps; ++i)
+	{
+		RotateRays(DEGREE, Axis::Z);
+		azimuthRays[i] = rays;
+	}
+	return azimuthRays;
+}
+
 const std::vector<Ray>& MIndices::RayGrid::getRays() const noexcept
 {
 	return rays;
