@@ -1,5 +1,8 @@
 #include "MIndice.h"
 #include "FileIOHandler.h"
+#include "ThreadPool.h"
+
+#include <mutex>
 
 using namespace MIndices;
 
@@ -15,7 +18,10 @@ const std::unordered_map<InitState, std::unordered_set<InitState>> MIndice::stat
 	{InitState::failed,				{}}
 };
 
-MIndice::MIndice(size_t dim_x, size_t dim_y, size_t dim_z, IFileIOHandler& fileIOHandler) : dim_x(dim_x), dim_y(dim_y), dim_z(dim_z), fileIOHandler(fileIOHandler)
+MIndice::MIndice(size_t dim_x, size_t dim_y, size_t dim_z,
+	IFileIOHandler& fileIOHandler, ParallelThreads threadOpts) : dim_x(dim_x), dim_y(dim_y), dim_z(dim_z),
+	fileIOHandler(fileIOHandler),
+	threadOpts(threadOpts)
 {
 	vector3D = std::make_unique<Vector3D>(dim_x, dim_y, dim_z);
 	mCubes = nullptr;
@@ -111,6 +117,18 @@ int32_t MIndices::MIndice::ComputeIndice()
 
 	pairs.reserve(ELEVATION * AZIMUTH);
 
+	if (threadOpts == ParallelThreads::off)
+	{
+		return ComputeIndiceDefault();
+	}
+	else
+	{
+		ComputeIndiceParallel();
+	}
+}
+
+int32_t MIndices::MIndice::ComputeIndiceDefault()
+{
 	for (int32_t e = 0; e < ELEVATION; ++e)
 	{
 		std::chrono::high_resolution_clock::time_point start_f = std::chrono::high_resolution_clock::now();
@@ -134,6 +152,38 @@ int32_t MIndices::MIndice::ComputeIndice()
 	return 0;
 }
 
+int32_t MIndices::MIndice::ComputeIndiceParallel()
+{
+	try
+	{
+		ThreadPool pool(threadOpts);
+		auto rayRotationGrid = rayGrid->ComputeRotationGrid(ELEVATION, AZIMUTH);
+		for (const auto& rays : rayRotationGrid)
+		{
+			std::chrono::high_resolution_clock::time_point start_f = std::chrono::high_resolution_clock::now();
+			pool.EnqueTask([this, &rays]()
+				{
+					std::vector<VecPoint3D> points;
+					RayTraceBVHNodes(points, rays.second);
+					AnglePair pair{ rays.first.first, rays.first.second };
+					pair.CalculateIndices(points);
+					std::unique_lock<std::mutex> lock(mutex);
+					pairs.push_back(pair);
+					lock.unlock();
+				});
+			std::chrono::high_resolution_clock::time_point stop_f = std::chrono::high_resolution_clock::now();
+			std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(stop_f - start_f);
+			std::cout << "Elevation : " << rays.first.first + 1 << " from: " << ELEVATION << " Azimuth : " << rays.first.second + 1 << std::endl;
+		}
+	}
+	catch (std::runtime_error& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+
+	return 0;
+}
+
 int32_t MIndices::MIndice::RayTraceBVHNodes(std::vector<VecPoint3D>& outPoints)
 {
 	if (rayGrid->empty()) { return 1; }
@@ -142,6 +192,23 @@ int32_t MIndices::MIndice::RayTraceBVHNodes(std::vector<VecPoint3D>& outPoints)
 
 	BVHNode* root = bvh->GetRoot();
 	for (const auto& ray : rayGrid->getRaySpan())
+	{
+		VecPoint3D points;
+		bvh->RayTraceNodes(root, ray, points);
+		if (!points.empty() && points.size() % 2 == 0)
+		{
+			//sort points based on the distance from the origin of the ray
+			ray.sortVecPoint3D(points);
+			outPoints.push_back({ points });
+		}
+	}
+	return 0;
+}
+
+int32_t MIndices::MIndice::RayTraceBVHNodes(std::vector<VecPoint3D>& outPoints, const std::vector<Ray>& rays)
+{
+	BVHNode* root = bvh->GetRoot();
+	for (const auto& ray : rays)
 	{
 		VecPoint3D points;
 		bvh->RayTraceNodes(root, ray, points);
