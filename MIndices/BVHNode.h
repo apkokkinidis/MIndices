@@ -5,15 +5,13 @@
 #include "Structures.h"
 #include <vector>
 
-using std::vector;
-
 namespace MIndices
 {
 
 	class BVHNode
 	{
 	public:
-		BVHNode(BoundingBox3D bbox, vector<Triangle> triangles);
+		BVHNode(BoundingBox3D bbox, std::vector<Triangle> triangles);
 		BVHNode(const BVHNode& other);
 		~BVHNode();
 		//public members
@@ -27,8 +25,8 @@ namespace MIndices
 
 		//Get functions
 		const BoundingBox3D& Box() const noexcept;
-		vector<Triangle> GetTriangles() const noexcept;
-		vector<TriangleEdge> GetEdges() const noexcept;
+		std::vector<Triangle> GetTriangles() const noexcept;
+		std::vector<TriangleEdge> GetEdges() const noexcept;
 		std::vector<Triangle>::iterator GetTriBegin();
 		std::vector<Triangle>::iterator GetTriEnd();
 		std::vector<TriangleEdge>::iterator GetEdgeBegin();
@@ -37,7 +35,7 @@ namespace MIndices
 
 		//Set functions
 		void SetBBox(const BoundingBox3D& newBBox);
-		void SetTriangles(const vector<Triangle>& triangles);
+		void SetTriangles(const std::vector<Triangle>& triangles);
 
 		void ClearTriangles();
 
@@ -45,8 +43,8 @@ namespace MIndices
 
 	private:
 		BoundingBox3D bbox;
-		vector<Triangle> triangles;
-		vector<TriangleEdge> edges;
+		std::vector<Triangle> triangles;
+		std::vector<TriangleEdge> edges;
 
 	};
 }
