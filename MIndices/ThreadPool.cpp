@@ -1,6 +1,6 @@
 #include "ThreadPool.h"
 
-ThreadPool::ThreadPool(MIndices::ParallelThreads threadOpts)
+ThreadPool::ThreadPool(MIndices::ParallelThreads threadOpts, size_t queueSize) : maxQueueSize(queueSize)
 {
 	if (threadOpts != MIndices::ParallelThreads::off)
 	{
@@ -32,12 +32,16 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::EnqueTask(std::function<void()> task)
 {
-	if (tasks.size() >= maxQueueSize)
-	{
-		throw std::runtime_error("Tasks queue already at maximum size.");
-	}
-
 	std::unique_lock<std::mutex> lock(mutex);
+	condition.wait(lock, [this]
+		{
+			return tasks.size() <= maxQueueSize || stop;
+		});
+
+	if (stop)
+	{
+		throw std::runtime_error("Thread pool has been stopped.");
+	}
 	tasks.push_back(std::move(task));
 	condition.notify_one();
 }
@@ -61,6 +65,7 @@ void ThreadPool::StartThreads()
 
 			task = std::move(tasks.front());
 			tasks.pop_front();
+			condition.notify_one();
 		}
 		task();
 	}

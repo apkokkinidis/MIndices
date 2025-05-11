@@ -12,7 +12,7 @@ class ThreadPool
 {
 public:
 	ThreadPool() = default;
-	ThreadPool(MIndices::ParallelThreads threadOpts);
+	ThreadPool(MIndices::ParallelThreads threadOpts, size_t quueSize);
 	~ThreadPool();
 
 	void EnqueTask(std::function<void()> task);
@@ -22,9 +22,7 @@ private:
 	std::condition_variable condition;
 	std::mutex mutex;
 	std::atomic_bool stop = false;
-	const int32_t maxQueueSize = 10648;
+	size_t maxQueueSize;
 
 	void StartThreads();
 };
-
-	
