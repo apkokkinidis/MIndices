@@ -2,8 +2,6 @@
 //MarchingCubes.h
 //Lookup table by Paul Boorke http://paulbourke.net/geometry/polygonise/
 #pragma once
-#ifndef Cubes_H
-#define Cubes_H
 
 #include <string>
 #include <vector>
@@ -339,4 +337,3 @@ namespace MIndices
 		inline Point3D FindEdgeMidPoint(const Point3D& p1, const Point3D& p2) const noexcept;
 	};
 }
-#endif  Cubes_H
