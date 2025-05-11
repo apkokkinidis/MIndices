@@ -123,8 +123,16 @@ int32_t MIndices::MIndice::ComputeIndice()
 	}
 	else
 	{
-		ComputeIndiceParallel();
+		try
+		{
+			ComputeIndiceParallel();
+		}
+		catch (std::runtime_error& e)
+		{
+			std::cerr << e.what() << std::endl;
+		}
 	}
+	return 0;
 }
 
 int32_t MIndices::MIndice::ComputeIndiceDefault()
@@ -156,25 +164,31 @@ int32_t MIndices::MIndice::ComputeIndiceParallel()
 {
 	try
 	{
-		ThreadPool pool(threadOpts);
-		auto rayRotationGrid = rayGrid->ComputeRotationGrid(ELEVATION, AZIMUTH);
-		for (const auto& rays : rayRotationGrid)
+		ThreadPool pool(threadOpts, rayGrid->getRaySpan().size());
+		for (int32_t elev = 0; elev < ELEVATION; ++elev)
 		{
 			std::chrono::high_resolution_clock::time_point start_f = std::chrono::high_resolution_clock::now();
-			pool.EnqueTask([this, &rays]()
-				{
-					std::vector<VecPoint3D> points;
-					RayTraceBVHNodes(points, rays.second);
-					AnglePair pair{ rays.first.first, rays.first.second };
-					pair.CalculateIndices(points);
-					std::unique_lock<std::mutex> lock(mutex);
-					pairs.push_back(pair);
-					lock.unlock();
-				});
+			auto azimuthRays = rayGrid->ComputeAzimuthRays();
+			for (int32_t azmth = 0; azmth < azimuthRays.size(); ++azmth)
+			{
+				pool.EnqueTask([this, azmth, elev, azimuthRays]()
+					{
+						std::vector<VecPoint3D> points;
+						RayTraceBVHNodes(points, azimuthRays[azmth]);
+						AnglePair pair{ azmth, elev };
+						pair.CalculateIndices(points);
+						std::unique_lock<std::mutex> lock(mutex);
+						pairs.push_back(pair);
+						lock.unlock();
+					});
+			}
 			std::chrono::high_resolution_clock::time_point stop_f = std::chrono::high_resolution_clock::now();
 			std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(stop_f - start_f);
-			std::cout << "Elevation : " << rays.first.first + 1 << " from: " << ELEVATION << " Azimuth : " << rays.first.second + 1 << std::endl;
+			std::cout << "Elevation : " << elev + 1 << " from: " << ELEVATION << " duration : " << dur.count() << std::endl;
+			rayGrid->RotateRays(DEGREE, Axis::X);
 		}
+		//sort the pairs
+		std::sort(pairs.begin(), pairs.end(), &AnglePair::SortPairs);
 	}
 	catch (std::runtime_error& e)
 	{
