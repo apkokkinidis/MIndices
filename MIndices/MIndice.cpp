@@ -149,9 +149,9 @@ int32_t MIndices::MIndice::ComputeIndiceDefault()
 			pair.CalculateIndices(points);
 
 			pairs.push_back(pair);
-			rayGrid->RotateRays(DEGREE, Axis::X);
+			rayGrid->RotateRays(DEGREE, Axis::Z);
 		}
-		rayGrid->RotateRays(DEGREE, Axis::Z);
+		rayGrid->RotateRays(DEGREE, Axis::X);
 		std::chrono::high_resolution_clock::time_point stop_f = std::chrono::high_resolution_clock::now();
 		std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(stop_f - start_f);
 		std::cout << "Cycle " << e + 1 << " from: " << ELEVATION << " duration: " << dur.count() << " sec" << std::endl;
