@@ -130,14 +130,14 @@ int32_t ComputeIndices(BVHTree* bvh, vector<Ray>& rays, vector<AnglePair>& pairs
 				}
 			}
 			//Rotate Rays by 1 degree
-			RotateRays(1.0, Axis::X, rays);
+			RotateRays(1.0, Axis::Z, rays);
 			AnglePair newPair(a, e);
 			newPair.CalculateIndices(points);
 			pairs.push_back(newPair);
 		}
 		std::chrono::high_resolution_clock::time_point stop_f = std::chrono::high_resolution_clock::now();
 		std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(stop_f - start_f);
-		RotateRays(1.0, Axis::Z, rays);
+		RotateRays(1.0, Axis::X, rays);
 		std::cout << "Cycle " << e + 1 << " out of 90 duration: " << dur.count() << " sec" << std::endl;
 	}
 	return 1;
@@ -189,12 +189,12 @@ int32_t ComputeIndicesParallel(BVHTree* bvh, vector<Ray>& r, vector<AnglePair>& 
 				}
 			}
 			//update the original ray vector
-			RotateRays(1.0, Axis::X, rParallel[NUM_OF_THREADS_X_16 - 1]);
+			RotateRays(1.0, Axis::Z, rParallel[NUM_OF_THREADS_X_16 - 1]);
 			r = rParallel[NUM_OF_THREADS_X_16 - 1];
 		}
 		std::chrono::high_resolution_clock::time_point stop_f = std::chrono::high_resolution_clock::now();
 		std::chrono::milliseconds dur = std::chrono::duration_cast<std::chrono::milliseconds>(stop_f - start_f);
-		RotateRays(1.0, Axis::Z, r);
+		RotateRays(1.0, Axis::X, r);
 		std::cout << "Cycle " << e + 1 << " out of 90 duration: " << dur.count() << " sec" << std::endl;
 	}
 	return 1;
