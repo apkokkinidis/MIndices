@@ -182,6 +182,7 @@ int32_t MIndices::MIndice::ComputeIndiceParallel()
 						lock.unlock();
 					});
 			}
+			pool.FinishTasks();
 			std::chrono::high_resolution_clock::time_point stop_f = std::chrono::high_resolution_clock::now();
 			std::chrono::seconds dur = std::chrono::duration_cast<std::chrono::seconds>(stop_f - start_f);
 			std::cout << "Elevation : " << elev + 1 << " from: " << ELEVATION << " duration : " << dur.count() << std::endl;

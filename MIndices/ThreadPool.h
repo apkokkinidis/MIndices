@@ -16,10 +16,12 @@ public:
 	~ThreadPool();
 
 	void EnqueTask(std::function<void()> task);
+	void FinishTasks();
 private:
 	std::vector<std::thread> threads;
 	std::deque<std::function<void()>> tasks;
 	std::condition_variable condition;
+	std::condition_variable finishedTasks;
 	std::mutex mutex;
 	std::atomic_bool stop = false;
 	size_t maxQueueSize;

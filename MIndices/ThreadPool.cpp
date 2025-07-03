@@ -1,4 +1,5 @@
 #include "ThreadPool.h"
+#include <iostream>
 
 ThreadPool::ThreadPool(MIndices::ParallelThreads threadOpts, size_t queueSize) : maxQueueSize(queueSize)
 {
@@ -46,6 +47,15 @@ void ThreadPool::EnqueTask(std::function<void()> task)
 	condition.notify_one();
 }
 
+void ThreadPool::FinishTasks()
+{
+	std::unique_lock<std::mutex> lock(mutex);
+	finishedTasks.wait(lock, [this]
+		{
+			return tasks.size() <= 0;
+		});
+}
+
 void ThreadPool::StartThreads()
 {
 	while (true)
@@ -66,7 +76,19 @@ void ThreadPool::StartThreads()
 			task = std::move(tasks.front());
 			tasks.pop_front();
 			condition.notify_one();
+			finishedTasks.notify_all();
 		}
-		task();
+		try
+		{
+			task();
+		}
+		catch (std::exception& e)
+		{
+			std::cerr << e.what() << std::endl;
+		}
+		catch (...)
+		{
+			std::cerr << "Unkown exception occured." << std::endl;
+		}
 	}
 }
