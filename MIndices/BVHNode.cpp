@@ -86,7 +86,7 @@ int32_t BVHNode::ComputeEdges()
 	return -1;	//Failed to compute edges
 }
 
-bool BVHNode::IsLeafNode() const
+bool BVHNode::IsLeafNode() const noexcept
 {
 	return (nullptr == left && nullptr == right);
 }
@@ -106,37 +106,13 @@ std::vector<TriangleEdge> BVHNode::GetEdges() const noexcept
 	return edges;
 }
 
-std::vector<Triangle>::iterator BVHNode::GetTriBegin()
-{
-	return triangles.begin();
-}
-
-std::vector<Triangle>::iterator BVHNode::GetTriEnd()
-{
-	return triangles.end();
-}
-
-std::vector<TriangleEdge>::iterator BVHNode::GetEdgeBegin()
-{
-	return edges.begin();
-}
-
-std::vector<TriangleEdge>::iterator BVHNode::GetEdgeEnd()
-{
-	return edges.end();
-}
-
-std::span<const Triangle> MIndices::BVHNode::triangleSpan()
+std::span<const Triangle> MIndices::BVHNode::triangleSpan() const noexcept
 {
 	return triangles;
 }
 
-size_t BVHNode::GetNumOfTriangles() const
+size_t BVHNode::TrianglesSize() const noexcept
 {
 	return triangles.size();
 }
 
-bool BVHNode::HasComputedEdges() const
-{
-	return !edges.empty();
-}

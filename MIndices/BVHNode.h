@@ -19,19 +19,14 @@ namespace MIndices
 		BVHNode* right;
 
 		//Utility functions
-		size_t GetNumOfTriangles() const;
-		bool IsLeafNode() const;
-		bool HasComputedEdges() const;
+		size_t TrianglesSize() const noexcept;
+		bool IsLeafNode() const noexcept;
 
 		//Get functions
 		const BoundingBox3D& Box() const noexcept;
 		std::vector<Triangle> GetTriangles() const noexcept;
 		std::vector<TriangleEdge> GetEdges() const noexcept;
-		std::vector<Triangle>::iterator GetTriBegin();
-		std::vector<Triangle>::iterator GetTriEnd();
-		std::vector<TriangleEdge>::iterator GetEdgeBegin();
-		std::vector<TriangleEdge>::iterator GetEdgeEnd();
-		std::span<const Triangle> triangleSpan();
+		std::span<const Triangle> triangleSpan() const noexcept;
 
 		//Set functions
 		void SetBBox(const BoundingBox3D& newBBox);

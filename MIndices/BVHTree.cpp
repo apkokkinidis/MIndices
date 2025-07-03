@@ -480,51 +480,6 @@ void BVHTree::RayTraceNodes(BVHNode* node, const Ray& r, std::vector<Point3D>& o
 	}
 }
 
-void BVHTree::RayTraceNodesPreEdges(BVHNode* node, const Ray& r, std::vector<Point3D>& outpoints, std::vector<double>& outT) const noexcept
-{
-	if (node == nullptr)
-	{
-		return;
-	}
-	//check for a given ray if it intersects
-	if (node->Box().RayBoxintersect(r))
-	{
-		if (node->IsLeafNode())
-		{
-			if (node->HasComputedEdges())
-			{
-				for (std::vector<TriangleEdge>::iterator it = node->GetEdgeBegin(); it != node->GetEdgeEnd(); ++it)
-				{
-					Point3D tmp_Point;
-					double tmp_t;
-					if (r.FastRayTriangleIntersection(it->triangle, it->edges[0], it->edges[1], tmp_Point, tmp_t))
-					{
-						outpoints.push_back(tmp_Point);
-						outT.push_back(tmp_t);
-					}
-				}
-			}
-			else
-			{
-				//check ray triangle intersection
-				for (auto triangle = node->GetTriBegin(); triangle != node->GetTriEnd(); ++triangle)
-				{
-					Point3D tmp_Point;
-					double tmp_t;
-					if (r.FastRayTriangleIntersection(*triangle, tmp_Point, tmp_t))
-					{
-						outpoints.push_back(tmp_Point);
-						outT.push_back(tmp_t);
-					}
-				}
-			}
-			//traverse left subtree then backtrack to the right tree
-		}
-		RayTraceNodesPreEdges(node->left, r, outpoints, outT);
-		RayTraceNodesPreEdges(node->right, r, outpoints, outT);
-	}
-}
-
 void BVHTree::DFSTraverse(BVHNode* node, int32_t& visitedNodes, int32_t& visitedLeafs) const noexcept
 {
 	//mark nodes as visited
@@ -542,21 +497,6 @@ void BVHTree::DFSTraverse(BVHNode* node, int32_t& visitedNodes, int32_t& visited
 	//traverse left subtree then backtrack to the right tree
 	DFSTraverse(node->left, visitedNodes, visitedLeafs);
 	DFSTraverse(node->right, visitedNodes, visitedLeafs);
-}
-
-void BVHTree::PrecomputeEdges(BVHNode* node, int32_t& out)
-{
-	if (node == nullptr)
-	{
-		return;
-	}
-
-	if (node->IsLeafNode())
-	{
-		out = node->BVHNode::ComputeEdges();
-	}
-	PrecomputeEdges(node->left, out);
-	PrecomputeEdges(node->right, out);
 }
 
 //Finds the depth of the tree

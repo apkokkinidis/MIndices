@@ -41,9 +41,7 @@ namespace MIndices
 
 		//traversal functions
 		void RayTraceNodes(BVHNode* node, const Ray& r, std::vector<Point3D>& outpoints) const noexcept;
-		void RayTraceNodesPreEdges(BVHNode* node, const Ray& r, std::vector<Point3D>& outpoints, std::vector<double>& outT) const noexcept;	//ToDO unused method
 		void DFSTraverse(BVHNode* node, int32_t& visitedNodes, int32_t& visitedLeafs) const noexcept;
-		void PrecomputeEdges(BVHNode* node, int32_t& out);	//ToDO unused method
 
 
 		//Returns a Pointer to the root of the tree
